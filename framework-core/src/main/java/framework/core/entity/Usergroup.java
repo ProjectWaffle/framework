@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -31,6 +33,7 @@ public class Usergroup extends AbstractEntity {
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "USERGROUP_ROLE", joinColumns = {  @JoinColumn(name = "USERGROUP_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
     private List<Role> roles;
 
     public List<Client> getClients() {

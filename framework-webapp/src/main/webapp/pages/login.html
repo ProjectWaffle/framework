@@ -1,20 +1,16 @@
-<form id="login" action="/" method="post">
-    <div class="large-12 columns">
-        <h3>Login</h3>
+<form id="settingsholder" ng-submit="login()" ng-controller="LoginCtrl">
+    <div>
+        {{error}}
     </div>
-    <div class="large-12 columns">
-        <label>
-            <span>Username :</span>
-            <input placeholder="username" type="text" tabindex="1" required="required">
-        </label>
+    <div>
+        <label for="username">Username</label>
+        <input name="username" ng-model="user.request.username" required="required" placeholder="username"/>
     </div>
-    <div class="large-12 columns">
-        <label> 
-            <span>Password :</span>
-            <input placeholder="password" type="password" tabindex="2" required="required">
-        </label>
+    <div>
+        <label for="password">Password</label>
+        <input name="password" type="password" ng-model="user.request.password" required="required"  placeholder="password"/>
     </div>
-    <div class="large-12 columns">
-        <input type="submit" class="small button" value="Login">
+    <div>
+        <input type="submit" value="Login" />
     </div>
 </form>

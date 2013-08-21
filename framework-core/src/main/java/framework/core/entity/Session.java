@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "SESSION")
-@NamedQueries(value = { @NamedQuery(name = "findBySessionId", query = "from Session where sessionid =:sessionid") })
+@NamedQueries(value = { @NamedQuery(name = "findBySessionId", query = "from Session s JOIN FETCH s.user u JOIN FETCH u.usergroup ug JOIN FETCH ug.roles where s.sessionid =:sessionid") })
 public class Session extends AbstractEntity {
 
     private static final long serialVersionUID = 4041171065363458266L;

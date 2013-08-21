@@ -9,34 +9,8 @@
         <description>System Administrators</description>
         <roles>
             <Role>
-                <name>CHANGE_PASSWORD</name>
-                <description>Change Password</description>
-                <urlPattern>/change-password/*</urlPattern>
-            </Role>
-            <Role>
-                <name>SYSTEM_PARAMETERS</name>
-                <description>Manage System Parameters</description>
-                <urlPattern>/system-parameters/*</urlPattern>
-            </Role>
-            <Role>
-                <name>SYSTEM _REFERENCE</name>
-                <description>Manage System Reference</description>
-                <urlPattern>/system-reference/*</urlPattern>
-            </Role>
-            <Role>
-                <name>LOGGED_IN_USERS</name>
-                <description>Manage Authenticated Users</description>
-                <urlPattern>/authenticated-users/*</urlPattern>
-            </Role>
-            <Role>
-                <name>USERGROUP_MANAGEMENT</name>
-                <description>Manage Usergroups</description>
-                <urlPattern>/usergroups/*</urlPattern>
-            </Role>
-            <Role>
-                <name>USER_MANAGEMENT</name>
-                <description>Manage Users</description>
-                <urlPattern>/users/*</urlPattern>
+                <name>Administrator</name>
+                <description>Administrator</description>
             </Role>
         </roles>
     </usergroup>

@@ -2,6 +2,7 @@ package framework.core.service.impl;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -63,7 +64,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         session.setUser(user);
         session.setSessionid(UUID.randomUUID().toString());
         session.setStart(this.getDateUtils().getCurrentUnixTime());
-        session.setExpiry(this.getDateUtils().addSecondsUnixTime(valueToAdd));
+        session.setExpiry(this.getDateUtils().addSecondsUnixTime(valueToAdd*60));
         return this.sessionService.saveOrUpdate(session);
     }
 

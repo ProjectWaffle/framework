@@ -29,12 +29,12 @@ public class SecurityContextFilter implements ResourceFilter, ContainerRequestFi
         User user = null;
         Session session = null;
         String sessionid = null;
-        Long userid = null;
+        String username = null;
         final ServiceRequest<?> serviceRequest = request.getEntity(ServiceRequest.class);
         if (serviceRequest.getRequestHeader() != null) {
             sessionid = serviceRequest.getRequestHeader().getSessionid();
-            userid = Long.valueOf(serviceRequest.getRequestHeader().getUserid());
-            session = this.sessionService.extendSession(userid, sessionid);
+            username = serviceRequest.getRequestHeader().getUsername();
+            session = this.sessionService.extendSession(username, sessionid);
             if (session != null) {
                 user = session.getUser();
             }
@@ -48,7 +48,9 @@ public class SecurityContextFilter implements ResourceFilter, ContainerRequestFi
     public ContainerResponse filter(ContainerRequest request, ContainerResponse response) {
         final Object entity = response.getEntity();
         if (entity != null) {
-            response.setEntity(ServiceResponse.result(entity).status(ApplicationStatus.SUCCESS).build());
+            if (!(entity instanceof ServiceResponse)) {
+                response.setEntity(ServiceResponse.result(entity).status(ApplicationStatus.SUCCESS).build());
+            }
         }
         return response;
     }

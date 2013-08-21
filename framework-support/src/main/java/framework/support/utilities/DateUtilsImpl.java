@@ -63,6 +63,6 @@ public class DateUtilsImpl implements DateUtils {
     
     @Override
     public boolean isAfter(Long dateToCompare) {
-        return this.getCurrentUnixTime() < dateToCompare;
+        return this.getCurrentUnixTime() > dateToCompare;
     }
 }

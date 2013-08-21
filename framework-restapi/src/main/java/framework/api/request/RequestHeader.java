@@ -8,22 +8,22 @@ public class RequestHeader implements Serializable {
 
     private String sessionid;
 
-    private String userid;
+    private String username;
 
     public String getSessionid() {
         return this.sessionid;
     }
 
-    public String getUserid() {
-        return this.userid;
+    public String getUsername() {
+        return this.username;
     }
 
     public void setSessionid(String sessionid) {
         this.sessionid = sessionid;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
 }

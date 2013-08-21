@@ -6,38 +6,34 @@ public class SessionResponse implements Serializable {
 
     private static final long serialVersionUID = -7717653586881038941L;
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
+    private String sessionid;
+
+    private String usergroupid;
+
+    private String username;
+
+    public String getSessionid() {
+        return this.sessionid;
     }
 
-    private String sessionId;
-
-    private String usergroupId;
-
-    private String userId;
-
-    public String getSessionId() {
-        return this.sessionId;
+    public String getUsergroupid() {
+        return this.usergroupid;
     }
 
-    public String getUsergroupId() {
-        return this.usergroupId;
+    public String getUsername() {
+        return this.username;
     }
 
-    public String getUserId() {
-        return this.userId;
+    public void setSessionid(String sessionid) {
+        this.sessionid = sessionid;
     }
 
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+    public void setUsergroupid(String usergroupid) {
+        this.usergroupid = usergroupid;
     }
 
-    public void setUsergroupId(String usergroupId) {
-        this.usergroupId = usergroupId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
 }

@@ -15,7 +15,8 @@ import framework.core.entity.AbstractEntity;
 import framework.core.persistence.Dao;
 
 /**
- * This class contains basic CRUD implementation. All data access object classes must extends this class.
+ * This class contains basic CRUD implementation. All data access object classes
+ * must extends this class.
  * 
  * @author Frederick Yap
  * @param <T>
@@ -41,7 +42,9 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
 
     /*
      * (non-Javadoc)
-     * @see framework.core.persistence.Dao#delete(framework.core.entity.AbstractEntity )
+     * @see
+     * framework.core.persistence.Dao#delete(framework.core.entity.AbstractEntity
+     * )
      */
     @Override
     public void delete(T t) {
@@ -55,13 +58,16 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
     @Override
     public T findById(String id) {
         final T t = this.entityManager.find(this.persistentClass, id);
-        this.entityManager.detach(t);
+        if (t != null) {
+            this.entityManager.detach(t);
+        }
         return t;
     }
 
     /*
      * (non-Javadoc)
-     * @see framework.core.persistence.Dao#saveOrUpdate(framework.core.entity. AbstractEntity)
+     * @see framework.core.persistence.Dao#saveOrUpdate(framework.core.entity.
+     * AbstractEntity)
      */
     @Override
     public T saveOrUpdate(T t) {
@@ -111,15 +117,16 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
             query.setMaxResults(size);
         }
         final List<T> objects = query.getResultList();
-        for (final T object : objects) {
-            this.entityManager.detach(object);
+        for (final T t : objects) {
+            this.entityManager.detach(t);
         }
         return objects;
     }
 
     /**
-     * Sets an instance of {@link EntityManager} to be used by the data access object class. Override this method only
-     * if using a different persistence unit aside from <em>defaultDb</em>.<br/>
+     * Sets an instance of {@link EntityManager} to be used by the data access
+     * object class. Override this method only if using a different persistence
+     * unit aside from <em>defaultDb</em>.<br/>
      * <br/>
      * <em>WARNING!</em> This method must not be called directly.
      * 

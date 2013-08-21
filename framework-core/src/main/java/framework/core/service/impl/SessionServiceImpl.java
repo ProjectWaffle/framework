@@ -26,25 +26,23 @@ public class SessionServiceImpl extends AbstractService<Session> implements Sess
     }
 
     @Override
-    public Session extendSession(Long userid, String sessionid) {
-        final Session session = this.findSession(userid, sessionid);
+    public Session extendSession(String username, String sessionid) {
+        final Session session = this.findSession(username, sessionid);
         if (session != null) {
             final String paramValue = this.systemParameterService.findByCode(ParameterCode.SESSION_TIMEOUT).getValue();
             final Integer add = Integer.valueOf(this.getCryptography().decrypt(paramValue));
-            if ((userid.equals(session.getUser().getId())) && (this.getDateUtils().isBefore(session.getExpiry()))) {
-                session.setExpiry(this.getDateUtils().addSecondsUnixTime(add));
-                return this.sessionDao.saveOrUpdate(session);
-            }
+            session.setExpiry(this.getDateUtils().addSecondsUnixTime(add * 60));
+            return this.sessionDao.saveOrUpdate(session);
         }
         return null;
     }
 
     @Override
-    public Session findSession(Long userid, String sessionid) {
+    public Session findSession(String username, String sessionid) {
         final List<Session> sessions = this.sessionDao.findBySessionId(sessionid);
         if (sessions.size() == 1) {
             final Session session = sessions.get(0);
-            if ((userid.equals(session.getUser().getId())) && (this.getDateUtils().isBefore(session.getExpiry()))) {
+            if ((username.equals(session.getUser().getName())) && (this.getDateUtils().isBefore(session.getExpiry()))) {
                 return session;
             }
         }

@@ -1,8 +1,16 @@
 package framework.core.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+
 
 /**
  * Represents the different roles that a {@link Usergroup} can have access to.
@@ -23,8 +31,9 @@ public class Role extends AbstractEntity {
     @Column(unique = true)
     private String name;
 
-    @Column
-    private String urlPattern;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "USERGROUP_ROLE", joinColumns = {  @JoinColumn(name = "ROLE_ID") }, inverseJoinColumns = { @JoinColumn(name = "USERGROUP_ID") })
+    private List<Usergroup> roles;
 
     /**
      * Returns the description of this Role.
@@ -42,15 +51,6 @@ public class Role extends AbstractEntity {
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Returns the url pattern that the Role is accessible.
-     * 
-     * @return the url pattern.
-     */
-    public String getUrlPattern() {
-        return this.urlPattern;
     }
 
 }

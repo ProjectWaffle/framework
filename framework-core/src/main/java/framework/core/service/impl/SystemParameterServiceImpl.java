@@ -34,7 +34,11 @@ public class SystemParameterServiceImpl extends AbstractService<SystemParameter>
      */
     @Override
     public List<SystemParameter> findAllActiveSystemParam() {
-        return this.systemParameterDao.findAllActiveSystemParam();
+        List<SystemParameter> systemParameters = this.systemParameterDao.findAllActiveSystemParam();
+        for (SystemParameter systemParameter : systemParameters) {
+            systemParameter.setValue(this.getCryptography().decrypt(systemParameter.getValue()));
+        }
+        return systemParameters;
     }
 
     /*

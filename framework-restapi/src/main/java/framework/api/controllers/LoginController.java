@@ -27,9 +27,9 @@ public class LoginController extends AbstractController {
     public SessionResponse processRequest(LoginRequest loginRequest) {
         final Session session = this.userService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
         final SessionResponse sessionResponse = new SessionResponse();
-        sessionResponse.setSessionId(String.valueOf(session.getId()));
-        sessionResponse.setUserId(String.valueOf(session.getUser().getId()));
-        sessionResponse.setUsergroupId(String.valueOf(session.getUser().getUsergroup().getId()));
+        sessionResponse.setSessionid(session.getSessionid());
+        sessionResponse.setUsername(session.getUser().getName());
+        sessionResponse.setUsergroupid(String.valueOf(session.getUser().getUsergroup().getId()));
         return sessionResponse;
     }
 
