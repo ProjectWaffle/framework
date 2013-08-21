@@ -6,28 +6,28 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.ws.rs.GET;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 
 import framework.api.request.SystemParameterRequest;
-import framework.api.response.ServiceResponse;
 import framework.api.response.SystemParameterResponse;
-import framework.core.constants.ApplicationStatus;
+import framework.core.entity.Role;
 import framework.core.entity.SystemParameter;
 import framework.core.service.SystemParameterService;
-import framework.core.utilities.Cryptography;
 
 @Named
 @Path("/systemParameter")
-public class SystemParameterController extends AbstractController<SystemParameterRequest, SystemParameterResponse> {
+public class SystemParameterController extends AbstractController {
 
     private static final long serialVersionUID = 200605594031531073L;
-    private Cryptography cryptography;
     private SystemParameterService systemParameterService;
 
-    @GET
-    @RolesAllowed(value = { "Administrator" })
-    public ServiceResponse<SystemParameterResponse> processRequest() {
+    @POST
+    @RolesAllowed(value = { Role.ADMINISTRATOR })
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<SystemParameterResponse> loadSystemParameters(SystemParameterRequest serviceRequest) {
         final List<SystemParameterResponse> list = new ArrayList<SystemParameterResponse>();
         final List<SystemParameter> systemParameters = this.systemParameterService.findAllActiveSystemParam();
         for (final SystemParameter systemParameter : systemParameters) {
@@ -38,15 +38,10 @@ public class SystemParameterController extends AbstractController<SystemParamete
             systemParameterDTO.setMinimum(String.valueOf(systemParameter.getMinimum()));
             systemParameterDTO.setType(systemParameter.getType().name());
             systemParameterDTO.setReadonly(String.valueOf(systemParameter.isReadonly()));
-            systemParameterDTO.setValue(this.cryptography.decrypt(systemParameter.getValue()));
+            systemParameterDTO.setValue(systemParameter.getValue());
             list.add(systemParameterDTO);
         }
-        return ServiceResponse.results(list).status(ApplicationStatus.SUCCESS).build();
-    }
-
-    @Inject
-    protected void setCryptography(Cryptography cryptography) {
-        this.cryptography = cryptography;
+        return list;
     }
 
     /**

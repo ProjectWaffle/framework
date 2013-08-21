@@ -1,7 +1,7 @@
 angular.module('systemParameter.service', []).factory('SystemParameterResponse', ['$http', function($http){
     return{
         load: function(callback){
-            $http.get('services/systemParameter/').success(function(data) {
+            $http.post('services/systemParameter/','{"request":{"code":"ACODE"},"requestHeader":{"userid":"1111","sessionid":"AS"}}').success(function(data) {
                 callback(data);
             });
         },

@@ -1,4 +1,4 @@
-package framework.core.constants;
+package framework.core.enums;
 
 /**
  * Returns the different types of look-up values.

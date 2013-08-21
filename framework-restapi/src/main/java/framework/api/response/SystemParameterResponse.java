@@ -2,36 +2,22 @@ package framework.api.response;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class SystemParameterResponse implements Serializable {
 
     private static final long serialVersionUID = 908256462946326444L;
 
-    @XmlElement
     private String code;
 
-    @XmlElement
     private String description;
 
-    @XmlElement
     private String maximum;
 
-    @XmlElement
     private String minimum;
 
-    @XmlElement
     private String readonly;
 
-    @XmlElement
     private String type;
 
-    @XmlElement
     private String value;
 
     public String getCode() {

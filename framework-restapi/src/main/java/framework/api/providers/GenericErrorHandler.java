@@ -15,7 +15,7 @@ public class GenericErrorHandler implements ExceptionMapper<ServiceException> {
     @Override
     public Response toResponse(ServiceException exception) {
         return Response.status(Status.BAD_REQUEST)
-                .entity(ServiceResponse.results().status(exception.getStatus()).build())
+                .entity(ServiceResponse.result().status(exception.getStatus()).build())
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

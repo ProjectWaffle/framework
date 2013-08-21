@@ -5,16 +5,22 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "SESSION")
+@NamedQueries(value = { @NamedQuery(name = "findBySessionId", query = "from Session where sessionid =:sessionid") })
 public class Session extends AbstractEntity {
 
     private static final long serialVersionUID = 4041171065363458266L;
 
     @Column
     private Long expiry;
+
+    @Column(unique = true, nullable = false)
+    private String sessionid;
 
     @Column
     private Long start;
@@ -24,6 +30,10 @@ public class Session extends AbstractEntity {
 
     public Long getExpiry() {
         return this.expiry;
+    }
+
+    public String getSessionid() {
+        return this.sessionid;
     }
 
     public Long getStart() {
@@ -36,6 +46,10 @@ public class Session extends AbstractEntity {
 
     public void setExpiry(Long expiry) {
         this.expiry = expiry;
+    }
+
+    public void setSessionid(String sessionid) {
+        this.sessionid = sessionid;
     }
 
     public void setStart(Long start) {

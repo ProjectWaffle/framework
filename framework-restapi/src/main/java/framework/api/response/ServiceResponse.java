@@ -1,35 +1,36 @@
 package framework.api.response;
 
-import java.util.List;
+import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+public class ServiceResponse<T> implements Serializable {
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class ServiceResponse<T> {
+    private static final long serialVersionUID = 1303959587184354193L;
 
-    public static <T> ServiceResponseBuilder<T> results() {
+    public static <T> ServiceResponseBuilder<T> result() {
         final ServiceResponseBuilder<T> serviceResponseBuilder = new ServiceResponseBuilder<T>();
         return serviceResponseBuilder;
     }
 
-    public static <T> ServiceResponseBuilder<T> results(List<T> results) {
+    public static <T> ServiceResponseBuilder<T> result(T result) {
         final ServiceResponseBuilder<T> serviceResponseBuilder = new ServiceResponseBuilder<T>();
-        serviceResponseBuilder.results(results);
+        serviceResponseBuilder.result(result);
         return serviceResponseBuilder;
     }
 
-    @XmlElement
     private final ResponseHeader responseHeader;
 
-    @XmlElement
-    private final List<T> results;
+    private final T result;
 
-    protected ServiceResponse(ResponseHeader responseHeader, List<T> results) {
+    protected ServiceResponse(ResponseHeader responseHeader, T result) {
         this.responseHeader = responseHeader;
-        this.results = results;
+        this.result = result;
+    }
+
+    public ResponseHeader getResponseHeader() {
+        return this.responseHeader;
+    }
+
+    public T getResult() {
+        return this.result;
     }
 }

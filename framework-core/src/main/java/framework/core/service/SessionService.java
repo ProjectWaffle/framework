@@ -4,6 +4,8 @@ import framework.core.entity.Session;
 
 public interface SessionService extends Service<Session> {
 
-    boolean isValidSession(String userid, String sessionid);
+    Session extendSession(Long userid, String sessionid);
+
+    Session findSession(Long userid, String sessionid);
 
 }

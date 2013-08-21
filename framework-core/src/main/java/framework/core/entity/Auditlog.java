@@ -8,7 +8,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import framework.core.constants.EventType;
+import framework.core.enums.EventType;
 
 /**
  * Represents events necessary for auditing.

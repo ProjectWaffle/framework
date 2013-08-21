@@ -55,4 +55,14 @@ public class DateUtilsImpl implements DateUtils {
     public Long addSecondsUnixTime(Integer seconds) {
         return convertToUnixTime(DateTime.now().plusSeconds(seconds).toDate());
     }
+
+    @Override
+    public boolean isBefore(Long dateToCompare) {
+        return this.getCurrentUnixTime() < dateToCompare;
+    }
+    
+    @Override
+    public boolean isAfter(Long dateToCompare) {
+        return this.getCurrentUnixTime() < dateToCompare;
+    }
 }

@@ -1,14 +1,15 @@
 package framework.core.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import framework.core.constants.ParameterCode;
 import framework.core.entity.Session;
 import framework.core.entity.SystemParameter;
 import framework.core.entity.User;
+import framework.core.enums.ParameterCode;
 import framework.core.exceptions.CredentialExpiredException;
 import framework.core.exceptions.InvalidUserException;
 import framework.core.exceptions.UserProfileExpiredException;
@@ -41,29 +42,28 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     public Session authenticate(String username, String password) {
         final List<User> users = this.userDao.findUsersByUsername(username);
         if (users.size() == 1) {
-            return this.prepareSession(users.get(0), password);
+            return this.validateAndPrepareSession(users.get(0), password);
         }
         throw new InvalidUserException(String.format("Username [%s] does not exist.", username));
     }
 
-    protected Session prepareSession(User user, String password) {
+    protected Session validateAndPrepareSession(User user, String password) {
         final Session session = new Session();
         final SystemParameter systemParameter = this.systemParameterService.findByCode(ParameterCode.SESSION_TIMEOUT);
+        final Integer valueToAdd = Integer.valueOf(this.getCryptography().decrypt(systemParameter.getValue()));
         if (this.getDateUtils().getCurrentUnixTime() > user.getProfileexpiration()) {
             throw new UserProfileExpiredException(String.format("User [%s] has already expired.", user.getName()));
         }
         if (this.getDateUtils().getCurrentUnixTime() > user.getPasswordexpiration()) {
-            throw new CredentialExpiredException(String.format("Credentials for user [%s] has already expired.",
-                    user.getName()));
+            throw new CredentialExpiredException("Credentials for user " + user.getName() + " has already expired.");
         }
         if (!password.equals(this.getCryptography().decrypt(user.getPassword()))) {
-            throw new InvalidUserException(String.format(
-                    "Password for [%s] does not match with the supplied password.", user.getName()));
+            throw new InvalidUserException("Password for " + user.getName() + " is invalid.");
         }
         session.setUser(user);
+        session.setSessionid(UUID.randomUUID().toString());
         session.setStart(this.getDateUtils().getCurrentUnixTime());
-        session.setExpiry(this.getDateUtils().addSecondsUnixTime(Integer.valueOf(this.getCryptography().decrypt(systemParameter
-                .getValue()))));
+        session.setExpiry(this.getDateUtils().addSecondsUnixTime(valueToAdd));
         return this.sessionService.saveOrUpdate(session);
     }
 

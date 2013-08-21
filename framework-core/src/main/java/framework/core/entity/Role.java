@@ -15,6 +15,8 @@ public class Role extends AbstractEntity {
 
     private static final long serialVersionUID = 1759977741752483761L;
 
+    public static final String ADMINISTRATOR = "Administrator";
+    
     @Column
     private String description;
 

@@ -8,8 +8,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import framework.core.constants.ParameterCode;
-import framework.core.constants.ParameterType;
+import framework.core.enums.ParameterCode;
+import framework.core.enums.ParameterType;
 
 /**
  * The System Parameter entity is a place-value holder for environment variables used for managing the state of the

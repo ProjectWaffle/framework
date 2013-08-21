@@ -2,8 +2,8 @@ package framework.core.persistence;
 
 import java.util.List;
 
-import framework.core.constants.ParameterCode;
 import framework.core.entity.SystemParameter;
+import framework.core.enums.ParameterCode;
 
 /**
  * Data access interface for persisting {@link SystemParameter} entity.

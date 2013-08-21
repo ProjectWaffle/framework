@@ -14,4 +14,7 @@ public interface DateUtils {
 
     Long getCurrentUnixTime();
 
+    boolean isBefore(Long dateToCompare);
+    
+    boolean isAfter(Long dateToCompare);
 }

@@ -1,18 +1,13 @@
 package framework.api.response;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ResponseHeader", propOrder = { "statusCode", "statusMessage" })
-public class ResponseHeader {
+public class ResponseHeader implements Serializable {
 
-    @XmlElement
+    private static final long serialVersionUID = -5963770126090460701L;
+
     private Integer statusCode;
 
-    @XmlElement
     private String statusMessage;
 
     /**

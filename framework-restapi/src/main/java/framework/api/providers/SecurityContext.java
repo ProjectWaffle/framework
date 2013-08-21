@@ -33,7 +33,7 @@ public class SecurityContext implements javax.ws.rs.core.SecurityContext {
 
     @Override
     public boolean isUserInRole(String name) {
-        if (null == this.session || null == this.user) {
+        if ((null == this.session) || (null == this.user)) {
             return false;
         }
         for (final Role role : this.user.getUsergroup().getRoles()) {

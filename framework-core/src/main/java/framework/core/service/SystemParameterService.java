@@ -2,8 +2,8 @@ package framework.core.service;
 
 import java.util.List;
 
-import framework.core.constants.ParameterCode;
 import framework.core.entity.SystemParameter;
+import framework.core.enums.ParameterCode;
 
 /**
  * This interface represents business operations for {@link SystemParameter} entity.

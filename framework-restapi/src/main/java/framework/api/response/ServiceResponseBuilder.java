@@ -1,61 +1,42 @@
 package framework.api.response;
 
-import java.util.List;
+import java.io.Serializable;
 
-import framework.core.constants.ApplicationStatus;
+import framework.core.enums.ApplicationStatus;
 
-public class ServiceResponseBuilder<T> {
+public class ServiceResponseBuilder<T> implements Serializable {
 
-    private List<T> results;
-
-    private Integer statusCode;
-    private String statusMessage;
+    private static final long serialVersionUID = 6197368273382015514L;
+    private ApplicationStatus applicationStatus;
+    private T result;
 
     ServiceResponseBuilder() {
-        
+
     }
-    
+
     public ServiceResponse<T> build() {
         final ResponseHeader responseHeader = new ResponseHeader();
-        responseHeader.setStatusCode(this.statusCode);
-        responseHeader.setStatusMessage(this.statusMessage);
-        return new ServiceResponse<T>(responseHeader, this.results);
+        responseHeader.setStatusCode(this.applicationStatus.getCode());
+        responseHeader.setStatusMessage(this.applicationStatus.getMessage());
+        return new ServiceResponse<T>(responseHeader, this.result);
     }
 
     /**
-     * @param results
-     *            the results to set
+     * @param result
+     *            the result to set
      */
-    public ServiceResponseBuilder<T> results(List<T> results) {
-        this.results = results;
+    public ServiceResponseBuilder<T> result(T result) {
+        this.result = result;
         return this;
     }
 
     /**
-     * @param results
-     *            the results to set
+     * @param result
+     *            the result to set
      */
     public ServiceResponseBuilder<T> status(ApplicationStatus status) {
-        this.statusMessage = status.getMessage();
-        this.statusCode = status.getCode();
+        this.applicationStatus = status;
         return this;
     }
 
-    /**
-     * @param results
-     *            the results to set
-     */
-    public ServiceResponseBuilder<T> statusCode(Integer statusCode) {
-        this.statusCode = statusCode;
-        return this;
-    }
-
-    /**
-     * @param results
-     *            the results to set
-     */
-    public ServiceResponseBuilder<T> statusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
-        return this;
-    }
 }

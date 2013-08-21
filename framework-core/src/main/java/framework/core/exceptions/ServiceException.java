@@ -1,6 +1,6 @@
 package framework.core.exceptions;
 
-import framework.core.constants.ApplicationStatus;
+import framework.core.enums.ApplicationStatus;
 
 public abstract class ServiceException extends RuntimeException {
 

@@ -15,9 +15,9 @@ import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-import framework.core.constants.EventType;
 import framework.core.entity.AbstractEntity;
 import framework.core.entity.Auditlog;
+import framework.core.enums.EventType;
 import framework.core.service.AuditlogService;
 import framework.core.utilities.DateUtils;
 
