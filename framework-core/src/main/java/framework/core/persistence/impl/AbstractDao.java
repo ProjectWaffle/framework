@@ -2,6 +2,7 @@ package framework.core.persistence.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,8 +16,7 @@ import framework.core.entity.AbstractEntity;
 import framework.core.persistence.Dao;
 
 /**
- * This class contains basic CRUD implementation. All data access object classes
- * must extends this class.
+ * This class contains basic CRUD implementation. All data access object classes must extends this class.
  * 
  * @author Frederick Yap
  * @param <T>
@@ -42,9 +42,7 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
 
     /*
      * (non-Javadoc)
-     * @see
-     * framework.core.persistence.Dao#delete(framework.core.entity.AbstractEntity
-     * )
+     * @see framework.core.persistence.Dao#delete(framework.core.entity.AbstractEntity )
      */
     @Override
     public void delete(T t) {
@@ -60,14 +58,16 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
         final T t = this.entityManager.find(this.persistentClass, id);
         if (t != null) {
             this.entityManager.detach(t);
+            if (!t.isDeleted()) {
+                return t;
+            }
         }
-        return t;
+        return null;
     }
 
     /*
      * (non-Javadoc)
-     * @see framework.core.persistence.Dao#saveOrUpdate(framework.core.entity.
-     * AbstractEntity)
+     * @see framework.core.persistence.Dao#saveOrUpdate(framework.core.entity. AbstractEntity)
      */
     @Override
     public T saveOrUpdate(T t) {
@@ -104,6 +104,7 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
 
     @SuppressWarnings("unchecked")
     protected List<T> find(String name, Map<String, Object> parameters, Integer index, Integer size, boolean isCacheable) {
+        final List<T> results = new ArrayList<T>();
         final Query query = this.entityManager.createNamedQuery(name);
         if (parameters != null) {
             for (final Entry<String, Object> parameter : parameters.entrySet()) {
@@ -116,17 +117,18 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
         if (size != null) {
             query.setMaxResults(size);
         }
-        final List<T> objects = query.getResultList();
-        for (final T t : objects) {
+        for (final T t : (List<T>) query.getResultList()) {
             this.entityManager.detach(t);
+            if (!t.isDeleted()) {
+                results.add(t);
+            }
         }
-        return objects;
+        return results;
     }
 
     /**
-     * Sets an instance of {@link EntityManager} to be used by the data access
-     * object class. Override this method only if using a different persistence
-     * unit aside from <em>defaultDb</em>.<br/>
+     * Sets an instance of {@link EntityManager} to be used by the data access object class. Override this method only
+     * if using a different persistence unit aside from <em>defaultDb</em>.<br/>
      * <br/>
      * <em>WARNING!</em> This method must not be called directly.
      * 

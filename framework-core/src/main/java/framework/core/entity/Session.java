@@ -11,16 +11,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "SESSION")
-@NamedQueries(value = { @NamedQuery(name = "findBySessionId", query = "from Session s JOIN FETCH s.user u JOIN FETCH u.usergroup ug JOIN FETCH ug.roles where s.sessionid =:sessionid") })
+@NamedQueries(value = { @NamedQuery(name = "findSessionById", query = "from Session where id =:id"),
+        @NamedQuery(name = "findSessionByUser", query = "select s from Session s inner join s.user u where u.name =:username") })
 public class Session extends AbstractEntity {
 
     private static final long serialVersionUID = 4041171065363458266L;
 
     @Column
     private Long expiry;
-
-    @Column(unique = true, nullable = false)
-    private String sessionid;
 
     @Column
     private Long start;
@@ -30,10 +28,6 @@ public class Session extends AbstractEntity {
 
     public Long getExpiry() {
         return this.expiry;
-    }
-
-    public String getSessionid() {
-        return this.sessionid;
     }
 
     public Long getStart() {
@@ -46,10 +40,6 @@ public class Session extends AbstractEntity {
 
     public void setExpiry(Long expiry) {
         this.expiry = expiry;
-    }
-
-    public void setSessionid(String sessionid) {
-        this.sessionid = sessionid;
     }
 
     public void setStart(Long start) {

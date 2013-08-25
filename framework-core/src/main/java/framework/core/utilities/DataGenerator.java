@@ -13,7 +13,12 @@ import javax.inject.Named;
 @Named
 public abstract class DataGenerator {
 
+    private Cryptography cryptography;
     private XMLEncoder xmlEncoder;
+
+    protected Cryptography getCryptography() {
+        return this.cryptography;
+    }
 
     /**
      * Returns the new database version. Normally, the database version is supplied by <em>DBVersion{}.data</em> file.
@@ -47,8 +52,9 @@ public abstract class DataGenerator {
      *            implementation class for {@link XMLEncoder}.
      */
     @Inject
-    protected final void setXmlEncoder(XMLEncoder xmlEncoder) {
+    protected final void setUtilities(XMLEncoder xmlEncoder, Cryptography cryptography) {
         this.xmlEncoder = xmlEncoder;
+        this.cryptography = cryptography;
     }
 
 }

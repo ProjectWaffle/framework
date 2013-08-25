@@ -18,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "PRINCIPAL")
-@NamedQueries(value = { @NamedQuery(name = "findUsersByUsername", query = "from User where name = :username") })
+@NamedQueries(value = { @NamedQuery(name = "findUsersByName", query = "from User where name = :username") })
 public class User extends AbstractEntity implements Principal {
 
     private static final long serialVersionUID = -7767487387897790096L;
@@ -44,7 +44,7 @@ public class User extends AbstractEntity implements Principal {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Userdetails userdetails;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Usergroup usergroup;
 
     public Client getClient() {

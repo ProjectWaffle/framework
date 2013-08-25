@@ -2,8 +2,8 @@ package framework.core.service;
 
 import java.util.List;
 
+import framework.core.constants.ParameterCode;
 import framework.core.entity.SystemParameter;
-import framework.core.enums.ParameterCode;
 
 /**
  * This interface represents business operations for {@link SystemParameter} entity.
@@ -17,7 +17,7 @@ public interface SystemParameterService extends Service<SystemParameter> {
      * 
      * @return all active {@link SystemParameter}.
      */
-    List<SystemParameter> findAllActiveSystemParam();
+    List<SystemParameter> findAllActiveSystemParam(String clientName);
 
     /**
      * Returns active {@link SystemParameter} based on the input {@link ParameterCode}.
@@ -26,6 +26,9 @@ public interface SystemParameterService extends Service<SystemParameter> {
      *            result filter.
      * @return all active {@link SystemParameter}.
      */
-    SystemParameter findByCode(ParameterCode code);
+    SystemParameter findByCode(ParameterCode code, String clientName);
 
+    SystemParameter findDatabaseVersion();
+
+    
 }

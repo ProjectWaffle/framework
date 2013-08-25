@@ -6,8 +6,8 @@ import java.util.Map;
 
 import javax.inject.Named;
 
+import framework.core.constants.ParameterCode;
 import framework.core.entity.SystemParameter;
-import framework.core.enums.ParameterCode;
 import framework.core.persistence.SystemParameterDao;
 
 /**

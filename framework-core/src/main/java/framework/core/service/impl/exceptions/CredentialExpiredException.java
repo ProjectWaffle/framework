@@ -1,6 +1,6 @@
-package framework.core.exceptions;
+package framework.core.service.impl.exceptions;
 
-import framework.core.enums.ApplicationStatus;
+import framework.core.constants.ApplicationStatus;
 
 public class CredentialExpiredException extends AuthenticationException {
 

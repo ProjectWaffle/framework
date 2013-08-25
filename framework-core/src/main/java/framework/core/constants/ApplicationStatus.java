@@ -1,4 +1,4 @@
-package framework.core.enums;
+package framework.core.constants;
 
 public enum ApplicationStatus {
 

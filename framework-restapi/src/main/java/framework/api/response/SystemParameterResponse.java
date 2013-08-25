@@ -2,23 +2,35 @@ package framework.api.response;
 
 import java.io.Serializable;
 
+import framework.core.entity.SystemParameter;
+
 public class SystemParameterResponse implements Serializable {
 
     private static final long serialVersionUID = 908256462946326444L;
 
-    private String code;
+    private final String code;
 
-    private String description;
+    private final String description;
 
-    private String maximum;
+    private final String maximum;
 
-    private String minimum;
+    private final String minimum;
 
-    private String readonly;
+    private final String readonly;
 
-    private String type;
+    private final String type;
 
-    private String value;
+    private final String value;
+
+    public SystemParameterResponse(SystemParameter systemParameter) {
+        this.code = systemParameter.getCode().name();
+        this.description = systemParameter.getDescription();
+        this.maximum = String.valueOf(systemParameter.getMaximum());
+        this.minimum = String.valueOf(systemParameter.getMinimum());
+        this.type = systemParameter.getType().name();
+        this.readonly = String.valueOf(systemParameter.isReadonly());
+        this.value = systemParameter.getValue();
+    }
 
     public String getCode() {
         return this.code;
@@ -46,34 +58,6 @@ public class SystemParameterResponse implements Serializable {
 
     public String getValue() {
         return this.value;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setMaximum(String maximum) {
-        this.maximum = maximum;
-    }
-
-    public void setMinimum(String minimum) {
-        this.minimum = minimum;
-    }
-
-    public void setReadonly(String readonly) {
-        this.readonly = readonly;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 
 }

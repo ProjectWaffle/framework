@@ -6,6 +6,7 @@ import framework.core.entity.Session;
 
 public interface SessionDao extends Dao<Session> {
     
-    List<Session> findBySessionId(String sessionId);
+    List<Session> findSessionById(String id);
     
+    List<Session> findSessionByUser(String username);
 }

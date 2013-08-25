@@ -1,4 +1,4 @@
-package framework.core.entity.listeners;
+package framework.core.utilities;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -10,19 +10,19 @@ import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import framework.core.constants.EventType;
 import framework.core.entity.AbstractEntity;
 import framework.core.entity.Auditlog;
-import framework.core.enums.EventType;
 import framework.core.service.AuditlogService;
-import framework.core.utilities.DateUtils;
 
 @Named
-public class EntityListener implements Serializable {
+public class AuditlogUtil implements Serializable {
 
     private static AuditlogService auditlogService;
     private static DateUtils dateUtils;
@@ -97,6 +97,16 @@ public class EntityListener implements Serializable {
                 fieldDetails.append(field.get(entity));
                 fieldDetails.append("\", ");
             }
+            final ManyToOne manyToOne = field.getAnnotation(ManyToOne.class);
+            if (manyToOne != null) {
+                final AbstractEntity abstractEntity = (AbstractEntity) field.get(entity);
+                if (abstractEntity != null) {
+                    fieldDetails.append(abstractEntity.getClass().getSimpleName().toUpperCase().replace("_$$_JAVASSIST_1", "") + "_ID");
+                    fieldDetails.append("=\"");
+                    fieldDetails.append(abstractEntity.getId());
+                    fieldDetails.append("\", ");
+                }
+            }
         }
         return fieldDetails;
     }
@@ -123,6 +133,7 @@ public class EntityListener implements Serializable {
             auditlog.setType(EventType.DELETE);
             auditlogService.saveOrUpdate(auditlog);
         }
+
     }
 
     @PreUpdate
@@ -130,24 +141,20 @@ public class EntityListener implements Serializable {
         if (!(entity instanceof Auditlog)) {
             final Auditlog auditlog = new Auditlog();
             final String detail = this.generateAuditlogDetails(entity);
-            final Auditlog previousLog = auditlogService.findLastAuditlogByCurrentDetail(detail);
             auditlog.setLogdate(dateUtils.getCurrentUnixTime());
             auditlog.setDetail(detail);
             auditlog.setType(EventType.UPDATE);
-            if (previousLog != null) {
-                auditlog.setPrevious(previousLog.getDetail());
-                auditlogService.saveOrUpdate(auditlog);
-            }
+            auditlogService.saveOrUpdate(auditlog);
         }
     }
 
     @Inject
     protected void setAuditlogService(AuditlogService auditlogService) {
-        EntityListener.auditlogService = auditlogService;
+        AuditlogUtil.auditlogService = auditlogService;
     }
 
     @Inject
     protected void setDateUtils(DateUtils dateUtils) {
-        EntityListener.dateUtils = dateUtils;
+        AuditlogUtil.dateUtils = dateUtils;
     }
 }

@@ -1,12 +1,14 @@
 package framework.core.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import framework.core.constants.ParameterCode;
+import framework.core.entity.Client;
 import framework.core.entity.SystemParameter;
-import framework.core.enums.ParameterCode;
 import framework.core.persistence.SystemParameterDao;
 import framework.core.service.SystemParameterService;
 
@@ -33,10 +35,16 @@ public class SystemParameterServiceImpl extends AbstractService<SystemParameter>
      * @see framework.core.service.SystemParameterService#findAllActiveSystemParam()
      */
     @Override
-    public List<SystemParameter> findAllActiveSystemParam() {
-        List<SystemParameter> systemParameters = this.systemParameterDao.findAllActiveSystemParam();
-        for (SystemParameter systemParameter : systemParameters) {
-            systemParameter.setValue(this.getCryptography().decrypt(systemParameter.getValue()));
+    public List<SystemParameter> findAllActiveSystemParam(String clientName) {
+        final List<SystemParameter> systemParameters = new ArrayList<SystemParameter>();
+        for (final SystemParameter systemParameter : this.systemParameterDao.findAllActiveSystemParam()) {
+            final Client client = systemParameter.getClient();
+            if (client != null) {
+                if (clientName.equals(client.getName()) && this.getDateUtils().isBefore(client.getValidity())) {
+                    systemParameter.setValue(this.getCryptography().decrypt(systemParameter.getValue()));
+                    systemParameters.add(systemParameter);
+                }
+            }
         }
         return systemParameters;
     }
@@ -48,12 +56,27 @@ public class SystemParameterServiceImpl extends AbstractService<SystemParameter>
      * .ParameterCode)
      */
     @Override
-    public SystemParameter findByCode(ParameterCode code) {
+    public SystemParameter findByCode(ParameterCode code, String clientName) {
         final List<SystemParameter> systemParameters = this.systemParameterDao.findSystemParametersByCode(code);
+        if (systemParameters.size() > 0) {
+            final SystemParameter systemParameter = systemParameters.get(0);
+            final Client client = systemParameter.getClient();
+            if (client != null) {
+                if (clientName.equals(client.getName()) && this.getDateUtils().isBefore(client.getValidity())) {
+                    systemParameter.setValue(this.getCryptography().decrypt(systemParameter.getValue()));
+                    return systemParameter;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public SystemParameter findDatabaseVersion() {
+        final List<SystemParameter> systemParameters = this.systemParameterDao.findSystemParametersByCode(ParameterCode.DB_VERSION);
         if (systemParameters.size() > 0) {
             return systemParameters.get(0);
         }
         return null;
     }
-
 }

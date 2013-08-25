@@ -1,7 +1,7 @@
 angular.module('systemParameter.service', []).factory('SystemParameterResponse', [ '$http', function($http) {
     return {
-        load : function(success, error, systemParameter) {
-            $http.post('services/systemParameter/', systemParameter).success(function(data) {
+        load : function(success, error, config) {
+            $http.get('services/systemParameter/', config).success(function(data) {
                 success(data);
             }).error(function(data) {
                 error(data);
@@ -26,18 +26,18 @@ angular.module('systemParameter.controller', [ 'systemParameter.service' ]).conf
 });
 
 function ListCtrl($scope, $cookies, $location, SystemParameterResponse) {
-    $scope.systemParameter = {
-        requestHeader : {
-            username : $cookies.username,
-            sessionid : $cookies.sessionid
+    var config = {
+        headers : {
+            token : $cookies.token
         }
     };
 
     SystemParameterResponse.load(function(data) {
+        $cookies.token = data.responseHeader.token;
         $scope.serviceResponse = data;
     }, function(data) {
         handlerError(data, $scope, $location);
-    }, angular.toJson($scope.systemParameter));
+    }, config);
 }
 
 function EditCtrl($scope, $location, $routeParams, SystemParameterResponse) {

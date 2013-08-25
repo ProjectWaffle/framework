@@ -8,7 +8,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import framework.core.enums.EventType;
+import framework.core.constants.EventType;
 
 /**
  * Represents events necessary for auditing.
@@ -27,9 +27,6 @@ public class Auditlog extends AbstractEntity {
 
     @Column
     private Long logdate;
-
-    @Column(columnDefinition = "TEXT")
-    private String previous;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -57,15 +54,6 @@ public class Auditlog extends AbstractEntity {
     }
 
     /**
-     * Returns the previous log entry if the event type is UPDATE.
-     * 
-     * @return the previous log entry.
-     */
-    public String getPrevious() {
-        return this.previous;
-    }
-
-    /**
      * Returns the event type.
      * 
      * @return the event type.
@@ -90,10 +78,6 @@ public class Auditlog extends AbstractEntity {
 
     public void setLogdate(Long logdate) {
         this.logdate = logdate;
-    }
-
-    public void setPrevious(String previous) {
-        this.previous = previous;
     }
 
     public void setType(EventType type) {

@@ -1,4 +1,4 @@
-package framework.core.enums;
+package framework.core.constants;
 
 /**
  * Enumerated values for different system events.

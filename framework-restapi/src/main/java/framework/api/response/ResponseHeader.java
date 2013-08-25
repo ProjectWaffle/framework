@@ -10,6 +10,8 @@ public class ResponseHeader implements Serializable {
 
     private String statusMessage;
 
+    private String token;
+
     /**
      * @return the statusCode
      */
@@ -22,6 +24,10 @@ public class ResponseHeader implements Serializable {
      */
     public String getStatusMessage() {
         return this.statusMessage;
+    }
+
+    public String getToken() {
+        return this.token;
     }
 
     /**
@@ -38,6 +44,10 @@ public class ResponseHeader implements Serializable {
      */
     public void setStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
 }

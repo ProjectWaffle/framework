@@ -9,7 +9,7 @@
         <description>System Administrators</description>
         <roles>
             <Role>
-                <name>Administrator</name>
+                <name>Administrators</name>
                 <description>Administrator</description>
             </Role>
         </roles>

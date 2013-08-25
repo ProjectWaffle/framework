@@ -1,11 +1,11 @@
 package framework.core.service;
 
 import framework.core.entity.Session;
+import framework.core.entity.User;
 
 public interface SessionService extends Service<Session> {
 
-    Session extendSession(String username, String sessionid);
+    Session findSessionById(String username, String id);
 
-    Session findSession(String username, String sessionid);
-
+    String saveOrUpdate(User user);
 }

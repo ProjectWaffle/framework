@@ -8,29 +8,22 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
 import framework.api.request.LoginRequest;
-import framework.api.response.SessionResponse;
-import framework.core.entity.Session;
+import framework.api.response.ServiceResponse;
+import framework.core.constants.ApplicationStatus;
 import framework.core.service.UserService;
 
 @Named
 @Path("/login")
 public class LoginController extends AbstractController {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -6402313528023081815L;
     private UserService userService;
 
     @POST
     @Consumes(value = { MediaType.APPLICATION_JSON })
-    public SessionResponse processRequest(LoginRequest loginRequest) {
-        final Session session = this.userService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
-        final SessionResponse sessionResponse = new SessionResponse();
-        sessionResponse.setSessionid(session.getSessionid());
-        sessionResponse.setUsername(session.getUser().getName());
-        sessionResponse.setUsergroupid(String.valueOf(session.getUser().getUsergroup().getId()));
-        return sessionResponse;
+    public ServiceResponse<?> processRequest(LoginRequest loginRequest) {
+        final String token = this.userService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
+        return ServiceResponse.result().status(ApplicationStatus.SUCCESS).token(token).build();
     }
 
     @Inject

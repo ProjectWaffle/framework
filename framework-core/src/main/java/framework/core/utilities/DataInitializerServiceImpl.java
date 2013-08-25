@@ -10,7 +10,6 @@ import javax.inject.Named;
 
 import framework.core.entity.Localization;
 import framework.core.entity.SystemParameter;
-import framework.core.enums.ParameterCode;
 import framework.core.service.SystemParameterService;
 
 /**
@@ -26,10 +25,16 @@ public class DataInitializerServiceImpl {
     private SystemParameterService systemParameterService;
     private XMLEncoder xmlEncoder;
 
-    /**
-     * Default constructor.
-     */
     protected DataInitializerServiceImpl() {
+    }
+
+    @Inject
+    protected DataInitializerServiceImpl(SystemParameterService systemParameterService, Cryptography cryptography,
+            XMLEncoder xmlEncoder, List<DataGenerator> dataGenerators) {
+        this.systemParameterService = systemParameterService;
+        this.cryptography = cryptography;
+        this.xmlEncoder = xmlEncoder;
+        this.dataGenerators = dataGenerators;
     }
 
     /**
@@ -38,7 +43,7 @@ public class DataInitializerServiceImpl {
     public void update() {
         this.sort();
         for (final DataGenerator dataGenerator : this.dataGenerators) {
-            SystemParameter systemParameter = this.systemParameterService.findByCode(ParameterCode.DB_VERSION);
+            SystemParameter systemParameter = this.systemParameterService.findDatabaseVersion();
             if (systemParameter != null) {
                 final Integer currentDBVersion = Integer.valueOf(this.cryptography.decrypt(systemParameter.getValue()));
                 if (dataGenerator.getDBVersion() > currentDBVersion) {
@@ -56,26 +61,6 @@ public class DataInitializerServiceImpl {
             }
         }
 
-    }
-
-    @Inject
-    protected void setCryptography(Cryptography cryptography) {
-        this.cryptography = cryptography;
-    }
-
-    @Inject
-    protected void setDataGenerators(List<DataGenerator> dataGenerators) {
-        this.dataGenerators = dataGenerators;
-    }
-
-    @Inject
-    protected void setSystemParameterService(SystemParameterService systemParameterService) {
-        this.systemParameterService = systemParameterService;
-    }
-
-    @Inject
-    protected void setXmlEncoder(XMLEncoder xmlEncoder) {
-        this.xmlEncoder = xmlEncoder;
     }
 
     /**

@@ -15,10 +15,17 @@ public class SessionDaoImpl extends AbstractDao<Session> implements SessionDao {
     private static final long serialVersionUID = -1385640701108483561L;
 
     @Override
-    public List<Session> findBySessionId(String sessionId) {
+    public List<Session> findSessionById(String id) {
         Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("sessionid", sessionId);
-        return this.find("findBySessionId", parameters);
+        parameters.put("id", id);
+        return this.find("findSessionById", parameters);
+    }
+
+    @Override
+    public List<Session> findSessionByUser(String username) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("username", username);
+        return this.find("findSessionByUser", parameters);
     }
 
 }

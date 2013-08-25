@@ -1,15 +1,18 @@
 package framework.core.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import framework.core.enums.ParameterCode;
-import framework.core.enums.ParameterType;
+import framework.core.constants.ParameterCode;
+import framework.core.constants.ParameterType;
 
 /**
  * The System Parameter entity is a place-value holder for environment variables used for managing the state of the
@@ -21,14 +24,17 @@ import framework.core.enums.ParameterType;
 @Entity
 @Table(name = "SYSTEMPARAMETER")
 @NamedQueries(value = {
-        @NamedQuery(name = "findAllActiveSystemParam", query = "from SystemParameter where deleted = false"),
+        @NamedQuery(name = "findAllActiveSystemParam", query = "from SystemParameter"),
         @NamedQuery(name = "findSystemParametersByCode", query = "from SystemParameter where code = :code"),
         @NamedQuery(name = "updateValue", query = "update SystemParameter set value = :value where code = :code") })
 public class SystemParameter extends AbstractEntity {
 
     private static final long serialVersionUID = 7583893180559514999L;
 
-    @Column(unique = true, nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Client client;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ParameterCode code;
 
@@ -56,6 +62,10 @@ public class SystemParameter extends AbstractEntity {
      */
     protected SystemParameter() {
 
+    }
+
+    public Client getClient() {
+        return this.client;
     }
 
     /**
@@ -129,6 +139,10 @@ public class SystemParameter extends AbstractEntity {
      */
     public boolean isReadonly() {
         return this.readonly;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public void setCode(ParameterCode code) {

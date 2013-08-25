@@ -6,7 +6,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import framework.core.entity.Client;
-import framework.core.entity.Localization;
 import framework.core.entity.Role;
 import framework.core.entity.SystemParameter;
 import framework.core.entity.User;
@@ -18,10 +17,16 @@ import framework.core.service.UserService;
 @Named
 public class DefaultDataGenerator extends DataGenerator {
 
-    private ClientService clientService;
-    private Cryptography cryptography;
-    private SystemParameterService systemParameterService;
-    private UserService userService;
+    private final ClientService clientService;
+    private final SystemParameterService systemParameterService;
+    private final UserService userService;
+
+    @Inject
+    public DefaultDataGenerator(UserService userService, ClientService clientService, SystemParameterService systemParameterService) {
+        this.userService = userService;
+        this.clientService = clientService;
+        this.systemParameterService = systemParameterService;
+    }
 
     @Override
     protected Integer getDBVersion() {
@@ -30,42 +35,20 @@ public class DefaultDataGenerator extends DataGenerator {
 
     @Override
     protected void performDataOperation() {
-        final List<SystemParameter> systemParameters = this.retrieveXMLContent("DefaultSystemParameters.data",
-                SystemParameter.class, Localization.class);
-        final User user = (User) this.retrieveXMLContent("DefaultUser.data", User.class, Usergroup.class, Role.class,
-                Client.class);
-        final Client client = this.clientService.saveOrUpdate((Client) this.retrieveXMLContent("DefaultClient.data",
-                Client.class));
+        final List<SystemParameter> systemParameters = this.retrieveXMLContent("DefaultSystemParameters.data", SystemParameter.class);
+        final User user = (User) this.retrieveXMLContent("DefaultUser.data", User.class, Usergroup.class, Role.class);
+        final Client client = this.clientService.saveOrUpdate((Client) this.retrieveXMLContent("DefaultClient.data", Client.class));
 
         for (final SystemParameter systemParameter : systemParameters) {
-            systemParameter.setValue(this.cryptography.encrypt(systemParameter.getValue()));
+            systemParameter.setValue(this.getCryptography().encrypt(systemParameter.getValue()));
+            systemParameter.setClient(client);
         }
         this.systemParameterService.saveOrUpdate(systemParameters);
 
-        user.setPassword(this.cryptography.encrypt(user.getPassword()));
+        user.setPassword(this.getCryptography().encrypt(user.getPassword()));
         user.setClient(client);
         user.getUsergroup().getClients().add(client);
         this.userService.saveOrUpdate(user);
-    }
-
-    @Inject
-    protected void setClientService(ClientService clientService) {
-        this.clientService = clientService;
-    }
-
-    @Inject
-    protected void setCryptography(Cryptography cryptography) {
-        this.cryptography = cryptography;
-    }
-
-    @Inject
-    protected void setSystemParameterService(SystemParameterService systemParameterService) {
-        this.systemParameterService = systemParameterService;
-    }
-
-    @Inject
-    protected void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
 }

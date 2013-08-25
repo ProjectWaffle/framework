@@ -1,4 +1,4 @@
-package framework.core.enums;
+package framework.core.constants;
 
 /**
  * Unique codes that can be assigned as System Parameter.

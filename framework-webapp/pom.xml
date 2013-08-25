@@ -35,6 +35,7 @@
         <cxf.version>2.7.0</cxf.version>
         <servlet-api.version>2.5</servlet-api.version>
         <spring.version>3.2.3.RELEASE</spring.version>
+        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
     <dependencies>
         <!-- Modules -->

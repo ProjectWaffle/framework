@@ -1,16 +1,15 @@
 package framework.core.entity;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
-import framework.core.entity.listeners.EntityListener;
+import framework.core.utilities.AuditlogUtil;
 
 /**
  * This class provides basic implementations for all Entity classes.
@@ -18,7 +17,7 @@ import framework.core.entity.listeners.EntityListener;
  * @author Frederick Yap
  */
 @MappedSuperclass
-@EntityListeners(value = { EntityListener.class })
+@EntityListeners(value = { AuditlogUtil.class })
 public abstract class AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = -2688529713266301979L;
@@ -27,9 +26,12 @@ public abstract class AbstractEntity implements Serializable {
     private boolean deleted;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column
-    private Long id;
+    private String id;
+
+    protected AbstractEntity() {
+        this.id = UUID.randomUUID().toString();
+    }
 
     @Column
     @Version
@@ -40,7 +42,7 @@ public abstract class AbstractEntity implements Serializable {
      * 
      * @return the unique identifier.
      */
-    public Long getId() {
+    public String getId() {
         return this.id;
     }
 

@@ -18,17 +18,14 @@ angular.module('login.controller', [ 'login.service' ]).config(function($routePr
 
 function LoginCtrl($scope, $cookies, $location, LoginResponse) {
     $scope.user = {
-        request : {
-            username : null,
-            password : null
-        }
+        username : null,
+        password : null
     };
 
     $scope.login = function() {
         LoginResponse.authenticate(function(data) {
-            $cookies.sessionid = data.result.sessionid;
-            $cookies.username = data.result.username;
-            $location.path('/');
+            $cookies.token = data.responseHeader.token;
+            $location.path('/systemParameters');
         }, function(data) {
             handlerError(data, $scope, $location);
         }, angular.toJson($scope.user));

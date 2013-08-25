@@ -11,5 +11,5 @@ import framework.core.entity.User;
  */
 public interface UserDao extends Dao<User> {
 
-    List<User> findUsersByUsername(String username);
+    List<User> findUsersByName(String username);
 }

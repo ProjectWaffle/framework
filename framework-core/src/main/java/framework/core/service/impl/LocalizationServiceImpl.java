@@ -6,9 +6,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import framework.core.entity.Localization;
-import framework.core.exceptions.LocalizationException;
 import framework.core.persistence.LocalizationDao;
 import framework.core.service.LocalizationService;
+import framework.core.service.impl.exceptions.LocalizationException;
 
 @Named
 public class LocalizationServiceImpl extends AbstractService<Localization> implements LocalizationService {

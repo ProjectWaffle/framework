@@ -6,7 +6,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
-import framework.core.enums.ReferenceType;
+import framework.core.constants.ReferenceType;
 
 /**
  * Represents the <em>look-up</em> values used by the system.

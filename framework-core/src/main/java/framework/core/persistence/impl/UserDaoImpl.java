@@ -20,10 +20,10 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     private static final long serialVersionUID = -508553230014446994L;
 
     @Override
-    public List<User> findUsersByUsername(String username) {
+    public List<User> findUsersByName(String username) {
         final Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("username", username);
-        return this.find("findUsersByUsername", parameters);
+        return this.find("findUsersByName", parameters);
     }
 
 }
