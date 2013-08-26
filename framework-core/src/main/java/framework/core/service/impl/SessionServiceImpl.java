@@ -28,6 +28,11 @@ public class SessionServiceImpl extends AbstractService<Session> implements Sess
     }
 
     @Override
+    public void deleteExpiredSessions() {
+        this.delete(this.sessionDao.findExpiredSessions(this.getDateUtils().getCurrentUnixTime()));
+    }
+
+    @Override
     public Session findSessionById(String username, String id) {
         final List<Session> sessions = this.sessionDao.findSessionById(id);
         if (sessions.size() == 1) {

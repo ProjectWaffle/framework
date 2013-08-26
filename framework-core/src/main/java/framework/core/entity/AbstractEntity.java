@@ -27,15 +27,15 @@ public abstract class AbstractEntity implements Serializable {
 
     @Id
     @Column
-    private String id;
-
-    protected AbstractEntity() {
-        this.id = UUID.randomUUID().toString();
-    }
+    private final String id;
 
     @Column
     @Version
     private Long version;
+
+    protected AbstractEntity() {
+        this.id = UUID.randomUUID().toString();
+    }
 
     /**
      * Returns the unique identifier for this data.
@@ -62,6 +62,10 @@ public abstract class AbstractEntity implements Serializable {
      */
     public boolean isDeleted() {
         return this.deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
 }

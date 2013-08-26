@@ -28,4 +28,11 @@ public class SessionDaoImpl extends AbstractDao<Session> implements SessionDao {
         return this.find("findSessionByUser", parameters);
     }
 
+    @Override
+    public List<Session> findExpiredSessions(Long expiry) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("expiry", expiry);
+        return this.find("findExpiredSessions", parameters);
+    }
+
 }

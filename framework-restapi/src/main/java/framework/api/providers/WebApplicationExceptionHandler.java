@@ -21,13 +21,17 @@ public class WebApplicationExceptionHandler implements ExceptionMapper<WebApplic
     @Override
     public Response toResponse(WebApplicationException exception) {
         logger.log(Level.WARNING, "Error encountered during HTTP response.", exception);
-
-        if (403 == exception.getResponse().getStatus()) {
-            return Response.status(Status.FORBIDDEN).type(MediaType.APPLICATION_JSON)
-                    .entity(ServiceResponse.result().status(ApplicationStatus.FORBIDDEN).build()).build();
+        switch (exception.getResponse().getStatus()) {
+            case 403:
+                return Response.status(Status.FORBIDDEN).type(MediaType.APPLICATION_JSON)
+                        .entity(ServiceResponse.result().status(ApplicationStatus.FORBIDDEN).build()).build();
+            case 404:
+                return Response.status(Status.NOT_FOUND).type(MediaType.APPLICATION_JSON)
+                        .entity(ServiceResponse.result().status(ApplicationStatus.SERVICE_NOT_FOUND).build()).build();
+            default:
+                return Response.status(Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON)
+                        .entity(ServiceResponse.result().status(ApplicationStatus.SYSTEM_EXCEPTION).build()).build();
         }
-        return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .entity(ServiceResponse.result().status(ApplicationStatus.SYSTEM_EXCEPTION).build()).build();
     }
 
 }

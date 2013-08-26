@@ -21,9 +21,9 @@ public class LoginController extends AbstractController {
 
     @POST
     @Consumes(value = { MediaType.APPLICATION_JSON })
-    public ServiceResponse<?> processRequest(LoginRequest loginRequest) {
+    public ServiceResponse<String> processRequest(LoginRequest loginRequest) {
         final String token = this.userService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
-        return ServiceResponse.result().status(ApplicationStatus.SUCCESS).token(token).build();
+        return ServiceResponse.result(token).status(ApplicationStatus.SUCCESS).token(token).build();
     }
 
     @Inject

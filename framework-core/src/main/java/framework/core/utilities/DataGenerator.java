@@ -45,16 +45,14 @@ public abstract class DataGenerator {
         return null;
     }
 
-    /**
-     * Injects the implementation class for {@link XMLEncoder}. This is normally done by the IOC container.
-     * 
-     * @param xmlEncoder
-     *            implementation class for {@link XMLEncoder}.
-     */
     @Inject
-    protected final void setUtilities(XMLEncoder xmlEncoder, Cryptography cryptography) {
-        this.xmlEncoder = xmlEncoder;
+    protected void setCryptography(Cryptography cryptography) {
         this.cryptography = cryptography;
+    }
+
+    @Inject
+    protected void setXmlEncoder(XMLEncoder xmlEncoder) {
+        this.xmlEncoder = xmlEncoder;
     }
 
 }

@@ -1,6 +1,5 @@
 package framework.core.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -31,7 +30,7 @@ public class SystemParameter extends AbstractEntity {
 
     private static final long serialVersionUID = 7583893180559514999L;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Client client;
 
     @Column(nullable = false)

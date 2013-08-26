@@ -9,4 +9,6 @@ public interface SessionDao extends Dao<Session> {
     List<Session> findSessionById(String id);
     
     List<Session> findSessionByUser(String username);
+    
+    List<Session> findExpiredSessions(Long time);
 }

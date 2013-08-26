@@ -35,4 +35,9 @@ public enum EventType {
      * This is the event type if an existing data has been updated.
      */
     UPDATE,
+    
+    /**
+     * This is the event type when a job is executed.
+     */
+    JOB_EXECUTION
 }

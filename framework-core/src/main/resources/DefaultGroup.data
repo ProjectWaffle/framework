@@ -1,0 +1,10 @@
+<Usergroup>
+	<name>SYS_ADMIN</name>
+    <description>System Administrators</description>
+    <roles>
+    	<Role>
+        	<name>Administrators</name>
+            <description>Administrator</description>
+		</Role>
+	</roles>
+</Usergroup>
