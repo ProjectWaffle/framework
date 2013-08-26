@@ -94,9 +94,13 @@ public abstract class AbstractService<T extends AbstractEntity> implements Servi
     }
 
     @Inject
-    protected void setUtilities(Cryptography cryptography, DateUtils dateUtils) {
-        this.dateUtils = dateUtils;
+    protected void setCryptography(Cryptography cryptography) {
         this.cryptography = cryptography;
+    }
+
+    @Inject
+    protected void setDateUtils(DateUtils dateUtils) {
+        this.dateUtils = dateUtils;
     }
 
 }

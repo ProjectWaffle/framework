@@ -3,7 +3,6 @@ package framework.core.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,7 +22,7 @@ public class Usergroup extends AbstractEntity {
 
     private static final long serialVersionUID = -1885738464094155147L;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Client> clients;
 
     @Column
@@ -32,7 +31,7 @@ public class Usergroup extends AbstractEntity {
     @Column
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USERGROUP_ROLE", joinColumns = { @JoinColumn(name = "USERGROUP_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
     private List<Role> roles;
 
@@ -80,6 +79,10 @@ public class Usergroup extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
 }

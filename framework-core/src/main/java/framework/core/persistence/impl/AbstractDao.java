@@ -46,7 +46,8 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
      */
     @Override
     public void delete(T t) {
-        this.entityManager.remove(t);
+        t.setDeleted(true);
+        this.saveOrUpdate(t);
     }
 
     /*

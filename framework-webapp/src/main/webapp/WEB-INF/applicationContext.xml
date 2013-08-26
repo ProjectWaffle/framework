@@ -74,12 +74,28 @@
             </list>
         </property>
     </bean>
-    <tx:annotation-driven/>
+    <tx:annotation-driven />
     <!-- Encryption -->
     <bean id="stringEncryptor" class="org.jasypt.encryption.pbe.PooledPBEStringEncryptor">
         <property name="algorithm" value="${framework.encryption.algorithm}" />
         <property name="password" value="${framework.encryption.password}" />
         <property name="poolSize" value="${framework.encryption.poolsize}" />
     </bean>
-    <bean class="org.slf4j.bridge.SLF4JBridgeHandler" init-method="install"/>
+    <bean class="org.slf4j.bridge.SLF4JBridgeHandler" init-method="install" />
+    <bean id="sessionMonitoringJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="sessionMonitoring" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="sessionMonitoringTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="sessionMonitoringJob" />
+		<property name="cronExpression" value="0 0/5 * 1/1 * ? *" />
+	</bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" autowire="no">
+		<property name="triggers">
+			<list>
+				<ref bean="sessionMonitoringTrigger" />
+			</list>
+		</property>
+	</bean>
 </beans>

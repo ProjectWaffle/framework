@@ -23,7 +23,7 @@ public class User extends AbstractEntity implements Principal {
 
     private static final long serialVersionUID = -7767487387897790096L;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Client client;
 
     @Column
@@ -41,10 +41,10 @@ public class User extends AbstractEntity implements Principal {
     @Column
     private Long profileexpiration;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Userdetails userdetails;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Usergroup usergroup;
 
     public Client getClient() {

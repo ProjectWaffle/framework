@@ -143,7 +143,11 @@ public class AuditlogUtil implements Serializable {
             final String detail = this.generateAuditlogDetails(entity);
             auditlog.setLogdate(dateUtils.getCurrentUnixTime());
             auditlog.setDetail(detail);
-            auditlog.setType(EventType.UPDATE);
+            if (entity.isDeleted()) {
+                auditlog.setType(EventType.DELETE);
+            } else {
+                auditlog.setType(EventType.UPDATE);
+            }
             auditlogService.saveOrUpdate(auditlog);
         }
     }

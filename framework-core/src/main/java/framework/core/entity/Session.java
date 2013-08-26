@@ -1,6 +1,5 @@
 package framework.core.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,8 +10,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "SESSION")
-@NamedQueries(value = { @NamedQuery(name = "findSessionById", query = "from Session where id =:id"),
-        @NamedQuery(name = "findSessionByUser", query = "select s from Session s inner join s.user u where u.name =:username") })
+@NamedQueries(value = {
+        @NamedQuery(name = "findSessionById", query = "from Session where id =:id"),
+        @NamedQuery(name = "findSessionByUser", query = "select s from Session s inner join s.user u where u.name =:username"),
+        @NamedQuery(name = "findExpiredSessions", query = "from Session where expiry <= :expiry") })
 public class Session extends AbstractEntity {
 
     private static final long serialVersionUID = 4041171065363458266L;
@@ -23,7 +24,7 @@ public class Session extends AbstractEntity {
     @Column
     private Long start;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     public Long getExpiry() {

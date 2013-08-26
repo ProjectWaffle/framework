@@ -8,4 +8,6 @@ public interface SessionService extends Service<Session> {
     Session findSessionById(String username, String id);
 
     String saveOrUpdate(User user);
+    
+    void deleteExpiredSessions();
 }
