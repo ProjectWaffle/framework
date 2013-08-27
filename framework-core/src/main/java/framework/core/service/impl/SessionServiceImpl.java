@@ -1,5 +1,6 @@
 package framework.core.service.impl;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,7 +30,7 @@ public class SessionServiceImpl extends AbstractService<Session> implements Sess
 
     @Override
     public void deleteExpiredSessions() {
-        this.delete(this.sessionDao.findExpiredSessions(this.getDateUtils().getCurrentUnixTime()));
+        this.delete(this.sessionDao.findExpiredSessions(Calendar.getInstance().getTime()));
     }
 
     @Override
@@ -37,7 +38,7 @@ public class SessionServiceImpl extends AbstractService<Session> implements Sess
         final List<Session> sessions = this.sessionDao.findSessionById(id);
         if (sessions.size() == 1) {
             final Session session = sessions.get(0);
-            if ((username.equals(session.getUser().getName())) && (this.getDateUtils().isBefore(session.getExpiry()))) {
+            if ((username.equals(session.getUser().getName())) && (Calendar.getInstance().getTime().before(session.getExpiry()))) {
                 return session;
             }
         }
@@ -48,6 +49,7 @@ public class SessionServiceImpl extends AbstractService<Session> implements Sess
     public String saveOrUpdate(User user) {
         Session session = new Session();
         String token = "";
+        Calendar calendar = Calendar.getInstance();
         final List<Session> sessions = this.sessionDao.findSessionByUser(user.getName());
         if (sessions.size() == 1) {
             session = sessions.get(0);
@@ -55,8 +57,9 @@ public class SessionServiceImpl extends AbstractService<Session> implements Sess
         final SystemParameter systemParameter = this.systemParameterService.findSystemParamByCode(ParameterCode.SESSION_TIMEOUT, user.getClient().getName());
         final Integer valueToAdd = Integer.valueOf(systemParameter.getValue());
         session.setUser(user);
-        session.setStart(this.getDateUtils().getCurrentUnixTime());
-        session.setExpiry(this.getDateUtils().addSecondsUnixTime(valueToAdd * 60));
+        session.setStart(calendar.getTime());
+        calendar.add(Calendar.MINUTE, valueToAdd);
+        session.setExpiry(calendar.getTime());
         token = String.format("sessionid=%s;username=%s", session.getId(), user.getName());
         this.saveOrUpdate(session);
         return this.getCryptography().encrypt(token);

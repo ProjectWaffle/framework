@@ -1,5 +1,7 @@
 package framework.core.service.impl;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,10 +53,11 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
     protected User validateLogin(String username, String password) {
         final User user = this.findUserByUsername(username);
-        if (this.getDateUtils().getCurrentUnixTime() > user.getProfileexpiration()) {
+        Date now = Calendar.getInstance().getTime();
+        if (now.after(user.getProfileexpiration())) {
             throw new UserProfileExpiredException(String.format("User [%s] has already expired.", user.getName()));
         }
-        if (this.getDateUtils().getCurrentUnixTime() > user.getPasswordexpiration()) {
+        if (now.after(user.getPasswordexpiration())) {
             throw new CredentialExpiredException("Credentials for user " + user.getName() + " has already expired.");
         }
         if (!password.equals(this.getCryptography().decrypt(user.getPassword()))) {

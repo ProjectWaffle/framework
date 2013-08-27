@@ -1,5 +1,7 @@
 package framework.core.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "SESSION")
@@ -19,19 +23,21 @@ public class Session extends AbstractEntity {
     private static final long serialVersionUID = 4041171065363458266L;
 
     @Column
-    private Long expiry;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date expiry;
 
     @Column
-    private Long start;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date start;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    public Long getExpiry() {
+    public Date getExpiry() {
         return this.expiry;
     }
 
-    public Long getStart() {
+    public Date getStart() {
         return this.start;
     }
 
@@ -39,11 +45,11 @@ public class Session extends AbstractEntity {
         return this.user;
     }
 
-    public void setExpiry(Long expiry) {
+    public void setExpiry(Date expiry) {
         this.expiry = expiry;
     }
 
-    public void setStart(Long start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 

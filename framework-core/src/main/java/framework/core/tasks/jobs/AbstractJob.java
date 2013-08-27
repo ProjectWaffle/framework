@@ -1,11 +1,12 @@
 package framework.core.tasks.jobs;
 
+import java.util.Calendar;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import framework.core.entity.Job;
 import framework.core.service.JobService;
-import framework.core.utilities.DateUtils;
 
 @Named
 public abstract class AbstractJob {
@@ -28,18 +29,16 @@ public abstract class AbstractJob {
 
     }
 
-    private DateUtils dateUtils;
-
     private JobService jobsService;
 
     public final void execute() {
-        final Long startTime = this.dateUtils.getCurrentUnixTime();
+        final Long startTime = Calendar.getInstance().getTimeInMillis();
         Job job = this.jobsService.findJobByName(this.getName());
         if (!job.isLocked()) {
             job.setLocked(true);
             job = this.jobsService.saveOrUpdate(job);
             this.performJob();
-            job.setExecutiontime(this.dateUtils.getCurrentUnixTime() - startTime);
+            job.setExecutiontime(Calendar.getInstance().getTimeInMillis() - startTime);
             job.setLocked(false);
             this.jobsService.saveOrUpdate(job);
         }
@@ -53,11 +52,6 @@ public abstract class AbstractJob {
     }
 
     protected abstract void performJob();
-
-    @Inject
-    protected void setDateUtils(DateUtils dateUtils) {
-        this.dateUtils = dateUtils;
-    }
 
     @Inject
     protected void setJobsService(JobService jobsService) {

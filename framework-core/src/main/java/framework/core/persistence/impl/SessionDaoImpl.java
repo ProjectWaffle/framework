@@ -1,5 +1,6 @@
 package framework.core.persistence.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class SessionDaoImpl extends AbstractDao<Session> implements SessionDao {
     }
 
     @Override
-    public List<Session> findExpiredSessions(Long expiry) {
+    public List<Session> findExpiredSessions(Date expiry) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("expiry", expiry);
         return this.find("findExpiredSessions", parameters);

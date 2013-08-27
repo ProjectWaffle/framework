@@ -1,15 +1,15 @@
 package framework.core.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
-import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Version;
-
-import framework.core.utilities.AuditUtil;
 
 /**
  * This class provides basic implementations for all Entity classes.
@@ -17,7 +17,7 @@ import framework.core.utilities.AuditUtil;
  * @author Frederick Yap
  */
 @MappedSuperclass
-@EntityListeners(value = { AuditUtil.class })
+// @EntityListeners(value = { AuditUtil.class })
 public abstract class AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = -2688529713266301979L;
@@ -31,7 +31,8 @@ public abstract class AbstractEntity implements Serializable {
 
     @Column
     @Version
-    private Long version;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastupdate;
 
     protected AbstractEntity() {
         this.id = UUID.randomUUID().toString();
@@ -46,13 +47,8 @@ public abstract class AbstractEntity implements Serializable {
         return this.id;
     }
 
-    /**
-     * Returns the version of this data used for pessimistic locking.
-     * 
-     * @return the version of this data.
-     */
-    public Long getVersion() {
-        return this.version;
+    public Date getLastupdate() {
+        return this.lastupdate;
     }
 
     /**

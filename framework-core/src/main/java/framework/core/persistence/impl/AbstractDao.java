@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -56,7 +57,7 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
      */
     @Override
     public T findById(String id) {
-        final T t = this.entityManager.find(this.persistentClass, id);
+        final T t = this.entityManager.find(this.persistentClass, id, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
         if (t != null) {
             this.entityManager.detach(t);
             if (!t.isDeleted()) {
@@ -74,7 +75,7 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
     public T saveOrUpdate(T t) {
         T latest = this.findById(t.getId());
         if (latest != null) {
-            if (latest.getVersion() != t.getVersion()) {
+            if (latest.getLastupdate() != t.getLastupdate()) {
                 return latest;
             }
         } 

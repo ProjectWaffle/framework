@@ -1,8 +1,12 @@
 package framework.core.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "CLIENT")
@@ -23,7 +27,8 @@ public class Client extends AbstractEntity {
     private String phone;
 
     @Column(nullable = false, unique = true)
-    private Long validity;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date validity;
 
     public String getEmailaddress() {
         return this.emailaddress;
@@ -41,7 +46,7 @@ public class Client extends AbstractEntity {
         return this.phone;
     }
 
-    public Long getValidity() {
+    public Date getValidity() {
         return this.validity;
     }
 
@@ -61,7 +66,7 @@ public class Client extends AbstractEntity {
         this.phone = phone;
     }
 
-    public void setValidity(Long validity) {
+    public void setValidity(Date validity) {
         this.validity = validity;
     }
 

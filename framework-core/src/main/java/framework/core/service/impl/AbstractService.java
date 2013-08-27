@@ -10,7 +10,6 @@ import framework.core.entity.AbstractEntity;
 import framework.core.persistence.Dao;
 import framework.core.service.Service;
 import framework.core.utilities.Cryptography;
-import framework.core.utilities.DateUtils;
 
 /**
  * Provides basic business operation for all service classes.
@@ -27,7 +26,6 @@ public abstract class AbstractService<T extends AbstractEntity> implements Servi
     private static final long serialVersionUID = 8443877242673541465L;
 
     private Cryptography cryptography;
-    private DateUtils dateUtils;
     private final Dao<T> persistence;
 
     protected AbstractService(Dao<T> persistence) {
@@ -89,18 +87,9 @@ public abstract class AbstractService<T extends AbstractEntity> implements Servi
         return this.cryptography;
     }
 
-    protected DateUtils getDateUtils() {
-        return this.dateUtils;
-    }
-
     @Inject
     protected void setCryptography(Cryptography cryptography) {
         this.cryptography = cryptography;
-    }
-
-    @Inject
-    protected void setDateUtils(DateUtils dateUtils) {
-        this.dateUtils = dateUtils;
     }
 
 }

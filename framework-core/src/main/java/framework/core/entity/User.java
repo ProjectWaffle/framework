@@ -1,6 +1,7 @@
 package framework.core.entity;
 
 import java.security.Principal;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Represents the credentials needed for system authentication.
@@ -36,10 +39,12 @@ public class User extends AbstractEntity implements Principal {
     private String password;
 
     @Column
-    private Long passwordexpiration;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date passwordexpiration;
 
     @Column
-    private Long profileexpiration;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date profileexpiration;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Userdetails userdetails;
@@ -70,7 +75,7 @@ public class User extends AbstractEntity implements Principal {
      * 
      * @return the password expiration date.
      */
-    public Long getPasswordexpiration() {
+    public Date getPasswordexpiration() {
         return this.passwordexpiration;
     }
 
@@ -79,7 +84,7 @@ public class User extends AbstractEntity implements Principal {
      * 
      * @return the profile expiration date.
      */
-    public Long getProfileexpiration() {
+    public Date getProfileexpiration() {
         return this.profileexpiration;
     }
 
@@ -113,11 +118,11 @@ public class User extends AbstractEntity implements Principal {
         this.password = password;
     }
 
-    public void setPasswordexpiration(Long passwordexpiration) {
+    public void setPasswordexpiration(Date passwordexpiration) {
         this.passwordexpiration = passwordexpiration;
     }
 
-    public void setProfileexpiration(Long profileexpiration) {
+    public void setProfileexpiration(Date profileexpiration) {
         this.profileexpiration = profileexpiration;
     }
 

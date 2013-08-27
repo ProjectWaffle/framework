@@ -2,8 +2,8 @@
 <User>
     <name>administrator</name>
     <password>password1234</password>
-    <passwordexpiration>4102358400</passwordexpiration>
-    <profileexpiration>4102358400</profileexpiration>
+    <passwordexpiration>2015-12-31 23:59:59.0 PHT</passwordexpiration>
+    <profileexpiration>2015-12-31 23:59:59.0 PHT</profileexpiration>
     <usergroup>
         <name>SYS_ADMIN</name>
         <description>System Administrators</description>

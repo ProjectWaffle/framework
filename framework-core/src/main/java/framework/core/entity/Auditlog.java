@@ -1,5 +1,7 @@
 package framework.core.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -7,6 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import framework.core.constants.EventType;
 
@@ -26,7 +30,8 @@ public class Auditlog extends AbstractEntity {
     private String detail;
 
     @Column
-    private Long logdate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date logdate;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -49,7 +54,7 @@ public class Auditlog extends AbstractEntity {
      * 
      * @return the date of the event.
      */
-    public Long getLogdate() {
+    public Date getLogdate() {
         return this.logdate;
     }
 
@@ -76,7 +81,7 @@ public class Auditlog extends AbstractEntity {
         this.detail = detail;
     }
 
-    public void setLogdate(Long logdate) {
+    public void setLogdate(Date logdate) {
         this.logdate = logdate;
     }
 

@@ -1,6 +1,7 @@
 package framework.core.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,10 +38,11 @@ public class SystemParameterServiceImpl extends AbstractService<SystemParameter>
     @Override
     public List<SystemParameter> findAllActiveSystemParam(String clientName) {
         final List<SystemParameter> systemParameters = new ArrayList<SystemParameter>();
+        final Calendar now = Calendar.getInstance();
         for (final SystemParameter systemParameter : this.systemParameterDao.findAllActiveSystemParam()) {
             final Client client = systemParameter.getClient();
             if (client != null) {
-                if (clientName.equals(client.getName()) && this.getDateUtils().isBefore(client.getValidity())) {
+                if (clientName.equals(client.getName()) && now.getTime().before(client.getValidity())) {
                     systemParameter.setValue(this.getCryptography().decrypt(systemParameter.getValue()));
                     systemParameters.add(systemParameter);
                 }
@@ -58,11 +60,12 @@ public class SystemParameterServiceImpl extends AbstractService<SystemParameter>
     @Override
     public SystemParameter findSystemParamByCode(ParameterCode code, String clientName) {
         final List<SystemParameter> systemParameters = this.systemParameterDao.findSystemParametersByCode(code);
+        final Calendar now = Calendar.getInstance();
         if (systemParameters.size() > 0) {
             final SystemParameter systemParameter = systemParameters.get(0);
             final Client client = systemParameter.getClient();
             if (client != null) {
-                if (clientName.equals(client.getName()) && this.getDateUtils().isBefore(client.getValidity())) {
+                if (clientName.equals(client.getName()) && now.getTime().before(client.getValidity())) {
                     systemParameter.setValue(this.getCryptography().decrypt(systemParameter.getValue()));
                     return systemParameter;
                 }
