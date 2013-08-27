@@ -1,13 +1,41 @@
-angular.module('cookie', [ 'ngCookies' ]);
+var apps = angular.module('waffle', [ 'ngCookies' ]);
 
-angular.module('waffle', [ 'cookie', 'waffle.controller', 'systemParameter.controller', 'login.controller' ]);
-
-angular.module('waffle.controller', []).config(function($routeProvider) {
+apps.config(function($routeProvider) {
     $routeProvider.when('/', {
         templateUrl : 'pages/dashboard.html'
+    }).when('/systemParameters', {
+        templateUrl : 'pages/systemParameter/list.html',
+        controller : 'ListCtrl'
+    }).when('/systemParameter/:code', {
+        templateUrl : 'pages/systemParameter/detail.html',
+        controller : 'EditCtrl'
+    }).when('/login', {
+        templateUrl : 'pages/login.html',
     }).otherwise({
         templateUrl : 'pages/404.html'
     });
+});
+
+apps.factory('MenuService', [ '$http', function($http) {
+    return {
+        populate : function(success, config) {
+            $http.get('services/menu/', config).success(function(data) {
+                success(data);
+            });
+        }
+    };
+} ]);
+
+apps.controller("MenuCtrl", function($scope, $cookies, MenuService) {
+    var config = {
+            headers : {
+                token : $cookies.token
+            }
+        };
+    
+    MenuService.populate(function(data){
+        $scope.serviceResponse = data;
+    }, config);
 });
 
 function handlerError(data, $scope, $location) {

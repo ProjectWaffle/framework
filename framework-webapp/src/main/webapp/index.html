@@ -23,16 +23,17 @@
     </header>
     <section class="row">
         <aside class="large-3 columns">
-            <div class="panel">
-                <h5>Categories</h5>
+            <nav class="panel" ng-controller="MenuCtrl">
+                <h5>{{error}}</h5>
+<!--                 Categories
                 <ul class="side-nav">
                     <li><a href="#">News</a></li>
                     <li><a href="#">Code</a></li>
                     <li><a href="#">Design</a></li>
                     <li><a href="#">Fun</a></li>
                     <li><a href="#">Weasels</a></li>
-                </ul>
-            </div>
+                </ul> -->
+            </nav>
         </aside>
         <div class="large-9 columns" role="content" ng-view></div>
     </section>

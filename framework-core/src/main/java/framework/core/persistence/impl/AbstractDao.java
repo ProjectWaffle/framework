@@ -72,6 +72,12 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
      */
     @Override
     public T saveOrUpdate(T t) {
+        T latest = this.findById(t.getId());
+        if (latest != null) {
+            if (latest.getVersion() != t.getVersion()) {
+                return latest;
+            }
+        } 
         return this.entityManager.merge(t);
     }
 

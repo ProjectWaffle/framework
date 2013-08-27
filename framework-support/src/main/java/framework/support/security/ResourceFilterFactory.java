@@ -13,8 +13,12 @@ import com.sun.jersey.spi.container.ResourceFilter;
 @Named
 public class ResourceFilterFactory extends RolesAllowedResourceFilterFactory {
 
+    private final SecurityContextFilter securityContextFilter;
+
     @Inject
-    private SecurityContextFilter securityContextFilter;
+    protected ResourceFilterFactory(SecurityContextFilter securityContextFilter) {
+        this.securityContextFilter = securityContextFilter;
+    }
 
     @Override
     public List<ResourceFilter> create(AbstractMethod am) {

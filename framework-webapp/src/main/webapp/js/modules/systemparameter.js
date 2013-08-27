@@ -1,4 +1,4 @@
-angular.module('systemParameter.service', []).factory('SystemParameterResponse', [ '$http', function($http) {
+apps.factory('SystemParameterService', function($http) {
     return {
         load : function(success, error, config) {
             $http.get('services/systemParameter/', config).success(function(data) {
@@ -13,26 +13,16 @@ angular.module('systemParameter.service', []).factory('SystemParameterResponse',
             });
         }
     };
-} ]);
-
-angular.module('systemParameter.controller', [ 'systemParameter.service' ]).config(function($routeProvider) {
-    $routeProvider.when('/systemParameters', {
-        templateUrl : 'pages/systemParameter/list.html',
-        controller : 'ListCtrl'
-    }).when('/systemParameter/:code', {
-        templateUrl : 'pages/systemParameter/detail.html',
-        controller : 'EditCtrl'
-    });
 });
 
-function ListCtrl($scope, $cookies, $location, SystemParameterResponse) {
+function ListCtrl($scope, $cookies, $location, SystemParameterService) {
     var config = {
         headers : {
             token : $cookies.token
         }
     };
 
-    SystemParameterResponse.load(function(data) {
+    SystemParameterService.load(function(data) {
         $cookies.token = data.responseHeader.token;
         $scope.serviceResponse = data;
     }, function(data) {
@@ -40,8 +30,8 @@ function ListCtrl($scope, $cookies, $location, SystemParameterResponse) {
     }, config);
 }
 
-function EditCtrl($scope, $location, $routeParams, SystemParameterResponse) {
-    SystemParameterResponse.loadByCode(function(data) {
+function EditCtrl($scope, $location, $routeParams, SystemParameterService) {
+    SystemParameterService.loadByCode(function(data) {
         $scope.systemParameter = data.results[0];
     }, $routeParams.code);
 }

@@ -24,13 +24,10 @@ import framework.core.utilities.Cryptography;
 @Named
 public class SecurityContextFilter implements ResourceFilter, ContainerRequestFilter, ContainerResponseFilter {
 
-    @Inject
     private Cryptography cryptography;
 
-    @Inject
     private SessionService sessionService;
 
-    @Inject
     private UserService userService;
 
     @Override
@@ -75,6 +72,21 @@ public class SecurityContextFilter implements ResourceFilter, ContainerRequestFi
             map.put("user", this.userService.findUserByUsername(username));
         }
         return map;
+    }
+
+    @Inject
+    protected void setCryptography(Cryptography cryptography) {
+        this.cryptography = cryptography;
+    }
+
+    @Inject
+    protected void setSessionService(SessionService sessionService) {
+        this.sessionService = sessionService;
+    }
+
+    @Inject
+    protected void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
 }

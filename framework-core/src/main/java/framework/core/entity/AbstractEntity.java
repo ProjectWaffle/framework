@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
-import framework.core.utilities.AuditlogUtil;
+import framework.core.utilities.AuditUtil;
 
 /**
  * This class provides basic implementations for all Entity classes.
@@ -17,7 +17,7 @@ import framework.core.utilities.AuditlogUtil;
  * @author Frederick Yap
  */
 @MappedSuperclass
-@EntityListeners(value = { AuditlogUtil.class })
+@EntityListeners(value = { AuditUtil.class })
 public abstract class AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = -2688529713266301979L;

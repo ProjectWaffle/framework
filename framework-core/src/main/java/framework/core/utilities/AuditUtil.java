@@ -22,7 +22,7 @@ import framework.core.entity.Auditlog;
 import framework.core.service.AuditlogService;
 
 @Named
-public class AuditlogUtil implements Serializable {
+public class AuditUtil implements Serializable {
 
     private static AuditlogService auditlogService;
     private static DateUtils dateUtils;
@@ -154,11 +154,11 @@ public class AuditlogUtil implements Serializable {
 
     @Inject
     protected void setAuditlogService(AuditlogService auditlogService) {
-        AuditlogUtil.auditlogService = auditlogService;
+        AuditUtil.auditlogService = auditlogService;
     }
 
     @Inject
     protected void setDateUtils(DateUtils dateUtils) {
-        AuditlogUtil.dateUtils = dateUtils;
+        AuditUtil.dateUtils = dateUtils;
     }
 }

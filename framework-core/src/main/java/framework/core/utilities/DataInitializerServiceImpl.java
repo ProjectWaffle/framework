@@ -18,7 +18,7 @@ import framework.core.service.SystemParameterService;
  * @author Frederick Yap
  */
 @Named
-public class DataInitializerServiceImpl {
+public class DataInitializerServiceImpl implements DataInitializerService {
 
     private Cryptography cryptography;
     private List<DataGenerator> dataGenerators;
@@ -28,18 +28,11 @@ public class DataInitializerServiceImpl {
     protected DataInitializerServiceImpl() {
     }
 
-    @Inject
-    protected DataInitializerServiceImpl(SystemParameterService systemParameterService, Cryptography cryptography,
-            XMLEncoder xmlEncoder, List<DataGenerator> dataGenerators) {
-        this.systemParameterService = systemParameterService;
-        this.cryptography = cryptography;
-        this.xmlEncoder = xmlEncoder;
-        this.dataGenerators = dataGenerators;
-    }
-
-    /**
-     * Calls the saveOrUpdate method of all {@link DataGenerator} instances.
+    /*
+     * (non-Javadoc)
+     * @see framework.core.utilities.DataInitializerService#update()
      */
+    @Override
     public void update() {
         this.sort();
         for (final DataGenerator dataGenerator : this.dataGenerators) {
@@ -61,6 +54,26 @@ public class DataInitializerServiceImpl {
             }
         }
 
+    }
+
+    @Inject
+    protected void setCryptography(Cryptography cryptography) {
+        this.cryptography = cryptography;
+    }
+
+    @Inject
+    protected void setDataGenerators(List<DataGenerator> dataGenerators) {
+        this.dataGenerators = dataGenerators;
+    }
+
+    @Inject
+    protected void setSystemParameterService(SystemParameterService systemParameterService) {
+        this.systemParameterService = systemParameterService;
+    }
+
+    @Inject
+    protected void setXmlEncoder(XMLEncoder xmlEncoder) {
+        this.xmlEncoder = xmlEncoder;
     }
 
     /**

@@ -19,12 +19,9 @@ public abstract class AbstractController implements Serializable {
     protected AbstractController() {
     }
 
-    protected SecurityContext getSecurityContext() {
-        return securityContext;
-    }
-
     protected User getAuthenticatedUser() {
-        User user = (User)securityContext.getUserPrincipal();
+        final User user = (User) this.securityContext.getUserPrincipal();
         return user;
     }
+    
 }

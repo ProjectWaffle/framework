@@ -1,4 +1,9 @@
-angular.module('login.service', []).factory('LoginResponse', [ '$http', function($http) {
+var user = {
+    username : null,
+    password : null
+};
+
+apps.factory('LoginService', function($http) {
     return {
         authenticate : function(success, error, user) {
             $http.post('services/login/', user).success(function(data) {
@@ -8,22 +13,13 @@ angular.module('login.service', []).factory('LoginResponse', [ '$http', function
             });
         }
     };
-} ]);
-
-angular.module('login.controller', [ 'login.service' ]).config(function($routeProvider) {
-    $routeProvider.when('/login', {
-        templateUrl : 'pages/login.html',
-    });
 });
 
-function LoginCtrl($scope, $cookies, $location, LoginResponse) {
-    $scope.user = {
-        username : null,
-        password : null
-    };
+function LoginCtrl($scope, $cookies, $location, LoginService) {
+    $scope.user = user;
 
     $scope.login = function() {
-        LoginResponse.authenticate(function(data) {
+        LoginService.authenticate(function(data) {
             $cookies.token = data.responseHeader.token;
             $location.path('/systemParameters');
         }, function(data) {

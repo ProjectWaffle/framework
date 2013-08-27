@@ -18,13 +18,13 @@ public class SessionServiceImpl extends AbstractService<Session> implements Sess
 
     private static final long serialVersionUID = -6724981340291285304L;
     private final SessionDao sessionDao;
-    @Inject
     private SystemParameterService systemParameterService;
 
     @Inject
-    protected SessionServiceImpl(SessionDao sessionDao) {
+    protected SessionServiceImpl(SessionDao sessionDao, SystemParameterService systemParameterService) {
         super(sessionDao);
         this.sessionDao = sessionDao;
+        this.systemParameterService = systemParameterService;
     }
 
     @Override
@@ -52,8 +52,7 @@ public class SessionServiceImpl extends AbstractService<Session> implements Sess
         if (sessions.size() == 1) {
             session = sessions.get(0);
         }
-        final SystemParameter systemParameter = this.systemParameterService.findByCode(ParameterCode.SESSION_TIMEOUT,
-                user.getClient().getName());
+        final SystemParameter systemParameter = this.systemParameterService.findByCode(ParameterCode.SESSION_TIMEOUT, user.getClient().getName());
         final Integer valueToAdd = Integer.valueOf(systemParameter.getValue());
         session.setUser(user);
         session.setStart(this.getDateUtils().getCurrentUnixTime());

@@ -6,12 +6,12 @@ import javax.inject.Named;
 import framework.core.service.SessionService;
 
 @Named
-public class SessionMonitoring extends AbstractJob {
+public class SessionMonitor extends AbstractJob {
 
     private final SessionService sessionService;
 
     @Inject
-    protected SessionMonitoring(SessionService sessionService) {
+    protected SessionMonitor(SessionService sessionService) {
         this.sessionService = sessionService;
     }
 
