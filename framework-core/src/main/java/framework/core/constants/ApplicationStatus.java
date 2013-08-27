@@ -7,7 +7,7 @@ public enum ApplicationStatus {
     FAILED_TO_LOCALIZED(100, "Unable to proceed localizing certain text entries."),
     FORBIDDEN(403, "Access Denied."),
     INVALID_USER(20, "Either the username or the password is invalid."),
-    SERVICE_NOT_FOUND(403, "Service not found."),
+    SERVICE_NOT_FOUND(404, "Service not found."),
     SUCCESS(0, "Successful."),
     SYSTEM_EXCEPTION(500, "Unhandled exception.");
 
