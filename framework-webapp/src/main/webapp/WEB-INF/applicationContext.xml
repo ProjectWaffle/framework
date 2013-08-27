@@ -82,13 +82,13 @@
         <property name="poolSize" value="${framework.encryption.poolsize}" />
     </bean>
     <bean class="org.slf4j.bridge.SLF4JBridgeHandler" init-method="install" />
-    <bean id="sessionMonitoringJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="sessionMonitoring" />
-        <property name="targetMethod" value="execute" />
+    <bean id="jobsExecutorDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="jobsExecutor" />
+        <property name="targetMethod" value="performScheduledJobs" />
         <property name="concurrent" value="false" />
     </bean>
     <bean id="sessionMonitoringTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="sessionMonitoringJob" />
+		<property name="jobDetail" ref="jobsExecutorDetail" />
 		<property name="cronExpression" value="0 0/5 * 1/1 * ? *" />
 	</bean>
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" autowire="no">

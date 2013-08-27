@@ -10,6 +10,24 @@ import framework.core.utilities.DateUtils;
 @Named
 public abstract class AbstractJob {
 
+    public static enum JobPriority {
+
+        HIGH(3),
+        LOW(0),
+        MEDIUM(1);
+
+        private final int priority;
+
+        JobPriority(int priority) {
+            this.priority = priority;
+        }
+
+        public int getPriority() {
+            return this.priority;
+        }
+
+    }
+
     private DateUtils dateUtils;
 
     private JobService jobsService;
@@ -27,6 +45,8 @@ public abstract class AbstractJob {
         }
 
     }
+
+    public abstract JobPriority priority();
 
     protected String getName() {
         return this.getClass().getSimpleName();
