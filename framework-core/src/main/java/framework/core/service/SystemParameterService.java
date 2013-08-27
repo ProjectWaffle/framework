@@ -26,7 +26,7 @@ public interface SystemParameterService extends Service<SystemParameter> {
      *            result filter.
      * @return all active {@link SystemParameter}.
      */
-    SystemParameter findByCode(ParameterCode code, String clientName);
+    SystemParameter findSystemParamByCode(ParameterCode code, String clientName);
 
     SystemParameter findDatabaseVersion();
 

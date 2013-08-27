@@ -56,7 +56,7 @@ public class SystemParameterServiceImpl extends AbstractService<SystemParameter>
      * .ParameterCode)
      */
     @Override
-    public SystemParameter findByCode(ParameterCode code, String clientName) {
+    public SystemParameter findSystemParamByCode(ParameterCode code, String clientName) {
         final List<SystemParameter> systemParameters = this.systemParameterDao.findSystemParametersByCode(code);
         if (systemParameters.size() > 0) {
             final SystemParameter systemParameter = systemParameters.get(0);

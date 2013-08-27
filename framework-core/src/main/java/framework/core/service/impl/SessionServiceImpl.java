@@ -52,7 +52,7 @@ public class SessionServiceImpl extends AbstractService<Session> implements Sess
         if (sessions.size() == 1) {
             session = sessions.get(0);
         }
-        final SystemParameter systemParameter = this.systemParameterService.findByCode(ParameterCode.SESSION_TIMEOUT, user.getClient().getName());
+        final SystemParameter systemParameter = this.systemParameterService.findSystemParamByCode(ParameterCode.SESSION_TIMEOUT, user.getClient().getName());
         final Integer valueToAdd = Integer.valueOf(systemParameter.getValue());
         session.setUser(user);
         session.setStart(this.getDateUtils().getCurrentUnixTime());

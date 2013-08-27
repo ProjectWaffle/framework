@@ -5,10 +5,10 @@ apps.config(function($routeProvider) {
         templateUrl : 'pages/dashboard.html'
     }).when('/systemParameters', {
         templateUrl : 'pages/systemParameter/list.html',
-        controller : 'ListCtrl'
-    }).when('/systemParameter/:code', {
+        controller : 'SystemParameterCtrl'
+    }).when('/systemParameters/:code', {
         templateUrl : 'pages/systemParameter/detail.html',
-        controller : 'EditCtrl'
+        controller : 'SystemParameterCtrl'
     }).when('/login', {
         templateUrl : 'pages/login.html',
     }).otherwise({
@@ -28,12 +28,12 @@ apps.factory('MenuService', [ '$http', function($http) {
 
 apps.controller("MenuCtrl", function($scope, $cookies, MenuService) {
     var config = {
-            headers : {
-                token : $cookies.token
-            }
-        };
-    
-    MenuService.populate(function(data){
+        headers : {
+            token : $cookies.token
+        }
+    };
+
+    MenuService.populate(function(data) {
         $scope.serviceResponse = data;
     }, config);
 });

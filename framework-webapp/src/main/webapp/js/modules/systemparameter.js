@@ -1,3 +1,9 @@
+var systemParameter = {
+    code : "CODE",
+    description : "DESCRIPTION",
+    value : "VALUE"
+};
+
 apps.factory('SystemParameterService', function($http) {
     return {
         load : function(success, error, config) {
@@ -7,31 +13,42 @@ apps.factory('SystemParameterService', function($http) {
                 error(data);
             });
         },
-        loadByCode : function(callback, code) {
-            $http.get('services/systemParameter/' + code).success(function(data) {
-                callback(data);
+        loadByCode : function(onSuccess, code, config) {
+            $http.get('services/systemParameter/' + code, config).success(function(data) {
+                onSuccess(data);
+            });
+        },
+        submit : function(onSuccess, code, config) {
+            $http.get('services/systemParameter/' + code, config).success(function(data) {
+                alert("AS");
             });
         }
     };
 });
 
-function ListCtrl($scope, $cookies, $location, SystemParameterService) {
+function SystemParameterCtrl($scope, $cookies, $location, $routeParams, SystemParameterService) {
     var config = {
         headers : {
             token : $cookies.token
         }
     };
 
-    SystemParameterService.load(function(data) {
+    $scope.systemParameter = systemParameter;
+
+    $scope.loadAll = SystemParameterService.load(function(data) {
         $cookies.token = data.responseHeader.token;
         $scope.serviceResponse = data;
     }, function(data) {
         handlerError(data, $scope, $location);
     }, config);
-}
+    
+    /*
 
-function EditCtrl($scope, $location, $routeParams, SystemParameterService) {
-    SystemParameterService.loadByCode(function(data) {
-        $scope.systemParameter = data.results[0];
-    }, $routeParams.code);
+    $scope.loadByCode = SystemParameterService.loadByCode(function(data) {
+        $scope.systemParameter = data.result;
+    }, $routeParams.code, config);
+
+    $scope.systemParameter.submit = SystemParameterService.submit(function(data) {
+        $scope.systemParameter = data.result;
+    }, $routeParams.code, config);*/
 }
