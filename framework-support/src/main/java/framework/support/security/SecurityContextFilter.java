@@ -13,12 +13,12 @@ import com.sun.jersey.spi.container.ContainerResponseFilter;
 import com.sun.jersey.spi.container.ResourceFilter;
 
 import framework.api.providers.SecurityContext;
-import framework.api.response.ServiceResponse;
+import framework.api.webservices.ServiceResponse;
 import framework.core.constants.ApplicationStatus;
-import framework.core.entity.Session;
-import framework.core.entity.User;
-import framework.core.service.SessionService;
-import framework.core.service.UserService;
+import framework.core.domain.session.Session;
+import framework.core.domain.session.SessionService;
+import framework.core.domain.user.User;
+import framework.core.domain.user.UserService;
 import framework.core.utilities.Cryptography;
 
 @Named
@@ -33,18 +33,21 @@ public class SecurityContextFilter implements ResourceFilter, ContainerRequestFi
     @Override
     public ContainerRequest filter(ContainerRequest request) {
         final Map<String, Object> map = this.generateRequestMap(request);
-        request.setSecurityContext(new SecurityContext((User) map.get("user"), (Session) map.get("session")));
+        final User user = (User) map.get("user");
+        final Session session = (Session) map.get("session");
+        final SecurityContext securityContext = new SecurityContext(this.sessionService, user, session);
+        request.setSecurityContext(securityContext);
         return request;
     }
 
     @Override
     public ContainerResponse filter(ContainerRequest request, ContainerResponse response) {
-        final Map<String, Object> map = this.generateRequestMap(request);
         final Object entity = response.getEntity();
         if (entity != null) {
             if (!(entity instanceof ServiceResponse)) {
-                final String token = this.sessionService.saveOrUpdate((User) map.get("user"));
-                response.setEntity(ServiceResponse.result(entity).status(ApplicationStatus.SUCCESS).token(token).build());
+                final String token = request.getHeaderValue("token");
+                response.setEntity(ServiceResponse.result(entity).status(ApplicationStatus.SUCCESS).token(token)
+                        .build());
             }
         }
         return response;
@@ -62,12 +65,12 @@ public class SecurityContextFilter implements ResourceFilter, ContainerRequestFi
 
     private Map<String, Object> generateRequestMap(ContainerRequest request) {
         final Map<String, Object> map = new HashMap<String, Object>();
-        String tokenHeader = request.getHeaderValue("token");
+        String token = request.getHeaderValue("token");
         String sessionid = "", username = "";
-        if (tokenHeader != null) {
-            tokenHeader = this.cryptography.decrypt(tokenHeader);
-            sessionid = (tokenHeader.split(";")[0]).split("=")[1];
-            username = (tokenHeader.split(";")[1]).split("=")[1];
+        if (token != null) {
+            token = this.cryptography.decrypt(token);
+            sessionid = (token.split(";")[0]).split("=")[1];
+            username = (token.split(";")[1]).split("=")[1];
             map.put("session", this.sessionService.findSessionById(username, sessionid));
             map.put("user", this.userService.findUserByUsername(username));
         }

@@ -83,7 +83,7 @@
     </bean>
     <bean class="org.slf4j.bridge.SLF4JBridgeHandler" init-method="install" />
     <bean id="jobsExecutorDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="jobsExecutor" />
+        <property name="targetObject" ref="taskExecutor" />
         <property name="targetMethod" value="performScheduledJobs" />
         <property name="concurrent" value="false" />
     </bean>

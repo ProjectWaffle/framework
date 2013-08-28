@@ -6,16 +6,16 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import framework.core.entity.Client;
-import framework.core.entity.Role;
-import framework.core.entity.SystemParameter;
-import framework.core.entity.User;
-import framework.core.entity.Usergroup;
-import framework.core.service.ClientService;
-import framework.core.service.RoleService;
-import framework.core.service.SystemParameterService;
-import framework.core.service.UserService;
-import framework.core.service.UsergroupService;
+import framework.core.domain.client.Client;
+import framework.core.domain.client.ClientService;
+import framework.core.domain.role.Role;
+import framework.core.domain.role.RoleService;
+import framework.core.domain.systemparameter.SystemParameter;
+import framework.core.domain.systemparameter.SystemParameterService;
+import framework.core.domain.user.User;
+import framework.core.domain.user.UserService;
+import framework.core.domain.usergroup.Usergroup;
+import framework.core.domain.usergroup.UsergroupService;
 
 @Named
 public class DefaultDataGenerator extends DataGenerator {

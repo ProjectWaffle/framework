@@ -17,9 +17,9 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import framework.core.constants.EventType;
-import framework.core.entity.AbstractEntity;
-import framework.core.entity.Auditlog;
-import framework.core.service.AuditlogService;
+import framework.core.domain.BaseEntity;
+import framework.core.domain.auditlog.Auditlog;
+import framework.core.domain.auditlog.AuditlogService;
 
 @Named
 public class AuditUtil implements Serializable {
@@ -28,7 +28,7 @@ public class AuditUtil implements Serializable {
 
     private static final long serialVersionUID = 1819000638364499266L;
 
-    private String generateAuditlogDetails(AbstractEntity entity) {
+    private String generateAuditlogDetails(BaseEntity entity) {
         final StringBuilder detail = new StringBuilder();
         final Table table = entity.getClass().getAnnotation(Table.class);
         try {
@@ -53,7 +53,7 @@ public class AuditUtil implements Serializable {
         }
     }
 
-    private StringBuilder getAuditlogFieldDetails(AbstractEntity entity) throws IllegalAccessException {
+    private StringBuilder getAuditlogFieldDetails(BaseEntity entity) throws IllegalAccessException {
         final Field[] fields = entity.getClass().getDeclaredFields();
         final StringBuilder fieldDetails = new StringBuilder();
         for (final Field field : fields) {
@@ -61,9 +61,9 @@ public class AuditUtil implements Serializable {
             final ManyToMany manyToMany = field.getAnnotation(ManyToMany.class);
             if (manyToMany != null) {
                 @SuppressWarnings("unchecked")
-                final Collection<AbstractEntity> collection = (Collection<AbstractEntity>) field.get(entity);
+                final Collection<BaseEntity> collection = (Collection<BaseEntity>) field.get(entity);
                 if (collection != null) {
-                    final Iterator<AbstractEntity> iterator = collection.iterator();
+                    final Iterator<BaseEntity> iterator = collection.iterator();
                     fieldDetails.append("ITEMS={\"");
                     while (iterator.hasNext()) {
                         fieldDetails.append(this.generateAuditlogDetails(iterator.next()));
@@ -98,7 +98,7 @@ public class AuditUtil implements Serializable {
             }
             final ManyToOne manyToOne = field.getAnnotation(ManyToOne.class);
             if (manyToOne != null) {
-                final AbstractEntity abstractEntity = (AbstractEntity) field.get(entity);
+                final BaseEntity abstractEntity = (BaseEntity) field.get(entity);
                 if (abstractEntity != null) {
                     fieldDetails.append(abstractEntity.getClass().getSimpleName().toUpperCase().replace("_$$_JAVASSIST_1", "") + "_ID");
                     fieldDetails.append("=\"");
@@ -111,7 +111,7 @@ public class AuditUtil implements Serializable {
     }
 
     @PrePersist
-    protected void onPersist(AbstractEntity entity) {
+    protected void onPersist(BaseEntity entity) {
         if (!(entity instanceof Auditlog)) {
             final Auditlog auditlog = new Auditlog();
             final String detail = this.generateAuditlogDetails(entity);
@@ -122,7 +122,7 @@ public class AuditUtil implements Serializable {
     }
 
     @PreRemove
-    protected void onRemove(AbstractEntity entity) {
+    protected void onRemove(BaseEntity entity) {
         if (!(entity instanceof Auditlog)) {
             final Auditlog auditlog = new Auditlog();
             final String detail = this.generateAuditlogDetails(entity);
@@ -134,7 +134,7 @@ public class AuditUtil implements Serializable {
     }
 
     @PreUpdate
-    protected void onUpdate(AbstractEntity entity) {
+    protected void onUpdate(BaseEntity entity) {
         if (!(entity instanceof Auditlog)) {
             final Auditlog auditlog = new Auditlog();
             final String detail = this.generateAuditlogDetails(entity);

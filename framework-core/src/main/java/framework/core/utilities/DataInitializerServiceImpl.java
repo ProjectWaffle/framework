@@ -8,9 +8,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import framework.core.entity.Localization;
-import framework.core.entity.SystemParameter;
-import framework.core.service.SystemParameterService;
+import framework.core.domain.localization.Localization;
+import framework.core.domain.systemparameter.SystemParameter;
+import framework.core.domain.systemparameter.SystemParameterService;
 
 /**
  * Provides Transactional for {@link DataInitializationStartup}.

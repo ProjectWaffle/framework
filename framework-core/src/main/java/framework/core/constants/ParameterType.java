@@ -1,6 +1,6 @@
 package framework.core.constants;
 
-import framework.core.entity.Reference;
+import framework.core.domain.reference.Reference;
 
 /**
  * Allowable types of System Parameter.
