@@ -19,7 +19,7 @@ public class LocalizationDaoImpl extends AbstractDao<Localization> implements Lo
         final Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("key", key);
         parameters.put("locale", locale);
-        return this.find("findByKeyAndLocale", parameters, true);
+        return this.find("findByKeyAndLocale", parameters);
     }
 
 }

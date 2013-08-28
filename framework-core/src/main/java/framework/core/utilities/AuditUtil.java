@@ -2,7 +2,6 @@ package framework.core.utilities;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -116,7 +115,6 @@ public class AuditUtil implements Serializable {
         if (!(entity instanceof Auditlog)) {
             final Auditlog auditlog = new Auditlog();
             final String detail = this.generateAuditlogDetails(entity);
-            auditlog.setLogdate(Calendar.getInstance().getTime());
             auditlog.setDetail(detail);
             auditlog.setType(EventType.INSERT);
             auditlogService.saveOrUpdate(auditlog);
@@ -128,7 +126,6 @@ public class AuditUtil implements Serializable {
         if (!(entity instanceof Auditlog)) {
             final Auditlog auditlog = new Auditlog();
             final String detail = this.generateAuditlogDetails(entity);
-            auditlog.setLogdate(Calendar.getInstance().getTime());
             auditlog.setDetail(detail);
             auditlog.setType(EventType.DELETE);
             auditlogService.saveOrUpdate(auditlog);
@@ -141,7 +138,6 @@ public class AuditUtil implements Serializable {
         if (!(entity instanceof Auditlog)) {
             final Auditlog auditlog = new Auditlog();
             final String detail = this.generateAuditlogDetails(entity);
-            auditlog.setLogdate(Calendar.getInstance().getTime());
             auditlog.setDetail(detail);
             if (entity.isDeleted()) {
                 auditlog.setType(EventType.DELETE);

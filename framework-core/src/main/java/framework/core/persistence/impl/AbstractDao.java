@@ -73,9 +73,12 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
      */
     @Override
     public T saveOrUpdate(T t) {
-        T latest = this.findById(t.getId());
+        T latest = this.entityManager.find(persistentClass, t.getId());
         if (latest != null) {
-            if (latest.getLastupdate() != t.getLastupdate()) {
+            this.entityManager.refresh(latest, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+            if (latest.getVersion().equals(t.getVersion())) {
+                return this.entityManager.merge(t);
+            } else {
                 return latest;
             }
         } 
@@ -83,35 +86,19 @@ public abstract class AbstractDao<T extends AbstractEntity> implements Dao<T> {
     }
 
     protected List<T> find(String name) {
-        return this.find(name, null, null, null, false);
-    }
-
-    protected List<T> find(String name, boolean isCacheable) {
-        return this.find(name, null, null, null, isCacheable);
+        return this.find(name, null, null, null);
     }
 
     protected List<T> find(String name, Map<String, Object> parameters) {
-        return this.find(name, parameters, null, false);
-    }
-
-    protected List<T> find(String name, Map<String, Object> parameters, boolean isCacheable) {
-        return this.find(name, parameters, null, null, isCacheable);
+        return this.find(name, parameters, null);
     }
 
     protected List<T> find(String name, Map<String, Object> parameters, Integer index) {
-        return this.find(name, parameters, index, null, false);
-    }
-
-    protected List<T> find(String name, Map<String, Object> parameters, Integer index, boolean isCacheable) {
-        return this.find(name, parameters, index, null, isCacheable);
-    }
-
-    protected List<T> find(String name, Map<String, Object> parameters, Integer index, Integer size) {
-        return this.find(name, parameters, index, size, false);
+        return this.find(name, parameters, index, null);
     }
 
     @SuppressWarnings("unchecked")
-    protected List<T> find(String name, Map<String, Object> parameters, Integer index, Integer size, boolean isCacheable) {
+    protected List<T> find(String name, Map<String, Object> parameters, Integer index, Integer size) {
         final List<T> results = new ArrayList<T>();
         final Query query = this.entityManager.createNamedQuery(name);
         if (parameters != null) {
