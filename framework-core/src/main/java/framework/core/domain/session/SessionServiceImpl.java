@@ -17,7 +17,7 @@ public class SessionServiceImpl extends ServiceImpl<Session> implements SessionS
 
     private static final long serialVersionUID = -6724981340291285304L;
     private final SessionDao sessionDao;
-    private SystemParameterService systemParameterService;
+    private final SystemParameterService systemParameterService;
 
     @Inject
     protected SessionServiceImpl(SessionDao sessionDao, SystemParameterService systemParameterService) {
@@ -36,7 +36,8 @@ public class SessionServiceImpl extends ServiceImpl<Session> implements SessionS
         final List<Session> sessions = this.sessionDao.findActiveSessionById(id);
         if (sessions.size() == 1) {
             final Session session = sessions.get(0);
-            if ((username.equals(session.getUser().getName())) && (Calendar.getInstance().getTime().before(session.getExpiry()))) {
+            if ((username.equals(session.getUser().getName()))
+                    && (Calendar.getInstance().getTime().before(session.getExpiry()))) {
                 return session;
             }
         }
@@ -46,17 +47,23 @@ public class SessionServiceImpl extends ServiceImpl<Session> implements SessionS
     @Override
     public Session saveOrUpdate(User user) {
         Session session = new Session();
-        Calendar now = Calendar.getInstance();
-        final List<Session> sessions = this.sessionDao.findActiveSessionByUser(user.getName());
+        final Calendar now = Calendar.getInstance();
+        final List<Session> sessions = this.findActiveSessionByUser(user);
         if (sessions.size() == 1) {
             session = sessions.get(0);
         }
-        final SystemParameter systemParameter = this.systemParameterService.findSystemParamByCode(ParameterCode.SESSION_TIMEOUT, user.getClient().getName());
+        final SystemParameter systemParameter = this.systemParameterService.findSystemParamByCode(
+                ParameterCode.SESSION_TIMEOUT, user.getClient().getName());
         final Integer valueToAdd = Integer.valueOf(systemParameter.getValue());
         session.setUser(user);
         session.setStart(now.getTime());
         now.add(Calendar.MINUTE, valueToAdd);
         session.setExpiry(now.getTime());
         return this.saveOrUpdate(session);
+    }
+
+    @Override
+    public List<Session> findActiveSessionByUser(User user) {
+        return this.sessionDao.findActiveSessionsByUser(user.getName());
     }
 }

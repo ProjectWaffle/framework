@@ -39,6 +39,9 @@ public class SecurityContext implements javax.ws.rs.core.SecurityContext {
         if ((null == this.session) || (null == this.user)) {
             return false;
         }
+        if (!(this.session.getUser().getId().equals(this.user.getId()))) {
+            return false;
+        }
         for (final Role role : this.user.getUsergroup().getRoles()) {
             if (role.getName().equals(name)) {
                 this.service.saveOrUpdate(this.user);

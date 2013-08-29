@@ -33,7 +33,7 @@ public class Session extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date start;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
     public Date getExpiry() {

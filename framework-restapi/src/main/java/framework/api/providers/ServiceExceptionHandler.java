@@ -12,6 +12,7 @@ import javax.ws.rs.ext.Provider;
 import framework.api.webservices.ServiceResponse;
 import framework.core.exceptions.ApplicationException;
 import framework.core.exceptions.AuthenticationException;
+import framework.core.exceptions.FormValidationException;
 
 @Provider
 public class ServiceExceptionHandler implements ExceptionMapper<ApplicationException> {
@@ -26,6 +27,11 @@ public class ServiceExceptionHandler implements ExceptionMapper<ApplicationExcep
             return Response.status(Status.FORBIDDEN)
                     .entity(ServiceResponse.result().status(exception.getStatus()).build())
                     .type(MediaType.APPLICATION_JSON).build();
+        } else if (exception instanceof FormValidationException) {
+            return Response
+                    .status(Status.BAD_REQUEST)
+                    .entity(ServiceResponse.result(((FormValidationException) exception).getError())
+                            .status(exception.getStatus()).build()).type(MediaType.APPLICATION_JSON).build();
         }
 
         return Response.status(Status.BAD_REQUEST)

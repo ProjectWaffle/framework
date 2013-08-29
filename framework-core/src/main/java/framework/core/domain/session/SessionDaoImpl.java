@@ -21,7 +21,7 @@ public class SessionDaoImpl extends DaoImpl<Session> implements SessionDao {
     }
 
     @Override
-    public List<Session> findActiveSessionByUser(String username) {
+    public List<Session> findActiveSessionsByUser(String username) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("username", username);
         return this.find("findActiveSessionByUser", parameters);

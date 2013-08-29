@@ -9,7 +9,8 @@ public enum ApplicationStatus {
     INVALID_USER(20, "Either the username or the password is invalid."),
     SERVICE_NOT_FOUND(404, "Service not found."),
     SUCCESS(0, "Successful."),
-    SYSTEM_EXCEPTION(500, "Unhandled exception.");
+    SYSTEM_EXCEPTION(500, "Unhandled exception."),
+    VALIDATION_FAILED(1, "Validation Failed.");
 
     private Integer code;
     private String message;

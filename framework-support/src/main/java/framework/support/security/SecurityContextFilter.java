@@ -39,13 +39,13 @@ public class SecurityContextFilter implements ResourceFilter, ContainerRequestFi
         final Map<String, Cookie> cookie = request.getCookies();
         User user = null;
         Session session = null;
-        if (cookie.containsKey("username")) {
-            user = this.userService.findUserByUsername(cookie.get("username").getValue());
-        }
-        if (cookie.containsKey("sessionid")) {
+        if (cookie.containsKey("sessionid") && cookie.containsKey("username")) {
             session = this.sessionService.findSessionById(
                     cookie.get("username").getValue(), 
                     cookie.get("sessionid").getValue());
+            if (session != null) {
+                user = this.userService.findUserByUsername(cookie.get("username").getValue());
+            }
         }
         final SecurityContext securityContext = new SecurityContext(this.sessionService, user, session);
         request.setSecurityContext(securityContext);
