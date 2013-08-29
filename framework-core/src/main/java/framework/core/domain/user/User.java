@@ -26,7 +26,7 @@ import framework.core.domain.usergroup.Usergroup;
  */
 @Entity
 @Table(name = "PRINCIPAL")
-@NamedQueries(value = { @NamedQuery(name = "findUsersByName", query = "from User where name = :username") })
+@NamedQueries(value = { @NamedQuery(name = "findUsersByName", query = "from User where name = :username and deleted = false") })
 public class User extends BaseEntity implements Principal {
 
     private static final long serialVersionUID = -7767487387897790096L;

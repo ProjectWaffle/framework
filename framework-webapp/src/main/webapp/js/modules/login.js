@@ -20,7 +20,8 @@ function LoginCtrl($scope, $cookies, $location, LoginService) {
 
     $scope.login = function() {
         LoginService.authenticate(function(data) {
-            $cookies.token = data.responseHeader.token;
+            $cookies.username = data.result.username;
+            $cookies.sessionid= data.result.sessionid;
             $location.path('/systemParameters');
         }, function(data) {
             handlerError(data, $scope, $location);

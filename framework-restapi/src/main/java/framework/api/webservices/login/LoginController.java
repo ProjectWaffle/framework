@@ -8,8 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
 import framework.api.webservices.Controller;
-import framework.api.webservices.ServiceResponse;
-import framework.core.constants.ApplicationStatus;
+import framework.core.domain.session.Session;
 import framework.core.domain.user.UserService;
 
 @Named
@@ -21,9 +20,9 @@ public class LoginController extends Controller {
 
     @POST
     @Consumes(value = { MediaType.APPLICATION_JSON })
-    public ServiceResponse<String> processRequest(LoginRequest loginRequest) {
-        final String token = this.userService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
-        return ServiceResponse.result(token).status(ApplicationStatus.SUCCESS).token(token).build();
+    public LoginResponse processRequest(LoginRequest loginRequest) {
+        final Session session = this.userService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
+        return new LoginResponse(session);
     }
 
     @Inject

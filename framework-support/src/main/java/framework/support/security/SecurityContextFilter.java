@@ -1,10 +1,10 @@
 package framework.support.security;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.core.Cookie;
 
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerRequestFilter;
@@ -19,22 +19,34 @@ import framework.core.domain.session.Session;
 import framework.core.domain.session.SessionService;
 import framework.core.domain.user.User;
 import framework.core.domain.user.UserService;
-import framework.core.utilities.Cryptography;
 
 @Named
 public class SecurityContextFilter implements ResourceFilter, ContainerRequestFilter, ContainerResponseFilter {
 
-    private Cryptography cryptography;
+    private final SessionService sessionService;
 
-    private SessionService sessionService;
+    private final UserService userService;
 
-    private UserService userService;
+    @Inject
+    protected SecurityContextFilter(SessionService sessionService, UserService userService) {
+        super();
+        this.sessionService = sessionService;
+        this.userService = userService;
+    }
 
     @Override
     public ContainerRequest filter(ContainerRequest request) {
-        final Map<String, Object> map = this.generateRequestMap(request);
-        final User user = (User) map.get("user");
-        final Session session = (Session) map.get("session");
+        final Map<String, Cookie> cookie = request.getCookies();
+        User user = null;
+        Session session = null;
+        if (cookie.containsKey("username")) {
+            user = this.userService.findUserByUsername(cookie.get("username").getValue());
+        }
+        if (cookie.containsKey("sessionid")) {
+            session = this.sessionService.findSessionById(
+                    cookie.get("username").getValue(), 
+                    cookie.get("sessionid").getValue());
+        }
         final SecurityContext securityContext = new SecurityContext(this.sessionService, user, session);
         request.setSecurityContext(securityContext);
         return request;
@@ -45,9 +57,7 @@ public class SecurityContextFilter implements ResourceFilter, ContainerRequestFi
         final Object entity = response.getEntity();
         if (entity != null) {
             if (!(entity instanceof ServiceResponse)) {
-                final String token = request.getHeaderValue("token");
-                response.setEntity(ServiceResponse.result(entity).status(ApplicationStatus.SUCCESS).token(token)
-                        .build());
+                response.setEntity(ServiceResponse.result(entity).status(ApplicationStatus.SUCCESS).build());
             }
         }
         return response;
@@ -61,35 +71,6 @@ public class SecurityContextFilter implements ResourceFilter, ContainerRequestFi
     @Override
     public ContainerResponseFilter getResponseFilter() {
         return this;
-    }
-
-    private Map<String, Object> generateRequestMap(ContainerRequest request) {
-        final Map<String, Object> map = new HashMap<String, Object>();
-        String token = request.getHeaderValue("token");
-        String sessionid = "", username = "";
-        if (token != null) {
-            token = this.cryptography.decrypt(token);
-            sessionid = (token.split(";")[0]).split("=")[1];
-            username = (token.split(";")[1]).split("=")[1];
-            map.put("session", this.sessionService.findSessionById(username, sessionid));
-            map.put("user", this.userService.findUserByUsername(username));
-        }
-        return map;
-    }
-
-    @Inject
-    protected void setCryptography(Cryptography cryptography) {
-        this.cryptography = cryptography;
-    }
-
-    @Inject
-    protected void setSessionService(SessionService sessionService) {
-        this.sessionService = sessionService;
-    }
-
-    @Inject
-    protected void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
 }

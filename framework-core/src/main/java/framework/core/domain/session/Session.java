@@ -18,9 +18,9 @@ import framework.core.domain.user.User;
 @Entity
 @Table(name = "SESSION")
 @NamedQueries(value = {
-        @NamedQuery(name = "findSessionById", query = "from Session where id =:id"),
-        @NamedQuery(name = "findSessionByUser", query = "select s from Session s inner join s.user u where u.name =:username"),
-        @NamedQuery(name = "findExpiredSessions", query = "from Session where expiry <= :expiry") })
+        @NamedQuery(name = "findActiveSessionById", query = "from Session s where s.id =:id and s.deleted = false"),
+        @NamedQuery(name = "findActiveSessionByUser", query = "select s from Session s inner join s.user u where u.name =:username and s.expiry > CURRENT_TIMESTAMP and s.deleted = false"),
+        @NamedQuery(name = "findExpiredSessions", query = "from Session where expiry <= CURRENT_TIMESTAMP") })
 public class Session extends BaseEntity {
 
     private static final long serialVersionUID = 4041171065363458266L;

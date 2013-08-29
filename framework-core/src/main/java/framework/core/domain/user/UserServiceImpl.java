@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import framework.core.domain.ServiceImpl;
+import framework.core.domain.session.Session;
 import framework.core.domain.session.SessionService;
 import framework.core.exceptions.CredentialExpiredException;
 import framework.core.exceptions.InvalidUserException;
@@ -35,7 +36,7 @@ public class UserServiceImpl extends ServiceImpl<User> implements UserService {
     }
 
     @Override
-    public String authenticate(String username, String password) {
+    public Session authenticate(String username, String password) {
         final User user = this.validateLogin(username, password);
         return this.sessionService.saveOrUpdate(user);
     }

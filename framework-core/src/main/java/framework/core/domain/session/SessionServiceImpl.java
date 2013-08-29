@@ -28,12 +28,12 @@ public class SessionServiceImpl extends ServiceImpl<Session> implements SessionS
 
     @Override
     public void deleteExpiredSessions() {
-        this.delete(this.sessionDao.findExpiredSessions(Calendar.getInstance().getTime()));
+        this.delete(this.sessionDao.findExpiredSessions());
     }
 
     @Override
     public Session findSessionById(String username, String id) {
-        final List<Session> sessions = this.sessionDao.findSessionById(id);
+        final List<Session> sessions = this.sessionDao.findActiveSessionById(id);
         if (sessions.size() == 1) {
             final Session session = sessions.get(0);
             if ((username.equals(session.getUser().getName())) && (Calendar.getInstance().getTime().before(session.getExpiry()))) {
@@ -44,22 +44,19 @@ public class SessionServiceImpl extends ServiceImpl<Session> implements SessionS
     }
 
     @Override
-    public String saveOrUpdate(User user) {
+    public Session saveOrUpdate(User user) {
         Session session = new Session();
-        String token = "";
-        Calendar calendar = Calendar.getInstance();
-        final List<Session> sessions = this.sessionDao.findSessionByUser(user.getName());
+        Calendar now = Calendar.getInstance();
+        final List<Session> sessions = this.sessionDao.findActiveSessionByUser(user.getName());
         if (sessions.size() == 1) {
             session = sessions.get(0);
         }
         final SystemParameter systemParameter = this.systemParameterService.findSystemParamByCode(ParameterCode.SESSION_TIMEOUT, user.getClient().getName());
         final Integer valueToAdd = Integer.valueOf(systemParameter.getValue());
         session.setUser(user);
-        session.setStart(calendar.getTime());
-        calendar.add(Calendar.MINUTE, valueToAdd);
-        session.setExpiry(calendar.getTime());
-        token = String.format("sessionid=%s;username=%s", session.getId(), user.getName());
-        this.saveOrUpdate(session);
-        return this.getCryptography().encrypt(token);
+        session.setStart(now.getTime());
+        now.add(Calendar.MINUTE, valueToAdd);
+        session.setExpiry(now.getTime());
+        return this.saveOrUpdate(session);
     }
 }
