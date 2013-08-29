@@ -6,11 +6,9 @@ var systemParameter = {
 
 apps.factory('SystemParameterService', function($http) {
     return {
-        load : function(success, error, config) {
+        load : function(success, config) {
             $http.get('services/systemParameter/', config).success(function(data) {
                 success(data);
-            }).error(function(data) {
-                error(data);
             });
         },
         loadByCode : function(onSuccess, code, config) {
@@ -38,8 +36,6 @@ function SystemParameterCtrl($scope, $cookies, $location, $routeParams, SystemPa
     $scope.loadAll = SystemParameterService.load(function(data) {
         $cookies.token = data.responseHeader.token;
         $scope.serviceResponse = data;
-    }, function(data) {
-        handlerError(data, $scope, $location);
     }, config);
     
     /*

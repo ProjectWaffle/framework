@@ -47,12 +47,15 @@ public class UserServiceImpl extends ServiceImpl<User> implements UserService {
         if (users.size() == 1) {
             return users.get(0);
         }
-        throw new InvalidUserException("Unable to find username matching [" + username + "]");
+        return null;
     }
 
     protected User validateLogin(String username, String password) {
         final User user = this.findUserByUsername(username);
         Date now = Calendar.getInstance().getTime();
+        if (user == null) {
+            throw new InvalidUserException("Unable to find username matching [" + username + "]");
+        }
         if (now.after(user.getProfileexpiration())) {
             throw new UserProfileExpiredException(String.format("User [%s] has already expired.", user.getName()));
         }

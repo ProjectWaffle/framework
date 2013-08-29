@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import framework.api.webservices.Controller;
 
 @Named
-@Path("/menu")
+@Path("/navigation")
 public class NavigationController extends Controller {
 
     private static final long serialVersionUID = -5698557027479498976L;

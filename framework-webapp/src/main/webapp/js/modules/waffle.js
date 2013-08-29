@@ -14,31 +14,43 @@ apps.config(function($routeProvider) {
     }).otherwise({
         templateUrl : 'pages/404.html'
     });
+}).config(function($httpProvider) {
+    $httpProvider.responseInterceptors.push('errorInterceptor');
+});
+
+apps.factory('errorInterceptor', function($q,  $location) {
+    return function(promise) {
+
+        return promise.then(function(response) {
+            return promise;
+        }, function(response) {
+            if (response.status == 403) {
+                $location.path('/login');
+            }
+            alert(response.data.responseHeader.statusMessage);
+            return $q.reject(response);
+        });
+    };
 });
 
 apps.factory('MenuService', [ '$http', function($http) {
     return {
-        populate : function(success, config) {
-            $http.get('services/menu/', config).success(function(data) {
-                success(data);
+        populate : function(onSuccess) {
+            $http.get('services/navigation/').success(function(data) {
+                onSuccess(data);
             });
         }
     };
 } ]);
 
 apps.controller("MenuCtrl", function($scope, $cookies, MenuService) {
-    var config = {
-        headers : {
-            token : $cookies.token
-        }
-    };
-
     MenuService.populate(function(data) {
         $scope.serviceResponse = data;
-    }, config);
+    });
 });
 
 function handlerError(data, $scope, $location) {
+    alert(data);
     if (403 == data.responseHeader.statusCode) {
         $location.path('/login');
     } else {
