@@ -9,7 +9,7 @@ import javax.inject.Named;
 import framework.core.domain.DaoImpl;
 
 @Named
-public class LocalizationDaoImpl extends DaoImpl<Localization> implements LocalizationDao {
+class LocalizationDaoImpl extends DaoImpl<Localization> implements LocalizationDao {
 
     private static final long serialVersionUID = -1810597520079717978L;
 

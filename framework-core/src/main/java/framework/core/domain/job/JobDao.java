@@ -4,7 +4,7 @@ import java.util.List;
 
 import framework.core.domain.Dao;
 
-public interface JobDao extends Dao<Job> {
+interface JobDao extends Dao<Job> {
 
     List<Job> findJobByName(String name);
 }

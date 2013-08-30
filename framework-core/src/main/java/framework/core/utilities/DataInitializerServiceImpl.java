@@ -1,6 +1,5 @@
 package framework.core.utilities;
 
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -8,7 +7,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import framework.core.domain.localization.Localization;
+import framework.core.constants.ParameterCode;
+import framework.core.constants.ParameterType;
 import framework.core.domain.systemparameter.SystemParameter;
 import framework.core.domain.systemparameter.SystemParameterService;
 
@@ -23,8 +23,7 @@ public class DataInitializerServiceImpl implements DataInitializerService {
     private Cryptography cryptography;
     private List<DataGenerator> dataGenerators;
     private SystemParameterService systemParameterService;
-    private XMLEncoder xmlEncoder;
-
+    
     protected DataInitializerServiceImpl() {
     }
 
@@ -45,9 +44,13 @@ public class DataInitializerServiceImpl implements DataInitializerService {
                     this.systemParameterService.saveOrUpdate(systemParameter);
                 }
             } else {
-                final ClassLoader classLoader = this.getClass().getClassLoader();
-                final InputStream resourceAsStream = classLoader.getResourceAsStream("Default.data");
-                systemParameter = this.xmlEncoder.convert(resourceAsStream, SystemParameter.class, Localization.class);
+                systemParameter = new SystemParameter();
+                systemParameter.setCode(ParameterCode.DB_VERSION);
+                systemParameter.setDescription("label.db_version");
+                systemParameter.setReadonly(true);
+                systemParameter.setType(ParameterType.NUMERIC);
+                systemParameter.setMaximum(Long.valueOf(256));
+                systemParameter.setMinimum(Long.valueOf(0));
                 systemParameter.setValue(this.cryptography.encrypt(String.valueOf(dataGenerator.getDBVersion())));
                 dataGenerator.performDataOperation();
                 this.systemParameterService.saveOrUpdate(systemParameter);
@@ -69,11 +72,6 @@ public class DataInitializerServiceImpl implements DataInitializerService {
     @Inject
     protected void setSystemParameterService(SystemParameterService systemParameterService) {
         this.systemParameterService = systemParameterService;
-    }
-
-    @Inject
-    protected void setXmlEncoder(XMLEncoder xmlEncoder) {
-        this.xmlEncoder = xmlEncoder;
     }
 
     /**

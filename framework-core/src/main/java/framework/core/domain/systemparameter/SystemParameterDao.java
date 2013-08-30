@@ -10,7 +10,7 @@ import framework.core.domain.Dao;
  * 
  * @author Frederick Yap
  */
-public interface SystemParameterDao extends Dao<SystemParameter> {
+interface SystemParameterDao extends Dao<SystemParameter> {
 
     /**
      * Returns all active system parameters.

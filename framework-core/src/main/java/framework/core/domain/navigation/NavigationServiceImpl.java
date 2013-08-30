@@ -8,11 +8,10 @@ import javax.inject.Named;
 
 import framework.core.domain.ServiceImpl;
 import framework.core.domain.role.Role;
-import framework.core.domain.session.SessionService;
 import framework.core.domain.user.User;
 
 @Named
-public class NavigationServiceImpl extends ServiceImpl<Navigation> implements NavigationService {
+class NavigationServiceImpl extends ServiceImpl<Navigation> implements NavigationService {
 
     private static final long serialVersionUID = -6029148647815989471L;
 

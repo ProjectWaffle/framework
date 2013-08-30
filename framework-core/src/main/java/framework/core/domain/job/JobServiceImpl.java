@@ -8,7 +8,7 @@ import javax.inject.Named;
 import framework.core.domain.ServiceImpl;
 
 @Named
-public class JobServiceImpl extends ServiceImpl<Job> implements JobService {
+class JobServiceImpl extends ServiceImpl<Job> implements JobService {
 
     private static final long serialVersionUID = -1247877062672555397L;
 

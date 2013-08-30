@@ -20,7 +20,7 @@ import framework.core.exceptions.UserProfileExpiredException;
  * @author Frederick Yap
  */
 @Named
-public class UserServiceImpl extends ServiceImpl<User> implements UserService {
+class UserServiceImpl extends ServiceImpl<User> implements UserService {
 
     private static final long serialVersionUID = 5506093159372637005L;
     

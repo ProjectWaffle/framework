@@ -9,7 +9,7 @@ import framework.core.domain.Dao;
  * 
  * @author Frederick Yap
  */
-public interface UserDao extends Dao<User> {
+interface UserDao extends Dao<User> {
 
     List<User> findUsersByName(String username);
 }

@@ -9,7 +9,7 @@ import javax.inject.Named;
 import framework.core.domain.DaoImpl;
 
 @Named
-public class ClientDaoImpl extends DaoImpl<Client> implements ClientDao {
+class ClientDaoImpl extends DaoImpl<Client> implements ClientDao {
 
     private static final long serialVersionUID = 3925222390268583407L;
 

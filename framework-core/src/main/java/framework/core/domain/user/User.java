@@ -139,11 +139,11 @@ public class User extends BaseEntity implements Principal {
         this.usergroup = usergroup;
     }
 
-    protected String getLocale() {
+    public String getLocale() {
         return this.locale;
     }
 
-    protected void setLocale(String locale) {
+    public void setLocale(String locale) {
         this.locale = locale;
     }
 

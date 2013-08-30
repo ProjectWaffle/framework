@@ -9,7 +9,7 @@ import javax.inject.Named;
 import framework.core.domain.DaoImpl;
 
 @Named
-public class JobDaoImpl extends DaoImpl<Job> implements JobDao {
+class JobDaoImpl extends DaoImpl<Job> implements JobDao {
 
     private static final long serialVersionUID = 1104856385879275119L;
 

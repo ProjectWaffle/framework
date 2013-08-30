@@ -6,7 +6,7 @@ import javax.inject.Named;
 import framework.core.domain.ServiceImpl;
 
 @Named
-public class UsergroupServiceImpl extends ServiceImpl<Usergroup> implements UsergroupService {
+class UsergroupServiceImpl extends ServiceImpl<Usergroup> implements UsergroupService {
 
     private static final long serialVersionUID = 5404039380441901398L;
 

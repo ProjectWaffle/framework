@@ -6,7 +6,7 @@ import javax.inject.Named;
 import framework.core.domain.ServiceImpl;
 
 @Named
-public class RoleServiceImpl extends ServiceImpl<Role> implements RoleService {
+class RoleServiceImpl extends ServiceImpl<Role> implements RoleService {
 
     private static final long serialVersionUID = -675261136460381643L;
 

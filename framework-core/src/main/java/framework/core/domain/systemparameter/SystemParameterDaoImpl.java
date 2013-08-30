@@ -15,7 +15,7 @@ import framework.core.domain.DaoImpl;
  * @author Frederick Yap
  */
 @Named
-public class SystemParameterDaoImpl extends DaoImpl<SystemParameter> implements SystemParameterDao {
+class SystemParameterDaoImpl extends DaoImpl<SystemParameter> implements SystemParameterDao {
 
     private static final long serialVersionUID = -5030590659029576233L;
 

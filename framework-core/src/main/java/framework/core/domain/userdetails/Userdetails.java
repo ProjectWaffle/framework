@@ -1,5 +1,7 @@
 package framework.core.domain.userdetails;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -21,7 +23,7 @@ public class Userdetails extends BaseEntity {
     private String address;
 
     @Column
-    private Long birthdate;
+    private Date birthdate;
 
     @Column
     private String city;
@@ -55,7 +57,7 @@ public class Userdetails extends BaseEntity {
      * 
      * @return the user's birthdate.
      */
-    public Long getBirthdate() {
+    public Date getBirthdate() {
         return this.birthdate;
     }
 
@@ -111,6 +113,38 @@ public class Userdetails extends BaseEntity {
      */
     public Long getZipcode() {
         return this.zipcode;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setEmailaddress(String emailaddress) {
+        this.emailaddress = emailaddress;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setZipcode(Long zipcode) {
+        this.zipcode = zipcode;
     }
 
 }

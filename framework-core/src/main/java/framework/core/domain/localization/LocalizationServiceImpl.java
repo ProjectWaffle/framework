@@ -9,7 +9,7 @@ import framework.core.domain.ServiceImpl;
 import framework.core.exceptions.LocalizationException;
 
 @Named
-public class LocalizationServiceImpl extends ServiceImpl<Localization> implements LocalizationService {
+class LocalizationServiceImpl extends ServiceImpl<Localization> implements LocalizationService {
 
     private static final long serialVersionUID = -6057911460335988890L;
 

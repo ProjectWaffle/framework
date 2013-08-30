@@ -13,7 +13,7 @@ import framework.core.domain.systemparameter.SystemParameterService;
 import framework.core.domain.user.User;
 
 @Named
-public class SessionServiceImpl extends ServiceImpl<Session> implements SessionService {
+class SessionServiceImpl extends ServiceImpl<Session> implements SessionService {
 
     private static final long serialVersionUID = -6724981340291285304L;
     private final SessionDao sessionDao;

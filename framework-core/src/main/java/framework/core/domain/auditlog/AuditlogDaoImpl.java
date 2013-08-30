@@ -9,7 +9,7 @@ import javax.inject.Named;
 import framework.core.domain.DaoImpl;
 
 @Named
-public class AuditlogDaoImpl extends DaoImpl<Auditlog> implements AuditlogDao {
+class AuditlogDaoImpl extends DaoImpl<Auditlog> implements AuditlogDao {
 
     private static final long serialVersionUID = -7807736241131100379L;
 

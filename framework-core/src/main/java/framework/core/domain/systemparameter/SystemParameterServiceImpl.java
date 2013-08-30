@@ -17,7 +17,7 @@ import framework.core.domain.client.Client;
  * @author Frederick Yap
  */
 @Named
-public class SystemParameterServiceImpl extends ServiceImpl<SystemParameter> implements SystemParameterService {
+class SystemParameterServiceImpl extends ServiceImpl<SystemParameter> implements SystemParameterService {
 
     private static final long serialVersionUID = 1541672630059263485L;
 

@@ -1,7 +1,5 @@
 package framework.core.utilities;
 
-import java.io.InputStream;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -14,7 +12,6 @@ import javax.inject.Named;
 public abstract class DataGenerator {
 
     private Cryptography cryptography;
-    private XMLEncoder xmlEncoder;
 
     protected Cryptography getCryptography() {
         return this.cryptography;
@@ -34,25 +31,9 @@ public abstract class DataGenerator {
      */
     protected abstract void performDataOperation();
 
-    /**
-     * Initialize this class.
-     */
-    protected final <T> T retrieveXMLContent(String location, Class<?>... aClass) {
-        if (location != null) {
-            final InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(location);
-            return this.xmlEncoder.convert(resourceAsStream, aClass);
-        }
-        return null;
-    }
-
     @Inject
     protected void setCryptography(Cryptography cryptography) {
         this.cryptography = cryptography;
-    }
-
-    @Inject
-    protected void setXmlEncoder(XMLEncoder xmlEncoder) {
-        this.xmlEncoder = xmlEncoder;
     }
 
 }

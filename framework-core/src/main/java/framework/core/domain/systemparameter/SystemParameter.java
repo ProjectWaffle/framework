@@ -58,13 +58,6 @@ public class SystemParameter extends BaseEntity {
     @Column
     private String value;
 
-    /**
-     * Creates a new instance of {@link SystemParameter}.
-     */
-    protected SystemParameter() {
-
-    }
-
     public Client getClient() {
         return this.client;
     }

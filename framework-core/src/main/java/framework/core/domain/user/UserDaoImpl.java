@@ -14,7 +14,7 @@ import framework.core.domain.DaoImpl;
  * @author Frederick Yap
  */
 @Named
-public class UserDaoImpl extends DaoImpl<User> implements UserDao {
+class UserDaoImpl extends DaoImpl<User> implements UserDao {
 
     private static final long serialVersionUID = -508553230014446994L;
 

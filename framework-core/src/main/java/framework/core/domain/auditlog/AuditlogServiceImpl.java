@@ -10,7 +10,7 @@ import javax.inject.Named;
 import framework.core.domain.ServiceImpl;
 
 @Named
-public class AuditlogServiceImpl extends ServiceImpl<Auditlog> implements AuditlogService {
+class AuditlogServiceImpl extends ServiceImpl<Auditlog> implements AuditlogService {
 
     private static final long serialVersionUID = 3214032897547552133L;
 

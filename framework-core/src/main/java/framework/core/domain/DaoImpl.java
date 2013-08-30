@@ -43,6 +43,13 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
      */
     @Override
     public void delete(T t) {
+        final T latest = this.entityManager.find(this.persistentClass, t.getId());
+        if (latest != null) {
+            this.entityManager.refresh(latest, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+            if (latest.getVersion().equals(t.getVersion()) && !latest.isDeleted()) {
+                t = latest;
+            }
+        }
         t.setDeleted(true);
         this.saveOrUpdate(t);
     }
@@ -67,7 +74,7 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
      */
     @Override
     public T saveOrUpdate(T t) {
-        T latest = this.entityManager.find(persistentClass, t.getId());
+        final T latest = this.entityManager.find(this.persistentClass, t.getId());
         if (latest != null) {
             this.entityManager.refresh(latest, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
             if (latest.getVersion().equals(t.getVersion())) {
@@ -75,7 +82,7 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
             } else {
                 return latest;
             }
-        } 
+        }
         return this.entityManager.merge(t);
     }
 
@@ -105,7 +112,7 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
         if (size != null) {
             query.setMaxResults(size);
         }
-        final List<T> results = (List<T>) query.getResultList();
+        final List<T> results = query.getResultList();
         for (final T t : results) {
             this.entityManager.detach(t);
         }
