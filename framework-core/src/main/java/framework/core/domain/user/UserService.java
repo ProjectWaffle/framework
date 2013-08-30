@@ -13,4 +13,6 @@ public interface UserService extends Service<User> {
     Session authenticate(String username, String password);
     
     User findUserByUsername(String username);
+    
+    User saveOrUpdate(User user, String password);
 }

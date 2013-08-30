@@ -10,13 +10,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import framework.api.webservices.Controller;
+import framework.api.webservices.BaseController;
 import framework.core.domain.navigation.Navigation;
 import framework.core.domain.navigation.NavigationService;
 
 @Named
 @Path("/navigation")
-public class NavigationController extends Controller {
+public class NavigationController extends BaseController {
 
     private static final long serialVersionUID = -5698557027479498976L;
 

@@ -57,4 +57,16 @@ public class Reference extends BaseEntity {
         return this.type;
     }
 
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public void setType(ReferenceType type) {
+        this.type = type;
+    }
+
 }

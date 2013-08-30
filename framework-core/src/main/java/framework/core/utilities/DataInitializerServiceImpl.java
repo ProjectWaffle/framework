@@ -7,10 +7,12 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import framework.core.constants.ParameterCode;
-import framework.core.constants.ParameterType;
-import framework.core.domain.systemparameter.SystemParameter;
-import framework.core.domain.systemparameter.SystemParameterService;
+import framework.core.constants.ReferenceCode;
+import framework.core.constants.ReferenceType;
+import framework.core.domain.configuration.Configuration;
+import framework.core.domain.configuration.ConfigurationService;
+import framework.core.domain.reference.Reference;
+import framework.core.domain.reference.ReferenceService;
 
 /**
  * Provides Transactional for {@link DataInitializationStartup}.
@@ -20,58 +22,44 @@ import framework.core.domain.systemparameter.SystemParameterService;
 @Named
 public class DataInitializerServiceImpl implements DataInitializerService {
 
-    private Cryptography cryptography;
-    private List<DataGenerator> dataGenerators;
-    private SystemParameterService systemParameterService;
-    
-    protected DataInitializerServiceImpl() {
+    private final ConfigurationService configurationService;
+    private final List<DataGenerator> dataGenerators;
+    private final ReferenceService referenceService;
+
+    @Inject
+    protected DataInitializerServiceImpl(List<DataGenerator> dataGenerators, ReferenceService referenceService,
+            ConfigurationService configurationService) {
+        super();
+        this.dataGenerators = dataGenerators;
+        this.configurationService = configurationService;
+        this.referenceService = referenceService;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see framework.core.utilities.DataInitializerService#update()
-     */
     @Override
     public void update() {
         this.sort();
         for (final DataGenerator dataGenerator : this.dataGenerators) {
-            SystemParameter systemParameter = this.systemParameterService.findDatabaseVersion();
-            if (systemParameter != null) {
-                final Integer currentDBVersion = Integer.valueOf(this.cryptography.decrypt(systemParameter.getValue()));
+            Configuration configuration = this.configurationService.findDatabaseVersion();
+            if (configuration != null) {
+                final Integer currentDBVersion = Integer.valueOf(configuration.getValue());
                 if (dataGenerator.getDBVersion() > currentDBVersion) {
                     dataGenerator.performDataOperation();
-                    systemParameter.setValue(this.cryptography.encrypt(String.valueOf(dataGenerator.getDBVersion())));
-                    this.systemParameterService.saveOrUpdate(systemParameter);
+                    configuration.setValue(dataGenerator.getDBVersion());
+                    this.configurationService.saveOrUpdate(configuration);
                 }
             } else {
-                systemParameter = new SystemParameter();
-                systemParameter.setCode(ParameterCode.DB_VERSION);
-                systemParameter.setDescription("label.db_version");
-                systemParameter.setReadonly(true);
-                systemParameter.setType(ParameterType.NUMERIC);
-                systemParameter.setMaximum(Long.valueOf(256));
-                systemParameter.setMinimum(Long.valueOf(0));
-                systemParameter.setValue(this.cryptography.encrypt(String.valueOf(dataGenerator.getDBVersion())));
+                final Reference reference = new Reference();
+                reference.setCode(ReferenceCode.CONFIGURATION_DB_VERSION);
+                reference.setLabel("label.db_version");
+                reference.setType(ReferenceType.SYSTEM_PARAMETERS);
+                configuration = new Configuration();
+                configuration.setReference(this.referenceService.saveOrUpdate(reference));
+                configuration.setValue(dataGenerator.getDBVersion());
                 dataGenerator.performDataOperation();
-                this.systemParameterService.saveOrUpdate(systemParameter);
+                this.configurationService.saveOrUpdate(configuration);
             }
         }
 
-    }
-
-    @Inject
-    protected void setCryptography(Cryptography cryptography) {
-        this.cryptography = cryptography;
-    }
-
-    @Inject
-    protected void setDataGenerators(List<DataGenerator> dataGenerators) {
-        this.dataGenerators = dataGenerators;
-    }
-
-    @Inject
-    protected void setSystemParameterService(SystemParameterService systemParameterService) {
-        this.systemParameterService = systemParameterService;
     }
 
     /**

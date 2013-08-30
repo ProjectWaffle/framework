@@ -1,6 +1,5 @@
 package framework.core.utilities;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -10,12 +9,6 @@ import javax.inject.Named;
  */
 @Named
 public abstract class DataGenerator {
-
-    private Cryptography cryptography;
-
-    protected Cryptography getCryptography() {
-        return this.cryptography;
-    }
 
     /**
      * Returns the new database version. Normally, the database version is supplied by <em>DBVersion{}.data</em> file.
@@ -30,10 +23,5 @@ public abstract class DataGenerator {
      * Override this method to perform additional tasks.
      */
     protected abstract void performDataOperation();
-
-    @Inject
-    protected void setCryptography(Cryptography cryptography) {
-        this.cryptography = cryptography;
-    }
 
 }

@@ -13,6 +13,7 @@ import framework.core.domain.session.SessionService;
 import framework.core.exceptions.CredentialExpiredException;
 import framework.core.exceptions.InvalidUserException;
 import framework.core.exceptions.UserProfileExpiredException;
+import framework.core.utilities.EncryptionUtil;
 
 /**
  * Performs business operations for {@link User} entity/
@@ -23,16 +24,17 @@ import framework.core.exceptions.UserProfileExpiredException;
 class UserServiceImpl extends ServiceImpl<User> implements UserService {
 
     private static final long serialVersionUID = 5506093159372637005L;
-    
-    private SessionService sessionService;
 
+    private final EncryptionUtil encryptionUtil;
+    private final SessionService sessionService;
     private final UserDao userDao;
 
     @Inject
-    protected UserServiceImpl(UserDao userDao, SessionService sessionService) {
+    protected UserServiceImpl(UserDao userDao, SessionService sessionService, EncryptionUtil encryptionUtil) {
         super(userDao);
         this.userDao = userDao;
         this.sessionService = sessionService;
+        this.encryptionUtil = encryptionUtil;
     }
 
     @Override
@@ -50,9 +52,16 @@ class UserServiceImpl extends ServiceImpl<User> implements UserService {
         return null;
     }
 
+    @Override
+    public User saveOrUpdate(User user, String password) {
+        byte[] newPassword = encryptionUtil.getEncryptedPassword(password);
+        user.setPassword(newPassword);
+        return super.saveOrUpdate(user);
+    }
+
     protected User validateLogin(String username, String password) {
         final User user = this.findUserByUsername(username);
-        Date now = Calendar.getInstance().getTime();
+        final Date now = Calendar.getInstance().getTime();
         if (user == null) {
             throw new InvalidUserException("Unable to find username matching [" + username + "]");
         }
@@ -62,7 +71,7 @@ class UserServiceImpl extends ServiceImpl<User> implements UserService {
         if (now.after(user.getPasswordexpiration())) {
             throw new CredentialExpiredException("Credentials for user " + user.getName() + " has already expired.");
         }
-        if (!password.equals(this.getCryptography().decrypt(user.getPassword()))) {
+        if (!this.encryptionUtil.isEqual(password, user.getPassword())) {
             throw new InvalidUserException("Password for " + user.getName() + " is invalid.");
         }
         return user;

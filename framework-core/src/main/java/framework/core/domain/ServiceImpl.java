@@ -3,10 +3,7 @@ package framework.core.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.inject.Named;
-
-import framework.core.utilities.Cryptography;
 
 /**
  * Provides basic business operation for all service classes.
@@ -22,7 +19,6 @@ public abstract class ServiceImpl<T extends BaseEntity> implements Service<T> {
 
     private static final long serialVersionUID = 8443877242673541465L;
 
-    private Cryptography cryptography;
     private final Dao<T> persistence;
 
     protected ServiceImpl(Dao<T> persistence) {
@@ -79,14 +75,5 @@ public abstract class ServiceImpl<T extends BaseEntity> implements Service<T> {
     public T saveOrUpdate(T t) {
         return this.persistence.saveOrUpdate(t);
     }
-
-    protected Cryptography getCryptography() {
-        return this.cryptography;
-    }
-
-    @Inject
-    protected void setCryptography(Cryptography cryptography) {
-        this.cryptography = cryptography;
-    }
-
+    
 }

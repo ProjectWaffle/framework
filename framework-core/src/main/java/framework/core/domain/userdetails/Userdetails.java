@@ -38,6 +38,9 @@ public class Userdetails extends BaseEntity {
     private String fullname;
 
     @Column
+    private String locale;
+
+    @Column
     private String phone;
 
     @Column
@@ -97,6 +100,10 @@ public class Userdetails extends BaseEntity {
         return this.fullname;
     }
 
+    public String getLocale() {
+        return this.locale;
+    }
+
     /**
      * Returns the user's phone number.
      * 
@@ -137,6 +144,10 @@ public class Userdetails extends BaseEntity {
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 
     public void setPhone(String phone) {

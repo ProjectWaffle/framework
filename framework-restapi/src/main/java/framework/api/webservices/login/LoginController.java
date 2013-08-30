@@ -7,13 +7,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
-import framework.api.webservices.Controller;
+import framework.api.webservices.BaseController;
 import framework.core.domain.session.Session;
 import framework.core.domain.user.UserService;
 
 @Named
 @Path("/login")
-public class LoginController extends Controller {
+public class LoginController extends BaseController {
 
     private static final long serialVersionUID = -6402313528023081815L;
     private UserService userService;

@@ -34,14 +34,11 @@ public class User extends BaseEntity implements Principal {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Client client;
 
-    @Column
-    private String locale;
-
     @Column(unique = true, nullable = false)
     private String name;
 
     @Column
-    private String password;
+    private byte[] password;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
@@ -51,7 +48,7 @@ public class User extends BaseEntity implements Principal {
     @Temporal(TemporalType.TIMESTAMP)
     private Date profileexpiration;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Userdetails userdetails;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -71,7 +68,7 @@ public class User extends BaseEntity implements Principal {
      * 
      * @return the secret 'key'.
      */
-    public String getPassword() {
+    public byte[] getPassword() {
         return this.password;
     }
 
@@ -119,7 +116,7 @@ public class User extends BaseEntity implements Principal {
         this.name = name;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(byte[] password) {
         this.password = password;
     }
 
@@ -137,14 +134,6 @@ public class User extends BaseEntity implements Principal {
 
     public void setUsergroup(Usergroup usergroup) {
         this.usergroup = usergroup;
-    }
-
-    public String getLocale() {
-        return this.locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
     }
 
 }

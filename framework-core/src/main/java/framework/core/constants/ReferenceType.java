@@ -11,4 +11,6 @@ public enum ReferenceType {
      * Reference type for countries.
      */
     COUNTRY,
+    
+    SYSTEM_PARAMETERS
 }

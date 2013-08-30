@@ -6,29 +6,34 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import framework.core.constants.ParameterCode;
+import framework.core.constants.ReferenceCode;
 import framework.core.domain.ServiceImpl;
-import framework.core.domain.systemparameter.SystemParameter;
-import framework.core.domain.systemparameter.SystemParameterService;
+import framework.core.domain.configuration.Configuration;
+import framework.core.domain.configuration.ConfigurationService;
 import framework.core.domain.user.User;
 
 @Named
 class SessionServiceImpl extends ServiceImpl<Session> implements SessionService {
 
     private static final long serialVersionUID = -6724981340291285304L;
+    private final ConfigurationService configurationService;
     private final SessionDao sessionDao;
-    private final SystemParameterService systemParameterService;
 
     @Inject
-    protected SessionServiceImpl(SessionDao sessionDao, SystemParameterService systemParameterService) {
+    protected SessionServiceImpl(SessionDao sessionDao, ConfigurationService configurationService) {
         super(sessionDao);
         this.sessionDao = sessionDao;
-        this.systemParameterService = systemParameterService;
+        this.configurationService = configurationService;
     }
 
     @Override
     public void deleteExpiredSessions() {
         this.delete(this.sessionDao.findExpiredSessions());
+    }
+
+    @Override
+    public List<Session> findActiveSessionByUser(User user) {
+        return this.sessionDao.findActiveSessionsByUser(user.getName());
     }
 
     @Override
@@ -52,18 +57,13 @@ class SessionServiceImpl extends ServiceImpl<Session> implements SessionService 
         if (sessions.size() == 1) {
             session = sessions.get(0);
         }
-        final SystemParameter systemParameter = this.systemParameterService.findSystemParamByCode(
-                ParameterCode.SESSION_TIMEOUT, user.getClient().getName());
-        final Integer valueToAdd = Integer.valueOf(systemParameter.getValue());
+        final Configuration configuration = this.configurationService.findConfigurationByRefCodeAndClient(
+                ReferenceCode.CONFIGURATION_SESSION_TIMEOUT, user.getClient().getName());
+        final Integer valueToAdd = Integer.valueOf(configuration.getValue());
         session.setUser(user);
         session.setStart(now.getTime());
         now.add(Calendar.MINUTE, valueToAdd);
         session.setExpiry(now.getTime());
         return this.saveOrUpdate(session);
-    }
-
-    @Override
-    public List<Session> findActiveSessionByUser(User user) {
-        return this.sessionDao.findActiveSessionsByUser(user.getName());
     }
 }

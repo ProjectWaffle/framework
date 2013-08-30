@@ -5,12 +5,6 @@
                 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
     default-autowire="byName">
     <context:component-scan base-package="framework.*" />
-    <bean name="propertiesReader" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="location" value="classpath:settings.properties" />
-    </bean>
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="properties" ref="propertiesReader" />
-    </bean>
     <!-- Database Connectivity -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="org.postgresql.Driver" />
@@ -26,7 +20,7 @@
         </property>
         <property name="packagesToScan">
             <list>
-                <value>${framework.datasource.packagesToScan}</value>
+                <value>framework.core.domain.*</value>
             </list>
         </property>
     </bean>
@@ -75,12 +69,6 @@
         </property>
     </bean>
     <tx:annotation-driven />
-    <!-- Encryption -->
-    <bean id="stringEncryptor" class="org.jasypt.encryption.pbe.PooledPBEStringEncryptor">
-        <property name="algorithm" value="${framework.encryption.algorithm}" />
-        <property name="password" value="${framework.encryption.password}" />
-        <property name="poolSize" value="${framework.encryption.poolsize}" />
-    </bean>
     <bean class="org.slf4j.bridge.SLF4JBridgeHandler" init-method="install" />
     <bean id="jobsExecutorDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="taskExecutor" />

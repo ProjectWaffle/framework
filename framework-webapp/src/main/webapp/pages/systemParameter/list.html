@@ -3,17 +3,13 @@
         <tr>
             <th>CODE</th>
             <th>Description</th>
-            <th>Maximum</th>
-            <th>Minimum</th>
             <th>Value</th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="systemParameter in serviceResponse.result">
             <td><a href="#/systemParameters/{{systemParameter.code}}">{{systemParameter.code}}</a></td>
-            <td>{{systemParameter.description}}</td>
-            <td>{{systemParameter.maximum}}</td>
-            <td>{{systemParameter.minimum}}</td>
+            <td>{{systemParameter.display}}</td>
             <td>{{systemParameter.value}}</td>
         </tr>
     </tbody>
