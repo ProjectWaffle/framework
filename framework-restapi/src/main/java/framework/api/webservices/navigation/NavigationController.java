@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import framework.api.webservices.Controller;
+import framework.core.domain.navigation.Navigation;
 import framework.core.domain.navigation.NavigationService;
 
 @Named
@@ -29,10 +30,12 @@ public class NavigationController extends Controller {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<String> loadMenu() {
-        if (getAuthenticatedUser() != null) {
-            this.navigationService.findNavigationByUsergroup(getAuthenticatedUser());
+    public List<NavigationResponse> loadMenu() {
+        List<NavigationResponse> navigationResponses = new ArrayList<NavigationResponse>();
+        List<Navigation> navigations = this.navigationService.findNavigationByUsergroup(getAuthenticatedUser());
+        for (Navigation navigation : navigations) {
+            navigationResponses.add(new NavigationResponse(navigation));
         }
-        return new ArrayList<>();
+        return navigationResponses;
     }
 }

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import framework.core.domain.ServiceImpl;
+import framework.core.domain.role.Role;
 import framework.core.domain.session.SessionService;
 import framework.core.domain.user.User;
 
@@ -15,18 +16,23 @@ public class NavigationServiceImpl extends ServiceImpl<Navigation> implements Na
 
     private static final long serialVersionUID = -6029148647815989471L;
 
-    private SessionService sessionService;
+    private NavigationDao navigationDao;
+
     @Inject
-    protected NavigationServiceImpl(NavigationDao navigationDao, SessionService sessionService) {
+    protected NavigationServiceImpl(NavigationDao navigationDao) {
         super(navigationDao);
-        this.sessionService = sessionService;
+        this.navigationDao = navigationDao;
     }
 
     @Override
     public List<Navigation> findNavigationByUsergroup(User user) {
         List<Navigation> navigations = new ArrayList<Navigation>();
-        if (sessionService.findActiveSessionByUser(user).size() > 0) {
-            
+        final List<String> roles = new ArrayList<String>();
+        if (user != null) {
+            for (final Role role : user.getUsergroup().getRoles()) {
+                roles.add(role.getName());
+            }
+            navigations = this.navigationDao.findNavigationByRoles(roles);
         }
         return navigations;
     }
