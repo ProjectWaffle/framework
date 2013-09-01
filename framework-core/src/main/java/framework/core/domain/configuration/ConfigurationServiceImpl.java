@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import framework.core.constants.ReferenceCode;
 import framework.core.domain.ServiceImpl;
 import framework.core.domain.user.User;
 import framework.core.utilities.EncryptionUtil;
@@ -51,7 +52,7 @@ class ConfigurationServiceImpl extends ServiceImpl<Configuration> implements Con
 
     @Override
     public Configuration findDatabaseVersion() {
-        final List<Configuration> configurations = this.configurationDao.findDatabaseVersion();
+        final List<Configuration> configurations = this.configurationDao.findConfigurationByCode(ReferenceCode.CONFIGURATION_DB_VERSION);
         Configuration configuration = null;
         if (configurations.size() == 1) {
             configuration = configurations.get(0);

@@ -5,7 +5,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-import java.util.Arrays;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
@@ -59,14 +58,15 @@ public class EncryptionUtil {
         }
     }
 
-    public byte[] getEncryptedPassword(String password) {
+    @SuppressWarnings("restriction")
+    public String getEncryptedPassword(String password) {
         try {
             final KeySpec spec = new PBEKeySpec(password.toCharArray(), this.asymmetricSalt, this.iterations,
                     this.asymmetricKeylength);
 
             final SecretKeyFactory f = SecretKeyFactory.getInstance(this.asymmetricAlgorithm);
 
-            return f.generateSecret(spec).getEncoded();
+            return new sun.misc.BASE64Encoder().encode(f.generateSecret(spec).getEncoded());
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new UtilityException("Encryption not possible.", e);
         }
@@ -112,10 +112,8 @@ public class EncryptionUtil {
         return salt.toString();
     }
 
-    public boolean isEqual(String attemptedPassword, byte[] encryptedPassword) {
-        final byte[] encryptedAttemptedPassword = this.getEncryptedPassword(attemptedPassword);
-
-        return Arrays.equals(encryptedPassword, encryptedAttemptedPassword);
+    public boolean isEqual(String attemptedPassword, String encryptedPassword) {
+        return encryptedPassword.equals(this.getEncryptedPassword(attemptedPassword));
     }
 
 }

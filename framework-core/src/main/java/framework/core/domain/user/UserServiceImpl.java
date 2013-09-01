@@ -52,7 +52,7 @@ class UserServiceImpl extends ServiceImpl<User> implements UserService {
         this.auditlogService.saveOrUpdate(auditlog);
         return this.sessionService.saveOrUpdate(user);
     }
-
+    
     @Override
     public User findUserByUsername(String username) {
         final List<User> users = this.userDao.findUsersByName(username);
@@ -73,7 +73,7 @@ class UserServiceImpl extends ServiceImpl<User> implements UserService {
 
     @Override
     public User saveOrUpdate(User user, String password) {
-        final byte[] newPassword = this.encryptionUtil.getEncryptedPassword(password);
+        String newPassword = encryptionUtil.getEncryptedPassword(password);
         user.setPassword(newPassword);
         return super.saveOrUpdate(user);
     }

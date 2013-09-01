@@ -12,6 +12,7 @@ import framework.core.exceptions.UtilityException;
 public class PropertiesUtil {
 
     private static final String ENVIRONMENT = "settings";
+    private static final Properties PROPERTIES = new Properties();
     protected static final String ENCRYPTION_ASYMMERTRIC_KEYLENGTH = "framework.encryption.assymetric.keylength";
     protected static final String ENCRYPTION_ASYMMETRIC_ALGORITHM = "framework.encryption.assymetric.algorithm";
     protected static final String ENCRYPTION_ASYMMETRIC_SALT = "framework.encryption.assymetric.salt";
@@ -19,15 +20,14 @@ public class PropertiesUtil {
     protected static final String ENCRYPTION_SYMMETRIC_ALGORITHM = "framework.encryption.symmetric.algorithm";
     protected static final String ENCRYPTION_SYMMETRIC_PADDING = "framework.encryption.symmetric.padding";
     protected static final String ENCRYPTION_SYMMETRIC_SALT = "framework.encryption.symmetric.salt";
-    private final Properties properties = new Properties();
 
     protected PropertiesUtil() {
         final String location = System.getenv(ENVIRONMENT);
         try {
             if (location != null) {
-                this.properties.load(new FileInputStream(location));
+                PROPERTIES.load(new FileInputStream(location));
             } else {
-                this.properties.load(PropertiesUtil.class.getResourceAsStream("/settings.properties"));
+                PROPERTIES.load(PropertiesUtil.class.getResourceAsStream("/settings.properties"));
             }
         } catch (final IOException e) {
             throw new UtilityException("Unable to load properties file", e);
@@ -39,7 +39,7 @@ public class PropertiesUtil {
      * @see framework.support.utilities.Pro#getProperty(java.lang.String)
      */
     public String get(String key) {
-        return this.properties.getProperty(key);
+        return PROPERTIES.getProperty(key);
     }
 
     public boolean getBoolean(String key) {

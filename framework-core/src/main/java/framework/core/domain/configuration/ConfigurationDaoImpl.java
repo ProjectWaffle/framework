@@ -22,8 +22,10 @@ class ConfigurationDaoImpl extends DaoImpl<Configuration> implements Configurati
     }
 
     @Override
-    public List<Configuration> findDatabaseVersion() {
-        return this.find("findDatabaseVersion");
+    public List<Configuration> findConfigurationByCode(String refCode) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("refCode", refCode);
+        return this.find("findConfigurationByCode", parameters);
     }
 
     @Override

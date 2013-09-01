@@ -14,7 +14,7 @@ public class EncryptionUtilTest {
         String decrypted = encryptionUtil.getDecryptedString(encrypted);
         Assert.assertEquals("TEST", decrypted);
         
-        byte [] encryptedPassword = encryptionUtil.getEncryptedPassword("TEST");
+        String encryptedPassword = encryptionUtil.getEncryptedPassword("TEST");
         
         Assert.assertTrue(encryptionUtil.isEqual("TEST", encryptedPassword));
         Assert.assertFalse(encryptionUtil.isEqual("NOTEST", encryptedPassword));

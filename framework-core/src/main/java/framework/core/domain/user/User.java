@@ -38,7 +38,7 @@ public class User extends BaseEntity implements Principal {
     private String name;
 
     @Column
-    private byte[] password;
+    private String password;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
@@ -68,7 +68,7 @@ public class User extends BaseEntity implements Principal {
      * 
      * @return the secret 'key'.
      */
-    public byte[] getPassword() {
+    public String getPassword() {
         return this.password;
     }
 
@@ -116,7 +116,7 @@ public class User extends BaseEntity implements Principal {
         this.name = name;
     }
 
-    public void setPassword(byte[] password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 

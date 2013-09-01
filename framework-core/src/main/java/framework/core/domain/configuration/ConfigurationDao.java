@@ -8,7 +8,7 @@ interface ConfigurationDao extends Dao<Configuration> {
 
     List<Configuration> findConfigurationByRefCodeAndClient(String refCode, String clientName);
 
-    List<Configuration> findDatabaseVersion();
+    List<Configuration> findConfigurationByCode(String code);
 
     List<Configuration> findAllActiveConfiguration(String name);
 }
