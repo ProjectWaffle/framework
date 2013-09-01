@@ -1,4 +1,4 @@
-package framework.api.webservices.systemparameters;
+package framework.api.webservices.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,25 +17,25 @@ import framework.core.domain.configuration.ConfigurationService;
 import framework.core.domain.role.Role;
 
 @Named
-@Path("/systemParameter")
-public class SystemParameterController extends BaseController {
+@Path("/configuration")
+public class ConfigurationController extends BaseController {
 
     private static final long serialVersionUID = 200605594031531073L;
     private final ConfigurationService configurationService;
 
     @Inject
-    protected SystemParameterController(ConfigurationService configurationService) {
+    protected ConfigurationController(ConfigurationService configurationService) {
         this.configurationService= configurationService;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(value = { Role.ADMINISTRATORS })
-    public List<SystemParameterResponse> loadSystemParameters() {
-        final List<SystemParameterResponse> list = new ArrayList<SystemParameterResponse>();
+    public List<ConfigurationResponse> loadConfiguration() {
+        final List<ConfigurationResponse> list = new ArrayList<ConfigurationResponse>();
         final List<Configuration> configurations = this.configurationService.findAllActiveConfiguration(this.getAuthenticatedUser());
         for (final Configuration configuration : configurations) {
-            SystemParameterResponse systemParameterResponse = new SystemParameterResponse(configuration);
+            ConfigurationResponse systemParameterResponse = new ConfigurationResponse(configuration);
             systemParameterResponse.setDisplay(this.getMessage(systemParameterResponse.getDisplay()));
             list.add(systemParameterResponse);
         }

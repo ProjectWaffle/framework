@@ -11,8 +11,10 @@ import framework.core.domain.session.Session;
 public interface UserService extends Service<User> {
 
     Session authenticate(String username, String password);
-    
+
     User findUserByUsername(String username);
-    
+
+    void logout(User user);
+
     User saveOrUpdate(User user, String password);
 }

@@ -7,11 +7,13 @@ import framework.core.domain.user.User;
 
 public interface SessionService extends Service<Session> {
 
-    Session findSessionById(String username, String id);
+    void delete(User user);
 
-    Session saveOrUpdate(User user);
-    
     void deleteExpiredSessions();
 
     List<Session> findActiveSessionByUser(User user);
+
+    Session findSessionById(String username, String id);
+
+    Session saveOrUpdate(User user);
 }

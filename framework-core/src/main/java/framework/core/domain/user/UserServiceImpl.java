@@ -42,6 +42,10 @@ class UserServiceImpl extends ServiceImpl<User> implements UserService {
         final User user = this.validateLogin(username, password);
         return this.sessionService.saveOrUpdate(user);
     }
+    
+    public void logout(User user) {
+        sessionService.delete(user);
+    }
 
     @Override
     public User findUserByUsername(String username) {

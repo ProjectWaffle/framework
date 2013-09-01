@@ -6,7 +6,7 @@ var user = {
 apps.factory('LoginService', function($http) {
     return {
         authenticate : function(onSuccess, json) {
-            $http.post('services/login/', json).success(function(data) {
+            $http.post('services/user/login/', json).success(function(data) {
                 onSuccess(data);
             });
         }
@@ -20,7 +20,7 @@ function LoginCtrl($scope, $cookies, $location, LoginService) {
         LoginService.authenticate(function(data) {
             $cookies.username = data.result.username;
             $cookies.sessionid= data.result.sessionid;
-            $location.path('/systemParameters');
+            $location.path('/configuration');
         }, angular.toJson($scope.user));
     };
 }

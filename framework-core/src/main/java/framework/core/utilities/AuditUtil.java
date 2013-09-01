@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -25,6 +27,7 @@ import framework.core.domain.auditlog.AuditlogService;
 public class AuditUtil implements Serializable {
 
     private static AuditlogService auditlogService;
+    private static Logger logger = Logger.getLogger(AuditUtil.class.getName());
 
     private static final long serialVersionUID = 1819000638364499266L;
 
@@ -100,7 +103,9 @@ public class AuditUtil implements Serializable {
             if (manyToOne != null) {
                 final BaseEntity abstractEntity = (BaseEntity) field.get(entity);
                 if (abstractEntity != null) {
-                    fieldDetails.append(abstractEntity.getClass().getSimpleName().toUpperCase().replace("_$$_JAVASSIST_1", "") + "_ID");
+                    fieldDetails.append(abstractEntity.getClass().getSimpleName().toUpperCase()
+                            .replace("_$$_JAVASSIST_1", "")
+                            + "_ID");
                     fieldDetails.append("=\"");
                     fieldDetails.append(abstractEntity.getId());
                     fieldDetails.append("\", ");
@@ -112,39 +117,50 @@ public class AuditUtil implements Serializable {
 
     @PrePersist
     protected void onPersist(BaseEntity entity) {
-        if (!(entity instanceof Auditlog)) {
-            final Auditlog auditlog = new Auditlog();
-            final String detail = this.generateAuditlogDetails(entity);
-            auditlog.setDetail(detail);
-            auditlog.setType(EventType.INSERT);
-            auditlogService.saveOrUpdate(auditlog);
+        if (auditlogService != null) {
+            if (!(entity instanceof Auditlog)) {
+                final Auditlog auditlog = new Auditlog();
+                final String detail = this.generateAuditlogDetails(entity);
+                auditlog.setDetail(detail);
+                auditlog.setType(EventType.INSERT);
+                auditlogService.saveOrUpdate(auditlog);
+            }
+        } else {
+            logger.log(Level.WARNING, "Auditlogservice is not yet initialized");
         }
     }
 
     @PreRemove
     protected void onRemove(BaseEntity entity) {
-        if (!(entity instanceof Auditlog)) {
-            final Auditlog auditlog = new Auditlog();
-            final String detail = this.generateAuditlogDetails(entity);
-            auditlog.setDetail(detail);
-            auditlog.setType(EventType.DELETE);
-            auditlogService.saveOrUpdate(auditlog);
+        if (auditlogService != null) {
+            if (!(entity instanceof Auditlog)) {
+                final Auditlog auditlog = new Auditlog();
+                final String detail = this.generateAuditlogDetails(entity);
+                auditlog.setDetail(detail);
+                auditlog.setType(EventType.DELETE);
+                auditlogService.saveOrUpdate(auditlog);
+            }
+        } else {
+            logger.log(Level.WARNING, "Auditlogservice is not yet initialized");
         }
-
     }
 
     @PreUpdate
     protected void onUpdate(BaseEntity entity) {
-        if (!(entity instanceof Auditlog)) {
-            final Auditlog auditlog = new Auditlog();
-            final String detail = this.generateAuditlogDetails(entity);
-            auditlog.setDetail(detail);
-            if (entity.isDeleted()) {
-                auditlog.setType(EventType.DELETE);
-            } else {
-                auditlog.setType(EventType.UPDATE);
+        if (auditlogService != null) {
+            if (!(entity instanceof Auditlog)) {
+                final Auditlog auditlog = new Auditlog();
+                final String detail = this.generateAuditlogDetails(entity);
+                auditlog.setDetail(detail);
+                if (entity.isDeleted()) {
+                    auditlog.setType(EventType.DELETE);
+                } else {
+                    auditlog.setType(EventType.UPDATE);
+                }
+                auditlogService.saveOrUpdate(auditlog);
             }
-            auditlogService.saveOrUpdate(auditlog);
+        } else {
+            logger.log(Level.WARNING, "Auditlogservice is not yet initialized");
         }
     }
 
@@ -152,5 +168,5 @@ public class AuditUtil implements Serializable {
     protected void setAuditlogService(AuditlogService auditlogService) {
         AuditUtil.auditlogService = auditlogService;
     }
-    
+
 }

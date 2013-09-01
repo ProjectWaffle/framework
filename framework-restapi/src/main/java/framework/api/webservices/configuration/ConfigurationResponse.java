@@ -1,10 +1,10 @@
-package framework.api.webservices.systemparameters;
+package framework.api.webservices.configuration;
 
 import java.io.Serializable;
 
 import framework.core.domain.configuration.Configuration;
 
-public class SystemParameterResponse implements Serializable {
+public class ConfigurationResponse implements Serializable {
 
     private static final long serialVersionUID = 908256462946326444L;
 
@@ -14,7 +14,7 @@ public class SystemParameterResponse implements Serializable {
 
     private String value;
 
-    public SystemParameterResponse(Configuration configuration) {
+    public ConfigurationResponse(Configuration configuration) {
         this.code = configuration.getReference().getCode();
         this.display = configuration.getReference().getLabel();
         this.value = configuration.getValue();

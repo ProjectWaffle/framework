@@ -1,0 +1,16 @@
+<table>
+    <thead>
+        <tr>
+            <th>CODE</th>
+            <th>Description</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="configuration in serviceResponse.result">
+            <td><a href="#/configuration/{{configuration.code}}">{{configuration.code}}</a></td>
+            <td>{{configuration.display}}</td>
+            <td>{{configuration.value}}</td>
+        </tr>
+    </tbody>
+</table>

@@ -51,7 +51,7 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
             }
         }
         t.setDeleted(true);
-        this.saveOrUpdate(t);
+        this.entityManager.merge(t);
     }
 
     /*

@@ -3,12 +3,12 @@ var apps = angular.module('waffle', [ 'ngCookies' ]);
 apps.config(function($routeProvider) {
     $routeProvider.when('/', {
         templateUrl : 'pages/dashboard.html'
-    }).when('/systemParameters', {
-        templateUrl : 'pages/systemParameter/list.html',
-        controller : 'SystemParameterCtrl'
-    }).when('/systemParameters/:code', {
-        templateUrl : 'pages/systemParameter/detail.html',
-        controller : 'SystemParameterCtrl'
+    }).when('/configuration', {
+        templateUrl : 'pages/configuration/list.html',
+        controller : 'ConfigurationCtrl'
+    }).when('/configuration/:code', {
+        templateUrl : 'pages/configuration/detail.html',
+        controller : 'ConfigurationCtrl'
     }).when('/login', {
         templateUrl : 'pages/login.html',
     }).otherwise({
