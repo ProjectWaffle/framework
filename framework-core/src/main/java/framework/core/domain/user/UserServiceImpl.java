@@ -7,7 +7,10 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import framework.core.constants.EventType;
 import framework.core.domain.ServiceImpl;
+import framework.core.domain.auditlog.Auditlog;
+import framework.core.domain.auditlog.AuditlogService;
 import framework.core.domain.session.Session;
 import framework.core.domain.session.SessionService;
 import framework.core.exceptions.CredentialExpiredException;
@@ -25,26 +28,29 @@ class UserServiceImpl extends ServiceImpl<User> implements UserService {
 
     private static final long serialVersionUID = 5506093159372637005L;
 
+    private final AuditlogService auditlogService;
     private final EncryptionUtil encryptionUtil;
     private final SessionService sessionService;
     private final UserDao userDao;
 
     @Inject
-    protected UserServiceImpl(UserDao userDao, SessionService sessionService, EncryptionUtil encryptionUtil) {
+    protected UserServiceImpl(UserDao userDao, SessionService sessionService, AuditlogService auditlogService,
+            EncryptionUtil encryptionUtil) {
         super(userDao);
         this.userDao = userDao;
         this.sessionService = sessionService;
+        this.auditlogService = auditlogService;
         this.encryptionUtil = encryptionUtil;
     }
 
     @Override
     public Session authenticate(String username, String password) {
         final User user = this.validateLogin(username, password);
+        final Auditlog auditlog = new Auditlog();
+        auditlog.setType(EventType.LOGIN);
+        auditlog.setUserid(user.getId());
+        this.auditlogService.saveOrUpdate(auditlog);
         return this.sessionService.saveOrUpdate(user);
-    }
-    
-    public void logout(User user) {
-        sessionService.delete(user);
     }
 
     @Override
@@ -57,8 +63,17 @@ class UserServiceImpl extends ServiceImpl<User> implements UserService {
     }
 
     @Override
+    public void logout(User user) {
+        final Auditlog auditlog = new Auditlog();
+        auditlog.setType(EventType.LOGOUT);
+        auditlog.setUserid(user.getId());
+        this.auditlogService.saveOrUpdate(auditlog);
+        this.sessionService.delete(user);
+    }
+
+    @Override
     public User saveOrUpdate(User user, String password) {
-        byte[] newPassword = encryptionUtil.getEncryptedPassword(password);
+        final byte[] newPassword = this.encryptionUtil.getEncryptedPassword(password);
         user.setPassword(newPassword);
         return super.saveOrUpdate(user);
     }

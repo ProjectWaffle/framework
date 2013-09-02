@@ -1,5 +1,8 @@
 package framework.core.domain.auditlog;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -7,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import framework.core.constants.EventType;
 import framework.core.domain.BaseEntity;
@@ -27,11 +32,19 @@ public class Auditlog extends BaseEntity {
     private String detail;
 
     @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private final Date logdate;
+
+    @Column
     @Enumerated(EnumType.STRING)
     private EventType type;
 
     @Column
     private String userid;
+
+    public Auditlog() {
+        this.logdate = Calendar.getInstance().getTime();
+    }
 
     /**
      * Returns the event log entry.
@@ -71,6 +84,10 @@ public class Auditlog extends BaseEntity {
 
     public void setUserid(String userid) {
         this.userid = userid;
+    }
+
+    public Date getLogdate() {
+        return this.logdate;
     }
 
 }
