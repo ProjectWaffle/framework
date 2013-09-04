@@ -5,10 +5,10 @@ apps.config(function($routeProvider) {
         templateUrl : 'pages/dashboard.html'
     }).when('/configuration', {
         templateUrl : 'pages/configuration/list.html',
-        controller : 'ConfigurationCtrl'
+        controller : 'ConfigurationListCtrl'
     }).when('/configuration/:code', {
         templateUrl : 'pages/configuration/detail.html',
-        controller : 'ConfigurationCtrl'
+        controller : 'ConfigurationEditCtrl'
     }).when('/login', {
         templateUrl : 'pages/login.html',
     }).otherwise({

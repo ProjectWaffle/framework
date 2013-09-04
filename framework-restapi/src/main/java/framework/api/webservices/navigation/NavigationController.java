@@ -32,10 +32,10 @@ public class NavigationController extends BaseController {
     @Produces(MediaType.APPLICATION_JSON)
     public List<NavigationResponse> loadMenu() {
         List<NavigationResponse> navigationResponses = new ArrayList<NavigationResponse>();
-        List<Navigation> navigations = this.navigationService.findNavigationByUsergroup(getAuthenticatedUser());
+        /*List<Navigation> navigations = this.navigationService.findNavigationByUsergroup(getAuthenticatedUser());
         for (Navigation navigation : navigations) {
             navigationResponses.add(new NavigationResponse(navigation));
-        }
+        }*/
         return navigationResponses;
     }
 }

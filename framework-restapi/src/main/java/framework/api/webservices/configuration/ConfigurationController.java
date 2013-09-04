@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -25,7 +26,7 @@ public class ConfigurationController extends BaseController {
 
     @Inject
     protected ConfigurationController(ConfigurationService configurationService) {
-        this.configurationService= configurationService;
+        this.configurationService = configurationService;
     }
 
     @GET
@@ -35,22 +36,23 @@ public class ConfigurationController extends BaseController {
         final List<ConfigurationResponse> list = new ArrayList<ConfigurationResponse>();
         final List<Configuration> configurations = this.configurationService.findAllActiveConfiguration(this.getAuthenticatedUser());
         for (final Configuration configuration : configurations) {
-            ConfigurationResponse systemParameterResponse = new ConfigurationResponse(configuration);
+            final ConfigurationResponse systemParameterResponse = new ConfigurationResponse(configuration);
             systemParameterResponse.setDisplay(this.getMessage(systemParameterResponse.getDisplay()));
             list.add(systemParameterResponse);
         }
         return list;
     }
 
-    /*@GET
+    @GET
     @Path(value = "/{code}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(value = { Role.ADMINISTRATORS })
-    public SystemParameterResponse loadSystemParameters(@PathParam(value = "code") String code) {
+    public ConfigurationResponse loadSystemParameters(@PathParam(value = "code") String code) {
         final String clientName = this.getAuthenticatedUser().getClient().getName();
-        final ParameterCode parameterCode = ParameterCode.valueOf(code);
-        final SystemParameter param = this.systemParameterService.findSystemParamByCode(parameterCode, clientName);
-        return new SystemParameterResponse(param);
-    }*/
+        final Configuration configuration = this.configurationService.findConfigurationByRefCodeAndClient(code, clientName);
+        final ConfigurationResponse configurationResponse = new ConfigurationResponse(configuration);
+        configurationResponse.setDisplay(this.getMessage(configurationResponse.getDisplay()));
+        return configurationResponse;
+    }
 
 }

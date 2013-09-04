@@ -7,7 +7,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="configuration in serviceResponse.result">
+        <tr ng-repeat="configuration in configurations">
             <td><a href="#/configuration/{{configuration.code}}">{{configuration.code}}</a></td>
             <td>{{configuration.display}}</td>
             <td>{{configuration.value}}</td>

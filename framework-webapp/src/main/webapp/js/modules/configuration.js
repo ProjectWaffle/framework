@@ -24,21 +24,23 @@ apps.factory('ConfigurationService', function($http) {
     };
 });
 
-function ConfigurationCtrl($scope, $cookies, $location, $routeParams, ConfigurationService) {
-    $scope.configuration = configuration;
-
-    $scope.loadAll = ConfigurationService.load(function(data) {
-        $cookies.token = data.responseHeader.token;
-        $scope.serviceResponse = data;
+function ConfigurationListCtrl($scope, ConfigurationService) {
+    ConfigurationService.load(function(data) {
+        $scope.configurations = data.result;
     });
-    
-    /*
-
-    $scope.loadByCode = SystemParameterService.loadByCode(function(data) {
-        $scope.systemParameter = data.result;
-    }, $routeParams.code, config);
-
-    $scope.systemParameter.submit = SystemParameterService.submit(function(data) {
-        $scope.systemParameter = data.result;
-    }, $routeParams.code, config);*/
 }
+
+function ConfigurationEditCtrl($scope, $routeParams, ConfigurationService) {
+    ConfigurationService.loadByCode(function(data) {
+        $scope.configuration = data.result;
+    }, $routeParams.code);
+}
+/*
+
+$scope.loadByCode = SystemParameterService.loadByCode(function(data) {
+    $scope.systemParameter = data.result;
+}, $routeParams.code, config);
+
+$scope.systemParameter.submit = SystemParameterService.submit(function(data) {
+    $scope.systemParameter = data.result;
+}, $routeParams.code, config);*/
