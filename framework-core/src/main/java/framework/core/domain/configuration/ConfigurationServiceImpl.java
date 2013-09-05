@@ -7,7 +7,7 @@ import javax.inject.Named;
 
 import framework.core.constants.ReferenceCode;
 import framework.core.domain.ServiceImpl;
-import framework.core.domain.user.User;
+import framework.core.domain.user.Credential;
 import framework.core.utilities.EncryptionUtil;
 
 @Named
@@ -25,7 +25,7 @@ class ConfigurationServiceImpl extends ServiceImpl<Configuration> implements Con
     }
 
     @Override
-    public List<Configuration> findAllActiveConfiguration(User authenticatedUser) {
+    public List<Configuration> findAllActiveConfiguration(Credential authenticatedUser) {
         List<Configuration> configurations = this.configurationDao.findAllActiveConfiguration(authenticatedUser.getClient().getName());
         for (Configuration configuration : configurations) {
             configuration.setValue(encryptionUtil.getDecryptedString(configuration.getValue()));

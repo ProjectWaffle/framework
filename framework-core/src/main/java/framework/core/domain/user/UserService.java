@@ -4,17 +4,17 @@ import framework.core.domain.Service;
 import framework.core.domain.session.Session;
 
 /**
- * This interface represents business operations for {@link User} entity.
+ * This interface represents business operations for {@link Credential} entity.
  * 
  * @author Frederick Yap
  */
-public interface UserService extends Service<User> {
+public interface UserService extends Service<Credential> {
 
     Session authenticate(String username, String password);
 
-    User findUserByUsername(String username);
+    Credential findCredentialByUsername(String username);
 
-    void logout(User user);
+    void logout(Credential user);
 
-    User saveOrUpdate(User user, String password);
+    Credential saveOrUpdate(Credential user, String password);
 }

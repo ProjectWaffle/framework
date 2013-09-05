@@ -18,9 +18,9 @@ import framework.core.domain.reference.Reference;
 import framework.core.domain.reference.ReferenceService;
 import framework.core.domain.role.Role;
 import framework.core.domain.role.RoleService;
+import framework.core.domain.user.Credential;
 import framework.core.domain.user.User;
 import framework.core.domain.user.UserService;
-import framework.core.domain.userdetails.Userdetails;
 import framework.core.domain.usergroup.Usergroup;
 import framework.core.domain.usergroup.UsergroupService;
 
@@ -148,26 +148,25 @@ public class DefaultDataGenerator extends DataGenerator {
         return this.roleService.saveOrUpdate(roles);
     }
 
-    private User generateUser(Usergroup usergroup, Client client) {
+    private Credential generateUser(Usergroup usergroup, Client client) {
         final Calendar now = Calendar.getInstance();
         now.add(Calendar.YEAR, 15);
 
-        final Userdetails userdetails = new Userdetails();
-        userdetails.setFullname("Project Waffle");
-        userdetails.setCity("Manila");
-        userdetails.setCountry("Philippines");
-        userdetails.setEmailaddress("pwaffle@gmail.com");
-        userdetails.setLocale("EN_US");
-        
-
         final User user = new User();
-        user.setUsergroup(usergroup);
-        user.setClient(client);
-        user.setUserdetails(userdetails);
-        user.setName("administrator");
-        user.setPasswordexpiration(now.getTime());
-        user.setProfileexpiration(now.getTime());
-        return this.userService.saveOrUpdate(user, "password1234");
+        user.setFullname("Project Waffle");
+        user.setCity("Manila");
+        user.setCountry("Philippines");
+        user.setEmailaddress("pwaffle@gmail.com");
+        user.setLocale("EN_US");
+
+        final Credential credential = new Credential();
+        credential.setUsergroup(usergroup);
+        credential.setClient(client);
+        credential.setUser(user);
+        credential.setName("administrator");
+        credential.setPasswordexpiration(now.getTime());
+        credential.setProfileexpiration(now.getTime());
+        return this.userService.saveOrUpdate(credential, "password1234");
     }
 
     private Usergroup generateUsergroup(List<Role> roles, List<Client> clients) {

@@ -5,15 +5,15 @@ import java.security.Principal;
 import framework.core.domain.role.Role;
 import framework.core.domain.session.Session;
 import framework.core.domain.session.SessionService;
-import framework.core.domain.user.User;
+import framework.core.domain.user.Credential;
 
 public class SecurityContext implements javax.ws.rs.core.SecurityContext {
 
     private final SessionService service;
     private final Session session;
-    private final User user;
+    private final Credential user;
 
-    public SecurityContext(SessionService service, User user, Session session) {
+    public SecurityContext(SessionService service, Credential user, Session session) {
         this.user = user;
         this.session = session;
         this.service = service;

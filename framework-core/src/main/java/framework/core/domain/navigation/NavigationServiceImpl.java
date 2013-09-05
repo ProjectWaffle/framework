@@ -8,7 +8,7 @@ import javax.inject.Named;
 
 import framework.core.domain.ServiceImpl;
 import framework.core.domain.role.Role;
-import framework.core.domain.user.User;
+import framework.core.domain.user.Credential;
 
 @Named
 class NavigationServiceImpl extends ServiceImpl<Navigation> implements NavigationService {
@@ -24,7 +24,7 @@ class NavigationServiceImpl extends ServiceImpl<Navigation> implements Navigatio
     }
 
     @Override
-    public List<Navigation> findNavigationByUsergroup(User user) {
+    public List<Navigation> findNavigationByUsergroup(Credential user) {
         List<Navigation> navigations = new ArrayList<Navigation>();
         final List<String> roles = new ArrayList<String>();
         if (user != null) {

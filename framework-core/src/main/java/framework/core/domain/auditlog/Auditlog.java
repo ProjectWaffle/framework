@@ -45,6 +45,12 @@ public class Auditlog extends BaseEntity {
     public Auditlog() {
         this.logdate = Calendar.getInstance().getTime();
     }
+    
+    public Auditlog(Throwable e) {
+        this();
+        this.detail = String.format("%s - %s", e.getClass().getName(), e.getMessage());
+        this.type = EventType.EXCEPTION;
+    }
 
     /**
      * Returns the event log entry.

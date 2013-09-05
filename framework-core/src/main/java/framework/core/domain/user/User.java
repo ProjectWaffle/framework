@@ -1,139 +1,161 @@
 package framework.core.domain.user;
 
-import java.security.Principal;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import framework.core.domain.BaseEntity;
-import framework.core.domain.client.Client;
-import framework.core.domain.userdetails.Userdetails;
-import framework.core.domain.usergroup.Usergroup;
 
 /**
- * Represents the credentials needed for system authentication.
+ * Represents the user's detailed information.
  * 
- * @author frederick
+ * @author Frederick Yap
  */
 @Entity
-@Table(name = "PRINCIPAL")
-@NamedQueries(value = { @NamedQuery(name = "findUsersByName", query = "from User where name = :username and deleted = false") })
-public class User extends BaseEntity implements Principal {
+@Table(name = "USERINFO")
+public class User extends BaseEntity {
 
-    private static final long serialVersionUID = -7767487387897790096L;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Client client;
-
-    @Column(unique = true, nullable = false)
-    private String name;
+    private static final long serialVersionUID = 5342989782721883971L;
 
     @Column
-    private String password;
+    private String address;
 
     @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date passwordexpiration;
+    private Date birthdate;
 
     @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date profileexpiration;
+    private String city;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Userdetails userdetails;
+    @Column
+    private String country;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Usergroup usergroup;
+    @Column
+    private String emailaddress;
 
-    public Client getClient() {
-        return this.client;
-    }
+    @Column
+    private String fullname;
 
-    @Override
-    public String getName() {
-        return this.name;
+    @Column
+    private String locale;
+
+    @Column
+    private String phone;
+
+    @Column
+    private Long zipcode;
+
+    /**
+     * Returns the user's address.
+     * 
+     * @return the user's address.
+     */
+    public String getAddress() {
+        return this.address;
     }
 
     /**
-     * Returns the secret 'key' used by the user for authentication.
+     * Returns the user's birthdate.
      * 
-     * @return the secret 'key'.
+     * @return the user's birthdate.
      */
-    public String getPassword() {
-        return this.password;
+    public Date getBirthdate() {
+        return this.birthdate;
     }
 
     /**
-     * Returns the date the password is going to expire.
+     * Returns the user's city.
      * 
-     * @return the password expiration date.
+     * @return the user's city.
      */
-    public Date getPasswordexpiration() {
-        return this.passwordexpiration;
+    public String getCity() {
+        return this.city;
     }
 
     /**
-     * Returns the date the user profile is going to expire.
+     * Returns the user's country.
      * 
-     * @return the profile expiration date.
+     * @return the user's country.
      */
-    public Date getProfileexpiration() {
-        return this.profileexpiration;
+    public String getCountry() {
+        return this.country;
     }
 
     /**
-     * Returns the user's detailed information.
+     * Returns the user's e-mail address.
      * 
-     * @return the user's detailed information.
+     * @return the user's e-mail address.
      */
-    public Userdetails getUserdetails() {
-        return this.userdetails;
+    public String getEmailaddress() {
+        return this.emailaddress;
     }
 
     /**
-     * Returns the {@link Usergroup} of the user.
+     * Returns the user's fullname.
      * 
-     * @return the {@link Usergroup}.
+     * @return the user's fullname.
      */
-    public Usergroup getUsergroup() {
-        return this.usergroup;
+    public String getFullname() {
+        return this.fullname;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public String getLocale() {
+        return this.locale;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * Returns the user's phone number.
+     * 
+     * @return the user's phone number.
+     */
+    public String getPhone() {
+        return this.phone;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    /**
+     * Returns the user's zip code.
+     * 
+     * @return the user's zip code.
+     */
+    public Long getZipcode() {
+        return this.zipcode;
     }
 
-    public void setPasswordexpiration(Date passwordexpiration) {
-        this.passwordexpiration = passwordexpiration;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setProfileexpiration(Date profileexpiration) {
-        this.profileexpiration = profileexpiration;
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
     }
 
-    public void setUserdetails(Userdetails userdetails) {
-        this.userdetails = userdetails;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public void setUsergroup(Usergroup usergroup) {
-        this.usergroup = usergroup;
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setEmailaddress(String emailaddress) {
+        this.emailaddress = emailaddress;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setZipcode(Long zipcode) {
+        this.zipcode = zipcode;
     }
 
 }

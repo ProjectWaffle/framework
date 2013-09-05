@@ -5,11 +5,11 @@ import java.util.List;
 import framework.core.domain.Dao;
 
 /**
- * Data access interface for persisting {@link User} entity.
+ * Data access interface for persisting {@link Credential} entity.
  * 
  * @author Frederick Yap
  */
-interface UserDao extends Dao<User> {
+interface UserDao extends Dao<Credential> {
 
-    List<User> findUsersByName(String username);
+    List<Credential> findCredentialsByName(String username);
 }

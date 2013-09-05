@@ -2,6 +2,8 @@ package framework.api.webservices;
 
 import java.io.Serializable;
 
+import framework.core.constants.ApplicationStatus;
+
 public class ResponseHeader implements Serializable {
 
     private static final long serialVersionUID = -5963770126090460701L;
@@ -10,6 +12,15 @@ public class ResponseHeader implements Serializable {
 
     private String statusMessage;
 
+    public ResponseHeader() {
+        
+    }
+    
+    public ResponseHeader(ApplicationStatus status) {
+        this.statusCode = status.getCode();
+        this.statusMessage = status.getMessage();
+    }
+    
     /**
      * @return the statusCode
      */

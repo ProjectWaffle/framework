@@ -13,7 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import framework.core.domain.BaseEntity;
-import framework.core.domain.user.User;
+import framework.core.domain.user.Credential;
 
 @Entity
 @Table(name = "SESSION")
@@ -34,7 +34,7 @@ public class Session extends BaseEntity {
     private Date start;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private User user;
+    private Credential user;
 
     public Date getExpiry() {
         return this.expiry;
@@ -44,7 +44,7 @@ public class Session extends BaseEntity {
         return this.start;
     }
 
-    public User getUser() {
+    public Credential getUser() {
         return this.user;
     }
 
@@ -56,7 +56,7 @@ public class Session extends BaseEntity {
         this.start = start;
     }
 
-    public void setUser(User user) {
+    public void setUser(Credential user) {
         this.user = user;
     }
 

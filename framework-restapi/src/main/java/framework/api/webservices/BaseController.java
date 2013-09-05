@@ -11,7 +11,7 @@ import javax.inject.Named;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 
-import framework.core.domain.user.User;
+import framework.core.domain.user.Credential;
 
 @Named
 public abstract class BaseController implements Serializable {
@@ -27,15 +27,15 @@ public abstract class BaseController implements Serializable {
 
     }
 
-    protected User getAuthenticatedUser() {
-        final User user = (User) this.securityContext.getUserPrincipal();
+    protected Credential getCredential() {
+        final Credential user = (Credential) this.securityContext.getUserPrincipal();
         return user;
     }
 
     protected String getMessage(String key) {
         Locale locale = Locale.getDefault();
-        if (this.getAuthenticatedUser() != null) {
-            locale = new Locale(this.getAuthenticatedUser().getUserdetails().getLocale());
+        if (this.getCredential() != null) {
+            locale = new Locale(this.getCredential().getUser().getLocale());
         }
         return this.getMessage(key, locale);
     }

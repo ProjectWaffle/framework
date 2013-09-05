@@ -34,7 +34,7 @@ public class ConfigurationController extends BaseController {
     @RolesAllowed(value = { Role.ADMINISTRATORS })
     public List<ConfigurationResponse> loadConfiguration() {
         final List<ConfigurationResponse> list = new ArrayList<ConfigurationResponse>();
-        final List<Configuration> configurations = this.configurationService.findAllActiveConfiguration(this.getAuthenticatedUser());
+        final List<Configuration> configurations = this.configurationService.findAllActiveConfiguration(this.getCredential());
         for (final Configuration configuration : configurations) {
             final ConfigurationResponse systemParameterResponse = new ConfigurationResponse(configuration);
             systemParameterResponse.setDisplay(this.getMessage(systemParameterResponse.getDisplay()));
@@ -48,7 +48,7 @@ public class ConfigurationController extends BaseController {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(value = { Role.ADMINISTRATORS })
     public ConfigurationResponse loadSystemParameters(@PathParam(value = "code") String code) {
-        final String clientName = this.getAuthenticatedUser().getClient().getName();
+        final String clientName = this.getCredential().getClient().getName();
         final Configuration configuration = this.configurationService.findConfigurationByRefCodeAndClient(code, clientName);
         final ConfigurationResponse configurationResponse = new ConfigurationResponse(configuration);
         configurationResponse.setDisplay(this.getMessage(configurationResponse.getDisplay()));

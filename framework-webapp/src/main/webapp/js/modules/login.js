@@ -6,7 +6,7 @@ var user = {
 apps.factory('LoginService', function($http) {
     return {
         authenticate : function(onSuccess, json) {
-            $http.post('services/user/login/', json).success(function(data) {
+            $http.post('services/login/', json).success(function(data) {
                 onSuccess(data);
             });
         }

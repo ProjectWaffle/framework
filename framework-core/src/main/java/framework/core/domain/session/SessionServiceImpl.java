@@ -10,7 +10,7 @@ import framework.core.constants.ReferenceCode;
 import framework.core.domain.ServiceImpl;
 import framework.core.domain.configuration.Configuration;
 import framework.core.domain.configuration.ConfigurationService;
-import framework.core.domain.user.User;
+import framework.core.domain.user.Credential;
 
 @Named
 class SessionServiceImpl extends ServiceImpl<Session> implements SessionService {
@@ -27,7 +27,7 @@ class SessionServiceImpl extends ServiceImpl<Session> implements SessionService 
     }
 
     @Override
-    public void delete(User user) {
+    public void delete(Credential user) {
         this.delete(this.findActiveSessionByUser(user));
     }
 
@@ -37,7 +37,7 @@ class SessionServiceImpl extends ServiceImpl<Session> implements SessionService 
     }
 
     @Override
-    public List<Session> findActiveSessionByUser(User user) {
+    public List<Session> findActiveSessionByUser(Credential user) {
         return this.sessionDao.findActiveSessionsByUser(user.getName());
     }
 
@@ -55,7 +55,7 @@ class SessionServiceImpl extends ServiceImpl<Session> implements SessionService 
     }
 
     @Override
-    public Session saveOrUpdate(User user) {
+    public Session saveOrUpdate(Credential user) {
         Session session = new Session();
         final Calendar now = Calendar.getInstance();
         final List<Session> sessions = this.findActiveSessionByUser(user);

@@ -11,21 +11,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import framework.api.webservices.BaseController;
-import framework.api.webservices.ServiceResponse;
-import framework.core.constants.ApplicationStatus;
+import framework.api.webservices.SuccessResponse;
 import framework.core.domain.role.Role;
 import framework.core.domain.session.Session;
 import framework.core.domain.user.UserService;
 
 @Named
-@Path("/user")
-public class UserController extends BaseController {
+@Path("/login")
+public class LoginController extends BaseController {
 
     private static final long serialVersionUID = -6402313528023081815L;
     private UserService userService;
 
     @POST
-    @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(value = { MediaType.APPLICATION_JSON })
     public LoginResponse login(LoginRequest loginRequest) {
@@ -34,12 +32,12 @@ public class UserController extends BaseController {
     }
     
     @GET
-    @Path("/logout")
+    @Path("/delete")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(value={Role.ADMINISTRATORS, Role.USERS})
-    public ServiceResponse<String> logout() {
-        this.userService.logout(getAuthenticatedUser());
-        return ServiceResponse.result("").status(ApplicationStatus.SUCCESS).build();
+    public SuccessResponse logout() {
+        this.userService.logout(getCredential());
+        return new SuccessResponse();
     }
 
     @Inject

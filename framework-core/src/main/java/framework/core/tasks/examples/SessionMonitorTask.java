@@ -1,13 +1,15 @@
-package framework.core.tasks;
+package framework.core.tasks.examples;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import framework.core.domain.session.SessionService;
+import framework.core.tasks.Task;
 
 @Named
-public class SessionMonitorTask extends BaseTask {
+public class SessionMonitorTask implements Task {
 
+    private static final long serialVersionUID = -2744188112114470973L;
     private final SessionService sessionService;
 
     @Inject
@@ -21,7 +23,7 @@ public class SessionMonitorTask extends BaseTask {
     }
 
     @Override
-    protected void performJob() {
+    public void performJob() {
         this.sessionService.deleteExpiredSessions();
     }
 

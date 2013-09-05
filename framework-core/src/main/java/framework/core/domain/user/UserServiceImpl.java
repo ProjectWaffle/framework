@@ -15,16 +15,17 @@ import framework.core.domain.session.Session;
 import framework.core.domain.session.SessionService;
 import framework.core.exceptions.CredentialExpiredException;
 import framework.core.exceptions.InvalidUserException;
+import framework.core.exceptions.SessionExistException;
 import framework.core.exceptions.UserProfileExpiredException;
 import framework.core.utilities.EncryptionUtil;
 
 /**
- * Performs business operations for {@link User} entity/
+ * Performs business operations for {@link Credential} entity/
  * 
  * @author Frederick Yap
  */
 @Named
-class UserServiceImpl extends ServiceImpl<User> implements UserService {
+class UserServiceImpl extends ServiceImpl<Credential> implements UserService {
 
     private static final long serialVersionUID = 5506093159372637005L;
 
@@ -45,7 +46,7 @@ class UserServiceImpl extends ServiceImpl<User> implements UserService {
 
     @Override
     public Session authenticate(String username, String password) {
-        final User user = this.validateLogin(username, password);
+        final Credential user = this.validateLogin(username, password);
         final Auditlog auditlog = new Auditlog();
         auditlog.setType(EventType.LOGIN);
         auditlog.setUserid(user.getId());
@@ -54,46 +55,49 @@ class UserServiceImpl extends ServiceImpl<User> implements UserService {
     }
     
     @Override
-    public User findUserByUsername(String username) {
-        final List<User> users = this.userDao.findUsersByName(username);
-        if (users.size() == 1) {
-            return users.get(0);
+    public Credential findCredentialByUsername(String username) {
+        final List<Credential> credential = this.userDao.findCredentialsByName(username);
+        if (credential.size() == 1) {
+            return credential.get(0);
         }
         return null;
     }
 
     @Override
-    public void logout(User user) {
+    public void logout(Credential credential) {
         final Auditlog auditlog = new Auditlog();
         auditlog.setType(EventType.LOGOUT);
-        auditlog.setUserid(user.getId());
+        auditlog.setUserid(credential.getId());
         this.auditlogService.saveOrUpdate(auditlog);
-        this.sessionService.delete(user);
+        this.sessionService.delete(credential);
     }
 
     @Override
-    public User saveOrUpdate(User user, String password) {
+    public Credential saveOrUpdate(Credential credential, String password) {
         String newPassword = encryptionUtil.getEncryptedPassword(password);
-        user.setPassword(newPassword);
-        return super.saveOrUpdate(user);
+        credential.setPassword(newPassword);
+        return super.saveOrUpdate(credential);
     }
 
-    protected User validateLogin(String username, String password) {
-        final User user = this.findUserByUsername(username);
+    protected Credential validateLogin(String username, String password) {
+        final Credential credential = this.findCredentialByUsername(username);
         final Date now = Calendar.getInstance().getTime();
-        if (user == null) {
+        if (!sessionService.findActiveSessionByUser(credential).isEmpty()) {
+            throw new SessionExistException(String.format("Session already exist for user [%s]", username));
+        }
+        if (credential == null) {
             throw new InvalidUserException("Unable to find username matching [" + username + "]");
         }
-        if (now.after(user.getProfileexpiration())) {
-            throw new UserProfileExpiredException(String.format("User [%s] has already expired.", user.getName()));
+        if (now.after(credential.getProfileexpiration())) {
+            throw new UserProfileExpiredException(String.format("User [%s] has already expired.", username));
         }
-        if (now.after(user.getPasswordexpiration())) {
-            throw new CredentialExpiredException("Credentials for user " + user.getName() + " has already expired.");
+        if (now.after(credential.getPasswordexpiration())) {
+            throw new CredentialExpiredException("Credentials for user " + username + " has already expired.");
         }
-        if (!this.encryptionUtil.isEqual(password, user.getPassword())) {
-            throw new InvalidUserException("Password for " + user.getName() + " is invalid.");
+        if (!this.encryptionUtil.isEqual(password, credential.getPassword())) {
+            throw new InvalidUserException("Password for " + username + " is invalid.");
         }
-        return user;
+        return credential;
     }
 
 }

@@ -17,7 +17,7 @@ import framework.api.webservices.ServiceResponse;
 import framework.core.constants.ApplicationStatus;
 import framework.core.domain.session.Session;
 import framework.core.domain.session.SessionService;
-import framework.core.domain.user.User;
+import framework.core.domain.user.Credential;
 import framework.core.domain.user.UserService;
 
 @Named
@@ -37,14 +37,14 @@ public class SecurityContextFilter implements ResourceFilter, ContainerRequestFi
     @Override
     public ContainerRequest filter(ContainerRequest request) {
         final Map<String, Cookie> cookie = request.getCookies();
-        User user = null;
+        Credential user = null;
         Session session = null;
         if (cookie.containsKey("sessionid") && cookie.containsKey("username")) {
             session = this.sessionService.findSessionById(
                     cookie.get("username").getValue(), 
                     cookie.get("sessionid").getValue());
             if (session != null) {
-                user = this.userService.findUserByUsername(cookie.get("username").getValue());
+                user = this.userService.findCredentialByUsername(cookie.get("username").getValue());
             }
         }
         final SecurityContext securityContext = new SecurityContext(this.sessionService, user, session);

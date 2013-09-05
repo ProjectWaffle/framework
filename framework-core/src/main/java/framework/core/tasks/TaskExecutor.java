@@ -1,32 +1,28 @@
 package framework.core.tasks;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import framework.core.domain.auditlog.AuditlogService;
 
 @Named
 public class TaskExecutor {
 
-    private final List<BaseTask> jobs;
-
+    private final List<Task> tasks;
+    private AuditlogService auditlogService;
+    
     @Inject
-    protected TaskExecutor(List<BaseTask> jobs) {
-        this.jobs = jobs;
+    protected TaskExecutor(AuditlogService auditlogService, List<Task> tasks) {
+        this.auditlogService = auditlogService;
+        this.tasks = tasks;
     }
 
+    @PostConstruct
     public void performScheduledJobs() {
-        Collections.sort(this.jobs, new Comparator<BaseTask>() {
-
-            @Override
-            public int compare(BaseTask o1, BaseTask o2) {
-                return (o1.priority() - o2.priority()) * -1;
-            }
-        });
-        for (final BaseTask job : this.jobs) {
-            job.execute();
-        }
+        Thread thread = new Thread(new TaskThread(auditlogService, tasks));
+        thread.start();
     }
 }

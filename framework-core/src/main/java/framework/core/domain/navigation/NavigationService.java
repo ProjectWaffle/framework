@@ -3,10 +3,10 @@ package framework.core.domain.navigation;
 import java.util.List;
 
 import framework.core.domain.Service;
-import framework.core.domain.user.User;
+import framework.core.domain.user.Credential;
 
 public interface NavigationService extends Service<Navigation> {
 
-    List<Navigation> findNavigationByUsergroup(User user);
+    List<Navigation> findNavigationByUsergroup(Credential user);
     
 }

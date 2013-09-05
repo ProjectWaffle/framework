@@ -15,9 +15,7 @@ public class ServiceResponseBuilder<T> implements Serializable {
     }
 
     public ServiceResponse<T> build() {
-        final ResponseHeader responseHeader = new ResponseHeader();
-        responseHeader.setStatusCode(this.applicationStatus.getCode());
-        responseHeader.setStatusMessage(this.applicationStatus.getMessage());
+        final ResponseHeader responseHeader = new ResponseHeader(applicationStatus);
         return new ServiceResponse<T>(responseHeader, this.result);
     }
 

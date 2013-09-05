@@ -2,16 +2,19 @@ package framework.core.constants;
 
 public enum ApplicationStatus {
 
-    EXPIRED_CREDENTIALS(21, "Password has already expired."),
-    EXPIRED_PROFILE(22, "Profile has already expired."),
-    FAILED_TO_LOCALIZED(100, "Unable to proceed localizing certain text entries."),
-    FORBIDDEN(403, "Authorization required to access this page."),
-    INVALID_USER(20, "Either the username or the password is invalid."),
-    SERVICE_NOT_FOUND(404, "Service not found."),
     SUCCESS(0, "Successful."),
-    SYSTEM_EXCEPTION(500, "Unhandled exception."),
-    VALIDATION_FAILED(1, "Validation Failed.");
-
+    
+    VALIDATION_FAILED(20, "Validation Failed."),
+    INVALID_USER(21, "Either the username or the password is invalid."),
+    EXPIRED_CREDENTIALS(22, "Password has already expired."),
+    EXPIRED_PROFILE(23, "Profile has already expired."),
+    FAILED_TO_LOCALIZED(24, "Unable to proceed localizing certain text entries."),
+    SESSION_ALREADY_EXIST(25, "User is already authenticated in another session."),
+    
+    FORBIDDEN(403, "Authorization required to access this page."),
+    SERVICE_NOT_FOUND(404, "Service not found."),
+    SYSTEM_EXCEPTION(500, "Unhandled exception.");
+    
     private Integer code;
     private String message;
 
