@@ -5,32 +5,29 @@ apps.config(function($routeProvider) {
         templateUrl : 'pages/dashboard.html'
     }).when('/configuration', {
         templateUrl : 'pages/configuration/list.html',
-        controller : 'ConfigurationListCtrl'
-    }).when('/configuration/:code', {
+        controller : 'ConfigurationCtrl'
+    }).when('/configuration/edit/:code', {
         templateUrl : 'pages/configuration/detail.html',
-        controller : 'ConfigurationEditCtrl'
+        controller : 'ConfigurationCtrl'
+    }).when('/configuration/saved/:code', {
+        templateUrl : 'pages/configuration/success.html',
+        controller : 'ConfigurationCtrl'
     }).when('/login', {
-        templateUrl : 'pages/login.html',
+        templateUrl : 'pages/login.html'
     }).otherwise({
         templateUrl : 'pages/404.html'
     });
-}).config(function($httpProvider) {
-    $httpProvider.responseInterceptors.push('errorInterceptor');
-});
-
-apps.factory('errorInterceptor', function($q,  $location) {
-    return function(promise) {
-
-        return promise.then(function(response) {
-            return promise;
-        }, function(response) {
-            if (response.status == 403) {
+}).run(function($rootScope, $location, $http) {
+    $rootScope.$on('$routeChangeStart', function(event, next, current) {
+        $http.get('services/authentication/verify').success(function(data) {
+            var isAuthenticated = data.result;
+            if ($location.url() != '/login' && !isAuthenticated) {
                 $location.path('/login');
+            } else if ($location.url() == '/login' && isAuthenticated) {
+                $location.path('/');
             }
-            alert(response.data.responseHeader.statusMessage);
-            return $q.reject(response);
         });
-    };
+    });
 });
 
 apps.factory('MenuService', [ '$http', function($http) {
@@ -48,12 +45,3 @@ apps.controller("MenuCtrl", function($scope, $cookies, MenuService) {
         $scope.serviceResponse = data;
     });
 });
-
-function handlerError(data, $scope, $location) {
-    alert(data);
-    if (403 == data.responseHeader.statusCode) {
-        $location.path('/login');
-    } else {
-        $scope.error = data.responseHeader.statusMessage;
-    }
-}

@@ -1,4 +1,4 @@
-package framework.api.webservices.login;
+package framework.api.webservices.authentication;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -17,13 +17,19 @@ import framework.core.domain.session.Session;
 import framework.core.domain.user.UserService;
 
 @Named
-@Path("/login")
-public class LoginController extends BaseController {
+@Path("/authentication")
+public class AuthenticationController extends BaseController {
 
     private static final long serialVersionUID = -6402313528023081815L;
     private UserService userService;
 
+    @Inject
+    protected AuthenticationController(UserService userService) {
+        this.userService = userService;
+    }
+    
     @POST
+    @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(value = { MediaType.APPLICATION_JSON })
     public LoginResponse login(LoginRequest loginRequest) {
@@ -32,17 +38,19 @@ public class LoginController extends BaseController {
     }
     
     @GET
-    @Path("/delete")
+    @Path("/logout")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed(value={Role.ADMINISTRATORS, Role.USERS})
+    @RolesAllowed(value={Role.USERS})
     public SuccessResponse logout() {
         this.userService.logout(getCredential());
         return new SuccessResponse();
     }
-
-    @Inject
-    protected void setUserService(UserService userService) {
-        this.userService = userService;
+    
+    @GET
+    @Path("/verify")
+    @Produces(MediaType.APPLICATION_JSON)
+    public boolean verify() {
+        return (this.getCredential() != null);
     }
 
 }

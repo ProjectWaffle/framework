@@ -31,10 +31,10 @@ public class TaskThread implements Runnable {
                 task.performJob();
             }
             Thread.sleep(60000);
-            this.run();
         } catch (final InterruptedException e) {
             auditlogService.saveOrUpdate(new Auditlog(e));
         }
+        this.run();
     }
 
 }

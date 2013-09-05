@@ -1,16 +1,18 @@
-<form id="settingsholder" ng-submit="login()" ng-controller="LoginCtrl">
-    <div>
-        <label for="username">Username</label>
-        <input name="username" type="text" ng-model="user.username" required="required" placeholder="username"/>
-    </div>
-    <div>
-        <label for="password">Password</label>
-        <input name="password" type="password" ng-model="user.password" required="required"  placeholder="password"/>
-    </div>
-    <div>
-        <input type="submit" value="Login" class="small button"/>
-    </div>
-    <div style="padding-top: 10px">
-        <label class="error">{{error}}</label>
-    </div>
-</form>
+<div ng-controller="LoginCtrl">
+    <form id="settingsholder" ng-submit="login()">
+        <div>
+            <label for="username">Username</label>
+            <input name="username" type="text" ng-model="user.username" required="required" placeholder="username"/>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input name="password" type="password" ng-model="user.password" required="required"  placeholder="password"/>
+        </div>
+        <div>
+            <input type="submit" value="Login" class="small button"/>
+        </div>
+        <div style="padding-top: 10px">
+            <label class="error">{{error}}</label>
+        </div>
+    </form>
+</div>

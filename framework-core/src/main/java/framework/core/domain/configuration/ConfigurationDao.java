@@ -6,7 +6,7 @@ import framework.core.domain.Dao;
 
 interface ConfigurationDao extends Dao<Configuration> {
 
-    List<Configuration> findConfigurationByRefCodeAndClient(String refCode, String clientName);
+    List<Configuration> findConfigurationByCodeAndClient(String refCode, String clientName);
 
     List<Configuration> findConfigurationByCode(String code);
 

@@ -32,8 +32,8 @@ class SessionServiceImpl extends ServiceImpl<Session> implements SessionService 
     }
 
     @Override
-    public void deleteExpiredSessions() {
-        this.delete(this.sessionDao.findExpiredSessions());
+    public void deleteActiveSessions() {
+        this.sessionDao.deleteActiveSessions();
     }
 
     @Override
@@ -42,11 +42,16 @@ class SessionServiceImpl extends ServiceImpl<Session> implements SessionService 
     }
 
     @Override
+    public List<Session> findExpiredSessions() {
+        return this.sessionDao.findExpiredSessions();
+    }
+
+    @Override
     public Session findSessionById(String username, String id) {
         final List<Session> sessions = this.sessionDao.findActiveSessionById(id);
         if (sessions.size() == 1) {
             final Session session = sessions.get(0);
-            if ((username.equals(session.getUser().getName()))
+            if ((username.equals(session.getCredential().getName()))
                     && (Calendar.getInstance().getTime().before(session.getExpiry()))) {
                 return session;
             }
@@ -55,17 +60,17 @@ class SessionServiceImpl extends ServiceImpl<Session> implements SessionService 
     }
 
     @Override
-    public Session saveOrUpdate(Credential user) {
+    public Session saveOrUpdate(Credential credential) {
         Session session = new Session();
         final Calendar now = Calendar.getInstance();
-        final List<Session> sessions = this.findActiveSessionByUser(user);
+        final List<Session> sessions = this.findActiveSessionByUser(credential);
         if (sessions.size() == 1) {
             session = sessions.get(0);
         }
-        final Configuration configuration = this.configurationService.findConfigurationByRefCodeAndClient(
-                ReferenceCode.CONFIGURATION_SESSION_TIMEOUT, user.getClient().getName());
+        final Configuration configuration = this.configurationService.findConfigurationByCodeAndClient(
+                ReferenceCode.CONFIGURATION_SESSION_TIMEOUT, credential.getClient().getName());
         final Integer valueToAdd = Integer.valueOf(configuration.getValue());
-        session.setUser(user);
+        session.setCredential(credential);
         session.setStart(now.getTime());
         now.add(Calendar.MINUTE, valueToAdd);
         session.setExpiry(now.getTime());

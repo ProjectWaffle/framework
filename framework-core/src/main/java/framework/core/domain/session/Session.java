@@ -19,11 +19,17 @@ import framework.core.domain.user.Credential;
 @Table(name = "SESSION")
 @NamedQueries(value = {
         @NamedQuery(name = "findActiveSessionById", query = "from Session s where s.id =:id and s.deleted = false"),
-        @NamedQuery(name = "findActiveSessionByUser", query = "select s from Session s inner join s.user u where u.name =:username and s.expiry > CURRENT_TIMESTAMP and s.deleted = false"),
-        @NamedQuery(name = "findExpiredSessions", query = "from Session where expiry <= CURRENT_TIMESTAMP") })
+        @NamedQuery(name = "findActiveSessionByUser", query = "select s from Session s inner join s.credential c where c.name =:username and s.expiry > CURRENT_TIMESTAMP and s.deleted = false"),
+        @NamedQuery(name = "findActiveSessions", query = "from Session s where s.deleted = false"),
+        @NamedQuery(name = "findExpiredSessions", query = "from Session s where s.expiry <= CURRENT_TIMESTAMP and s.deleted = false"),
+        @NamedQuery(name = "deleteActiveSessions", query = "update Session s set s.deleted = true where s.deleted = false"),
+        @NamedQuery(name = "deleteExpiredSessions", query = "update Session s set s.deleted = true where s.expiry <= CURRENT_TIMESTAMP") })
 public class Session extends BaseEntity {
 
     private static final long serialVersionUID = 4041171065363458266L;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Credential credential;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
@@ -33,8 +39,9 @@ public class Session extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date start;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Credential user;
+    public Credential getCredential() {
+        return this.credential;
+    }
 
     public Date getExpiry() {
         return this.expiry;
@@ -44,8 +51,8 @@ public class Session extends BaseEntity {
         return this.start;
     }
 
-    public Credential getUser() {
-        return this.user;
+    public void setCredential(Credential credential) {
+        this.credential = credential;
     }
 
     public void setExpiry(Date expiry) {
@@ -54,10 +61,6 @@ public class Session extends BaseEntity {
 
     public void setStart(Date start) {
         this.start = start;
-    }
-
-    public void setUser(Credential user) {
-        this.user = user;
     }
 
 }

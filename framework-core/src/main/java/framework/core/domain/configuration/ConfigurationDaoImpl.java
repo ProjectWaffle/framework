@@ -14,7 +14,7 @@ class ConfigurationDaoImpl extends DaoImpl<Configuration> implements Configurati
     private static final long serialVersionUID = -7635229511504452985L;
 
     @Override
-    public List<Configuration> findConfigurationByRefCodeAndClient(String refCode, String clientName) {
+    public List<Configuration> findConfigurationByCodeAndClient(String refCode, String clientName) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("refCode", refCode);
         parameters.put("clientName", clientName);

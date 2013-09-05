@@ -59,6 +59,8 @@ public class SecurityContextFilter implements ResourceFilter, ContainerRequestFi
             if (!(entity instanceof ServiceResponse)) {
                 response.setEntity(ServiceResponse.result(entity).status(ApplicationStatus.SUCCESS).build());
             }
+        } else {
+            response.setEntity(ServiceResponse.result(entity).status(ApplicationStatus.NO_RECORDS_FOUND).build());
         }
         return response;
     }

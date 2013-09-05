@@ -86,6 +86,20 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
         return this.entityManager.merge(t);
     }
 
+    protected boolean executeUpdate(String name) {
+        return this.executeUpdate(name, null);
+    }
+
+    protected boolean executeUpdate(String name, Map<String, Object> parameters) {
+        final Query query = this.entityManager.createNamedQuery(name);
+        if (parameters != null) {
+            for (final Entry<String, Object> parameter : parameters.entrySet()) {
+                query.setParameter(parameter.getKey(), parameter.getValue());
+            }
+        }
+        return query.executeUpdate() > 1;
+    }
+
     protected List<T> find(String name) {
         return this.find(name, null, null, null);
     }

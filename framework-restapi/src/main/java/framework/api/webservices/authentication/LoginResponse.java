@@ -1,4 +1,4 @@
-package framework.api.webservices.login;
+package framework.api.webservices.authentication;
 
 import framework.core.domain.session.Session;
 
@@ -10,7 +10,7 @@ public class LoginResponse {
 
     protected LoginResponse(Session session) {
         this.sessionid = session.getId();
-        this.username = session.getUser().getName();
+        this.username = session.getCredential().getName();
     }
 
     public String getSessionid() {

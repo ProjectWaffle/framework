@@ -20,7 +20,7 @@ public class WebApplicationExceptionHandler implements ExceptionMapper<WebApplic
 
     @Override
     public Response toResponse(WebApplicationException exception) {
-        logger.log(Level.WARNING, "Error encountered during HTTP response.");
+        logger.log(Level.WARNING, "Error encountered during HTTP response.", exception);
         switch (exception.getResponse().getStatus()) {
             case 403:
                 return Response.status(Status.FORBIDDEN).type(MediaType.APPLICATION_JSON)

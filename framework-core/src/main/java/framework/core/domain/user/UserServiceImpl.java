@@ -53,7 +53,7 @@ class UserServiceImpl extends ServiceImpl<Credential> implements UserService {
         this.auditlogService.saveOrUpdate(auditlog);
         return this.sessionService.saveOrUpdate(user);
     }
-    
+
     @Override
     public Credential findCredentialByUsername(String username) {
         final List<Credential> credential = this.userDao.findCredentialsByName(username);
@@ -73,8 +73,17 @@ class UserServiceImpl extends ServiceImpl<Credential> implements UserService {
     }
 
     @Override
+    public void logoutExpiredSession() {
+        final List<Session> sessions = this.sessionService.findExpiredSessions();
+        for (final Session session : sessions) {
+            this.logout(session.getCredential());
+        }
+        this.sessionService.delete(sessions);
+    }
+
+    @Override
     public Credential saveOrUpdate(Credential credential, String password) {
-        String newPassword = encryptionUtil.getEncryptedPassword(password);
+        final String newPassword = this.encryptionUtil.getEncryptedPassword(password);
         credential.setPassword(newPassword);
         return super.saveOrUpdate(credential);
     }
@@ -82,11 +91,11 @@ class UserServiceImpl extends ServiceImpl<Credential> implements UserService {
     protected Credential validateLogin(String username, String password) {
         final Credential credential = this.findCredentialByUsername(username);
         final Date now = Calendar.getInstance().getTime();
-        if (!sessionService.findActiveSessionByUser(credential).isEmpty()) {
-            throw new SessionExistException(String.format("Session already exist for user [%s]", username));
-        }
         if (credential == null) {
             throw new InvalidUserException("Unable to find username matching [" + username + "]");
+        }
+        if (!this.sessionService.findActiveSessionByUser(credential).isEmpty()) {
+            throw new SessionExistException(String.format("Session already exist for user [%s]", username));
         }
         if (now.after(credential.getProfileexpiration())) {
             throw new UserProfileExpiredException(String.format("User [%s] has already expired.", username));

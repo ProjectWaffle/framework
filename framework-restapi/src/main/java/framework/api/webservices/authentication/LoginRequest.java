@@ -1,4 +1,4 @@
-package framework.api.webservices.login;
+package framework.api.webservices.authentication;
 
 import java.io.Serializable;
 

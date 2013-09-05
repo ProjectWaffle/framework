@@ -1,46 +1,20 @@
-var configuration = {
-    code : "CODE",
-    description : "DESCRIPTION",
-    value : "VALUE"
-};
-
-apps.factory('ConfigurationService', function($http) {
-    return {
-        load : function(onSuccess) {
-            $http.get('services/configuration/').success(function(data) {
-                onSuccess(data);
-            });
-        },
-        loadByCode : function(onSuccess, code) {
-            $http.get('services/configuration/' + code).success(function(data) {
-                onSuccess(data);
-            });
-        },
-        submit : function(onSuccess, code, config) {
-            $http.get('services/configuration/' + code).success(function(data) {
-                alert("AS");
-            });
-        }
+function ConfigurationCtrl($scope, $http, $routeParams, $location) {
+    $scope.list = function() {
+        $http.get('services/configuration/').success(function(data) {
+            $scope.configurations = data.result;
+        });
     };
-});
-
-function ConfigurationListCtrl($scope, ConfigurationService) {
-    ConfigurationService.load(function(data) {
-        $scope.configurations = data.result;
-    });
+    $scope.edit = function() {
+        $http.get('services/configuration/' + $routeParams.code).success(function(data) {
+            $scope.message = data.responseHeader.statusMessage;
+            $scope.configuration = data.result;
+        });
+    };
+    $scope.submit = function() {
+        $http.post('services/configuration/save', $scope.configuration).success(function(data) {
+            $scope.configuration = data.result;
+            $scope.message = data.responseHeader.statusMessage;
+            $location.path('/configuration/saved/' + $routeParams.code);
+        });
+    };
 }
-
-function ConfigurationEditCtrl($scope, $routeParams, ConfigurationService) {
-    ConfigurationService.loadByCode(function(data) {
-        $scope.configuration = data.result;
-    }, $routeParams.code);
-}
-/*
-
-$scope.loadByCode = SystemParameterService.loadByCode(function(data) {
-    $scope.systemParameter = data.result;
-}, $routeParams.code, config);
-
-$scope.systemParameter.submit = SystemParameterService.submit(function(data) {
-    $scope.systemParameter = data.result;
-}, $routeParams.code, config);*/
