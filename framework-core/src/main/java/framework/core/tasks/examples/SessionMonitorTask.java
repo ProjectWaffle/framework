@@ -7,7 +7,7 @@ import framework.core.domain.user.UserService;
 import framework.core.tasks.Task;
 
 @Named
-public class SessionMonitorTask implements Task {
+public class SessionMonitorTask extends Task {
 
     private static final long serialVersionUID = -2744188112114470973L;
     private final UserService userService;
@@ -18,13 +18,18 @@ public class SessionMonitorTask implements Task {
     }
 
     @Override
-    public int priority() {
-        return 0;
+    public int delay() {
+        return 60000;
     }
 
     @Override
-    public void performJob() {
+    public void performTask() {
         this.userService.logoutExpiredSession();
+    }
+
+    @Override
+    public int order() {
+        return 0;
     }
 
 }
