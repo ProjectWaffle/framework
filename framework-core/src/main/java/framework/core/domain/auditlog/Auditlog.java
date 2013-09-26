@@ -7,8 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,7 +21,6 @@ import framework.core.domain.BaseEntity;
  */
 @Entity
 @Table(name = "AUDITLOG")
-@NamedQueries(value = { @NamedQuery(name = "findLastAuditlogByDetail", query = "from Auditlog where detail LIKE :detail ORDER BY logdate DESC") })
 public class Auditlog extends BaseEntity {
 
     private static final long serialVersionUID = -3935171119789690953L;

@@ -1,10 +1,10 @@
 package framework.core.domain.client;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Named;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import framework.core.domain.DaoImpl;
 
@@ -15,8 +15,8 @@ class ClientDaoImpl extends DaoImpl<Client> implements ClientDao {
 
     @Override
     public List<Client> findClientByName(String name) {
-        final Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("name", name);
-        return this.find("findClientByName", parameters);
+        Root<Client> fromClient = getRoot();
+        Predicate condition = getCriteriaBuilder().equal(fromClient.get("name"), "name");
+        return this.getResultList(condition);
     }
 }

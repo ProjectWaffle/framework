@@ -1,10 +1,10 @@
 package framework.core.domain.auditlog;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Named;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import framework.core.domain.DaoImpl;
 
@@ -15,8 +15,8 @@ class AuditlogDaoImpl extends DaoImpl<Auditlog> implements AuditlogDao {
 
     @Override
     public List<Auditlog> findLastAuditlogByDetail(String detail) {
-        final Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("detail", detail + "%");
-        return this.find("findLastAuditlogByDetail", parameters, 0, 1);
+        Root<Auditlog> fromAuditlog = getRoot();
+        Predicate condition = getCriteriaBuilder().equal(fromAuditlog.get("detail"), detail);
+        return this.getResultList(condition);
     }
 }

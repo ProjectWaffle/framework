@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Named;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import framework.core.domain.DaoImpl;
 
@@ -25,14 +27,14 @@ class SessionDaoImpl extends DaoImpl<Session> implements SessionDao {
 
     @Override
     public List<Session> findActiveSessionById(String id) {
-        final Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("id", id);
-        return this.find("findActiveSessionById", parameters);
+        Root<Session> fromSession = this.getRoot();
+        Predicate condition = getCriteriaBuilder().equal(fromSession.get("id"), id);
+        return this.getResultList(condition);
     }
 
     @Override
     public List<Session> findActiveSessions() {
-        return this.find("findActiveSessions");
+        return this.getResultList();
     }
 
     @Override

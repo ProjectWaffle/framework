@@ -11,6 +11,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 /**
  * This class contains basic CRUD implementation. All data access object classes must extends this class.
@@ -26,7 +30,9 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
 
     private final Class<T> persistentClass;
 
-    protected EntityManager entityManager;
+    private EntityManager entityManager;
+    private CriteriaBuilder criteriaBuilder;
+    private CriteriaQuery<T> criteriaQuery; 
 
     /**
      * Default constructor.
@@ -86,10 +92,12 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
         return this.entityManager.merge(t);
     }
 
+    @Deprecated
     protected boolean executeUpdate(String name) {
         return this.executeUpdate(name, null);
     }
 
+    @Deprecated
     protected boolean executeUpdate(String name, Map<String, Object> parameters) {
         final Query query = this.entityManager.createNamedQuery(name);
         if (parameters != null) {
@@ -100,19 +108,23 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
         return query.executeUpdate() > 1;
     }
 
+    @Deprecated
     protected List<T> find(String name) {
         return this.find(name, null, null, null);
     }
 
+    @Deprecated
     protected List<T> find(String name, Map<String, Object> parameters) {
         return this.find(name, parameters, null);
     }
 
+    @Deprecated
     protected List<T> find(String name, Map<String, Object> parameters, Integer index) {
         return this.find(name, parameters, index, null);
     }
 
     @SuppressWarnings("unchecked")
+    @Deprecated
     protected List<T> find(String name, Map<String, Object> parameters, Integer index, Integer size) {
         final Query query = this.entityManager.createNamedQuery(name);
         if (parameters != null) {
@@ -145,5 +157,26 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
     @PersistenceContext
     protected void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
+        this.criteriaBuilder = entityManager.getCriteriaBuilder();
+    }
+    
+    protected CriteriaBuilder getCriteriaBuilder() {
+        return this.criteriaBuilder;
+    }
+    
+    protected Root<T> getRoot() {
+        this.criteriaQuery = this.criteriaBuilder.createQuery(persistentClass);
+        return this.criteriaQuery.from(persistentClass);
+    }
+    
+    protected List<T> getResultList(Predicate... conditions) {
+        if (conditions.length > 0) {
+            this.criteriaQuery.where(conditions);
+        }
+        List<T> results = this.entityManager.createQuery(this.criteriaQuery).getResultList();
+        for (final T t : results) {
+            this.entityManager.detach(t);
+        }
+        return results;
     }
 }

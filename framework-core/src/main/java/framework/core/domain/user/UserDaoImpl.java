@@ -1,10 +1,10 @@
 package framework.core.domain.user;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Named;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import framework.core.domain.DaoImpl;
 
@@ -20,9 +20,9 @@ class UserDaoImpl extends DaoImpl<Credential> implements UserDao {
 
     @Override
     public List<Credential> findCredentialsByName(String username) {
-        final Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("username", username);
-        return this.find("findCredentialsByName", parameters);
+        Root<Credential> fromUser = this.getRoot();
+        Predicate condition = getCriteriaBuilder().equal(fromUser.get("name"), username);
+        return this.getResultList(condition);
     }
 
 }

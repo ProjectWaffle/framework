@@ -7,7 +7,7 @@ import framework.core.domain.user.Credential;
 
 public interface SessionService extends Service<Session> {
 
-    public abstract List<Session> findExpiredSessions();
+    List<Session> findExpiredSessions();
 
     void delete(Credential user);
 
@@ -18,4 +18,6 @@ public interface SessionService extends Service<Session> {
     Session findSessionById(String username, String id);
 
     Session saveOrUpdate(Credential user);
+    
+    List<Session> findActiveSessions();
 }

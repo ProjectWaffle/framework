@@ -76,4 +76,9 @@ class SessionServiceImpl extends ServiceImpl<Session> implements SessionService 
         session.setExpiry(now.getTime());
         return this.saveOrUpdate(session);
     }
+
+    @Override
+    public List<Session> findActiveSessions() {
+        return this.sessionDao.findActiveSessions();
+    }
 }
