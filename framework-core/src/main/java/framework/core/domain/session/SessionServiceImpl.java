@@ -33,7 +33,7 @@ class SessionServiceImpl extends ServiceImpl<Session> implements SessionService 
 
     @Override
     public void deleteActiveSessions() {
-        this.sessionDao.deleteActiveSessions();
+        this.delete(this.sessionDao.findActiveSessions());
     }
 
     @Override

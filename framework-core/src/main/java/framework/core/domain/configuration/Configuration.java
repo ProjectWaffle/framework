@@ -4,8 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import framework.core.domain.BaseEntity;
@@ -14,10 +12,6 @@ import framework.core.domain.reference.Reference;
 
 @Entity
 @Table(name = "CONFIGURATION")
-@NamedQueries(value = {
-        @NamedQuery(name = "findConfigurationByRefCodeAndClient", query = "SELECT c from Configuration c INNER JOIN c.reference r INNER JOIN c.client client WHERE r.code=:refCode and client.name =:clientName"),
-        @NamedQuery(name = "findAllActiveConfiguration", query = "SELECT c from Configuration c INNER JOIN c.client client WHERE client.name =:clientName"),
-        @NamedQuery(name = "findConfigurationByCode", query = "SELECT c from Configuration c INNER JOIN c.reference r WHERE r.code= :refCode") })
 public class Configuration extends BaseEntity {
 
     private static final long serialVersionUID = -6161991656266437823L;

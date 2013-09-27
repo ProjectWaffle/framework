@@ -3,14 +3,11 @@ package framework.core.domain;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -28,11 +25,11 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
 
     private static final long serialVersionUID = 4419440269704730290L;
 
-    private final Class<T> persistentClass;
-
-    private EntityManager entityManager;
     private CriteriaBuilder criteriaBuilder;
-    private CriteriaQuery<T> criteriaQuery; 
+    private CriteriaQuery<T> criteriaQuery;
+    private EntityManager entityManager;
+    private Root<T> fromRoot;
+    private final Class<T> persistentClass;
 
     /**
      * Default constructor.
@@ -92,57 +89,36 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
         return this.entityManager.merge(t);
     }
 
-    @Deprecated
-    protected boolean executeUpdate(String name) {
-        return this.executeUpdate(name, null);
+    protected CriteriaBuilder getCriteriaBuilder() {
+        return this.criteriaBuilder;
     }
 
-    @Deprecated
-    protected boolean executeUpdate(String name, Map<String, Object> parameters) {
-        final Query query = this.entityManager.createNamedQuery(name);
-        if (parameters != null) {
-            for (final Entry<String, Object> parameter : parameters.entrySet()) {
-                query.setParameter(parameter.getKey(), parameter.getValue());
-            }
+    protected List<T> getResultList() {
+        return this.getResultList(false, null);
+    }
+
+    protected List<T> getResultList(boolean isDeleted, Predicate condition) {
+        final Predicate isdeletedCondition = this.criteriaBuilder.equal(this.fromRoot.get("deleted"), isDeleted);
+        if (condition != null) {
+            this.criteriaQuery.where(this.criteriaBuilder.and(condition, isdeletedCondition));
+        } else {
+            this.criteriaQuery.where(isdeletedCondition);
         }
-        return query.executeUpdate() > 1;
-    }
-
-    @Deprecated
-    protected List<T> find(String name) {
-        return this.find(name, null, null, null);
-    }
-
-    @Deprecated
-    protected List<T> find(String name, Map<String, Object> parameters) {
-        return this.find(name, parameters, null);
-    }
-
-    @Deprecated
-    protected List<T> find(String name, Map<String, Object> parameters, Integer index) {
-        return this.find(name, parameters, index, null);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Deprecated
-    protected List<T> find(String name, Map<String, Object> parameters, Integer index, Integer size) {
-        final Query query = this.entityManager.createNamedQuery(name);
-        if (parameters != null) {
-            for (final Entry<String, Object> parameter : parameters.entrySet()) {
-                query.setParameter(parameter.getKey(), parameter.getValue());
-            }
-        }
-        if (index != null) {
-            query.setFirstResult(index);
-        }
-        if (size != null) {
-            query.setMaxResults(size);
-        }
-        final List<T> results = query.getResultList();
+        final List<T> results = this.entityManager.createQuery(this.criteriaQuery).getResultList();
         for (final T t : results) {
             this.entityManager.detach(t);
         }
         return results;
+    }
+
+    protected List<T> getResultList(Predicate condition) {
+        return this.getResultList(false, condition);
+    }
+
+    protected Root<T> getRoot() {
+        this.criteriaQuery = this.criteriaBuilder.createQuery(this.persistentClass);
+        this.fromRoot = this.criteriaQuery.from(this.persistentClass);
+        return this.fromRoot;
     }
 
     /**
@@ -158,25 +134,5 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
     protected void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
-    }
-    
-    protected CriteriaBuilder getCriteriaBuilder() {
-        return this.criteriaBuilder;
-    }
-    
-    protected Root<T> getRoot() {
-        this.criteriaQuery = this.criteriaBuilder.createQuery(persistentClass);
-        return this.criteriaQuery.from(persistentClass);
-    }
-    
-    protected List<T> getResultList(Predicate... conditions) {
-        if (conditions.length > 0) {
-            this.criteriaQuery.where(conditions);
-        }
-        List<T> results = this.entityManager.createQuery(this.criteriaQuery).getResultList();
-        for (final T t : results) {
-            this.entityManager.detach(t);
-        }
-        return results;
     }
 }

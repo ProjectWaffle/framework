@@ -22,25 +22,26 @@ class ConfigurationDaoImpl extends DaoImpl<Configuration> implements Configurati
         Root<Configuration> fromConfiguration = getRoot();
         Join<Configuration, Reference> joinReference = fromConfiguration.join("reference", JoinType.INNER);
         Join<Configuration, Client> joinClient= fromConfiguration.join("client", JoinType.INNER);
-        Predicate condition1 = getCriteriaBuilder().equal(joinReference.get("code"), code);
-        Predicate condition2 = getCriteriaBuilder().equal(joinClient.get("name"), name);
-        return this.getResultList(condition1, condition2);
+        Predicate condition = getCriteriaBuilder().and(
+                getCriteriaBuilder().equal(joinReference.get("code"), code), 
+                getCriteriaBuilder().equal(joinClient.get("name"), name));
+        return this.getResultList(condition);
     }
 
     @Override
     public List<Configuration> findConfigurationByCode(String code) {
         Root<Configuration> fromConfiguration = getRoot();
         Join<Configuration, Reference> joinReference = fromConfiguration.join("reference", JoinType.INNER);
-        Predicate condition1 = getCriteriaBuilder().equal(joinReference.get("code"), code);
-        return this.getResultList(condition1);
+        Predicate condition = getCriteriaBuilder().equal(joinReference.get("code"), code);
+        return this.getResultList(condition);
     }
 
     @Override
     public List<Configuration> findAllActiveConfiguration(String name) {
         Root<Configuration> fromConfiguration = getRoot();
         Join<Configuration, Client> joinClient= fromConfiguration.join("client", JoinType.INNER);
-        Predicate condition1 = getCriteriaBuilder().equal(joinClient.get("name"), name);
-        return this.getResultList(condition1);
+        Predicate condition = getCriteriaBuilder().equal(joinClient.get("name"), name);
+        return this.getResultList(condition);
     }
 
 }

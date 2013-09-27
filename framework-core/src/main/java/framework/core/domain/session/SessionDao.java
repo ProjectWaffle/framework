@@ -6,10 +6,6 @@ import framework.core.domain.Dao;
 
 interface SessionDao extends Dao<Session> {
 
-    void deleteActiveSessions();
-
-    void deleteExpiredSessions();
-
     List<Session> findActiveSessionById(String id);
 
     List<Session> findActiveSessions();

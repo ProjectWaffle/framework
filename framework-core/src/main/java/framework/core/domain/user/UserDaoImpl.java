@@ -21,8 +21,8 @@ class UserDaoImpl extends DaoImpl<Credential> implements UserDao {
     @Override
     public List<Credential> findCredentialsByName(String username) {
         Root<Credential> fromUser = this.getRoot();
-        Predicate condition = getCriteriaBuilder().equal(fromUser.get("name"), username);
-        return this.getResultList(condition);
+        Predicate condition1 = getCriteriaBuilder().equal(fromUser.get("name"), username);
+        return this.getResultList(condition1);
     }
 
 }

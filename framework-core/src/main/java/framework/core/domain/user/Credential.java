@@ -8,8 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,7 +23,6 @@ import framework.core.domain.usergroup.Usergroup;
  */
 @Entity
 @Table(name = "CREDENTIAL")
-@NamedQueries(value = { @NamedQuery(name = "findCredentialsByName", query = "from Credential where name = :username and deleted = false") })
 public class Credential extends BaseEntity implements Principal {
 
     private static final long serialVersionUID = -7767487387897790096L;

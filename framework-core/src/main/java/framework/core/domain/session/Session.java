@@ -6,8 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,13 +15,6 @@ import framework.core.domain.user.Credential;
 
 @Entity
 @Table(name = "SESSION")
-@NamedQueries(value = {
-        @NamedQuery(name = "findActiveSessionById", query = "from Session s where s.id =:id and s.deleted = false"),
-        @NamedQuery(name = "findActiveSessionByUser", query = "select s from Session s inner join s.credential c where c.name =:username and s.expiry > CURRENT_TIMESTAMP and s.deleted = false"),
-        @NamedQuery(name = "findActiveSessions", query = "from Session s where s.deleted = false"),
-        @NamedQuery(name = "findExpiredSessions", query = "from Session s where s.expiry <= CURRENT_TIMESTAMP and s.deleted = false"),
-        @NamedQuery(name = "deleteActiveSessions", query = "update Session s set s.deleted = true where s.deleted = false"),
-        @NamedQuery(name = "deleteExpiredSessions", query = "update Session s set s.deleted = true where s.expiry <= CURRENT_TIMESTAMP") })
 public class Session extends BaseEntity {
 
     private static final long serialVersionUID = 4041171065363458266L;
