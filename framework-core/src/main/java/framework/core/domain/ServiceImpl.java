@@ -30,7 +30,7 @@ public abstract class ServiceImpl<T extends BaseEntity> implements Service<T> {
      * @see framework.core.service.Service#delete(java.util.Collection)
      */
     @Override
-    public void delete(List<T> ts) {
+    public final void delete(List<T> ts) {
         for (final T t : ts) {
             this.delete(t);
         }
@@ -41,7 +41,7 @@ public abstract class ServiceImpl<T extends BaseEntity> implements Service<T> {
      * @see framework.core.service.Service#delete(T t)
      */
     @Override
-    public void delete(T t) {
+    public final void delete(T t) {
         this.persistence.delete(t);
     }
 
@@ -50,7 +50,7 @@ public abstract class ServiceImpl<T extends BaseEntity> implements Service<T> {
      * @see framework.core.service.Service#findById(java.lang.String)
      */
     @Override
-    public T findById(String id) {
+    public final T findById(String id) {
         return this.persistence.findById(id);
     }
 
@@ -59,7 +59,7 @@ public abstract class ServiceImpl<T extends BaseEntity> implements Service<T> {
      * @see framework.core.service.Service#saveOrUpdate(java.util.Collection)
      */
     @Override
-    public List<T> saveOrUpdate(List<T> ts) {
+    public final List<T> saveOrUpdate(List<T> ts) {
         final List<T> list = new ArrayList<T>();
         for (final T t : ts) {
             list.add(this.saveOrUpdate(t));
@@ -72,7 +72,7 @@ public abstract class ServiceImpl<T extends BaseEntity> implements Service<T> {
      * @see framework.core.service.Service#saveOrUpdate(T t)
      */
     @Override
-    public T saveOrUpdate(T t) {
+    public final T saveOrUpdate(T t) {
         return this.persistence.saveOrUpdate(t);
     }
     

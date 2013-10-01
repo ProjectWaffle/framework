@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import framework.core.domain.BaseEntity;
+import framework.core.domain.Encrypted;
 import framework.core.domain.client.Client;
 import framework.core.domain.usergroup.Usergroup;
 
@@ -34,6 +35,7 @@ public class Credential extends BaseEntity implements Principal {
     private String name;
 
     @Column
+    @Encrypted
     private String password;
 
     @Column

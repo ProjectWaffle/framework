@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import framework.core.domain.BaseEntity;
+import framework.core.domain.Encrypted;
 import framework.core.domain.client.Client;
 import framework.core.domain.reference.Reference;
 
@@ -23,6 +24,7 @@ public class Configuration extends BaseEntity {
     private Reference reference;
 
     @Column(nullable = false)
+    @Encrypted
     private String value;
 
     public Client getClient() {

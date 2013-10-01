@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -23,7 +22,7 @@ import framework.core.domain.BaseEntity;
 import framework.core.domain.auditlog.Auditlog;
 import framework.core.domain.auditlog.AuditlogService;
 
-@Named
+@Deprecated
 public class AuditUtil implements Serializable {
 
     private static AuditlogService auditlogService;

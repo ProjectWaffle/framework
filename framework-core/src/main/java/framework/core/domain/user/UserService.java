@@ -17,6 +17,4 @@ public interface UserService extends Service<Credential> {
     void logout(Credential user);
 
     void logoutExpiredSession();
-
-    Credential saveOrUpdate(Credential user, String password);
 }

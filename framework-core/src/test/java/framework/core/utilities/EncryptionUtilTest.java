@@ -8,8 +8,7 @@ public class EncryptionUtilTest {
 
     @Test
     public void testCryptography() {
-        PropertiesUtil propertiesUtil = new PropertiesUtil();
-        EncryptionUtil encryptionUtil = new EncryptionUtil(propertiesUtil);
+        EncryptionUtil encryptionUtil = EncryptionUtil.getInstance();
         String encrypted = encryptionUtil.getEncryptedString("TEST");
         String decrypted = encryptionUtil.getDecryptedString(encrypted);
         Assert.assertEquals("TEST", decrypted);
@@ -22,8 +21,7 @@ public class EncryptionUtilTest {
     
     @Test
     public void testSaltGenerator() {
-        PropertiesUtil propertiesUtil = new PropertiesUtil();
-        EncryptionUtil encryptionUtil = new EncryptionUtil(propertiesUtil);
+        EncryptionUtil encryptionUtil = EncryptionUtil.getInstance();
         
         String salt1 = encryptionUtil.getRandomSalt();
         String salt2 = encryptionUtil.getRandomSalt();

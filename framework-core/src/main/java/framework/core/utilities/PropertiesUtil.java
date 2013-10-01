@@ -4,15 +4,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import javax.inject.Named;
-
 import framework.core.exceptions.UtilityException;
 
-@Named
 public class PropertiesUtil {
 
     private static final String ENVIRONMENT = "settings";
     private static final Properties PROPERTIES = new Properties();
+    private static final PropertiesUtil PROPERTIES_UTIL = new PropertiesUtil();
     protected static final String ENCRYPTION_ASYMMERTRIC_KEYLENGTH = "framework.encryption.assymetric.keylength";
     protected static final String ENCRYPTION_ASYMMETRIC_ALGORITHM = "framework.encryption.assymetric.algorithm";
     protected static final String ENCRYPTION_ASYMMETRIC_SALT = "framework.encryption.assymetric.salt";
@@ -21,7 +19,11 @@ public class PropertiesUtil {
     protected static final String ENCRYPTION_SYMMETRIC_PADDING = "framework.encryption.symmetric.padding";
     protected static final String ENCRYPTION_SYMMETRIC_SALT = "framework.encryption.symmetric.salt";
 
-    protected PropertiesUtil() {
+    public static final PropertiesUtil getInstance() {
+        return PROPERTIES_UTIL;
+    }
+    
+    private PropertiesUtil() {
         final String location = System.getenv(ENVIRONMENT);
         try {
             if (location != null) {

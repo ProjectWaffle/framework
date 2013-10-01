@@ -10,14 +10,12 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.inject.Inject;
-import javax.inject.Named;
 
 import framework.core.exceptions.UtilityException;
 
-@Named
 public class EncryptionUtil {
 
+    private static final EncryptionUtil ENCRYPTION_UTIL = new EncryptionUtil();
     private final String asymmetricAlgorithm;
     private final int asymmetricKeylength;
     private final byte[] asymmetricSalt;
@@ -26,9 +24,13 @@ public class EncryptionUtil {
     private final String symmetricPadding;
     private final byte[] symmetricSalt;
 
-    @Inject
-    protected EncryptionUtil(PropertiesUtil propertiesUtil) {
+    public static final EncryptionUtil getInstance() {
+        return ENCRYPTION_UTIL;
+    }
+    
+    private EncryptionUtil() {
         try {
+            PropertiesUtil propertiesUtil = PropertiesUtil.getInstance();
             this.iterations = propertiesUtil.getInteger(PropertiesUtil.ENCRYPTION_ITERATION);
             this.asymmetricSalt = propertiesUtil.get(PropertiesUtil.ENCRYPTION_ASYMMETRIC_SALT).getBytes("UTF-8");
             this.asymmetricAlgorithm = propertiesUtil.get(PropertiesUtil.ENCRYPTION_ASYMMETRIC_ALGORITHM);
@@ -61,11 +63,8 @@ public class EncryptionUtil {
     @SuppressWarnings("restriction")
     public String getEncryptedPassword(String password) {
         try {
-            final KeySpec spec = new PBEKeySpec(password.toCharArray(), this.asymmetricSalt, this.iterations,
-                    this.asymmetricKeylength);
-
+            final KeySpec spec = new PBEKeySpec(password.toCharArray(), this.asymmetricSalt, this.iterations, this.asymmetricKeylength);
             final SecretKeyFactory f = SecretKeyFactory.getInstance(this.asymmetricAlgorithm);
-
             return new sun.misc.BASE64Encoder().encode(f.generateSecret(spec).getEncoded());
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new UtilityException("Encryption not possible.", e);

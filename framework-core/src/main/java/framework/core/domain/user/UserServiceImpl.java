@@ -17,7 +17,6 @@ import framework.core.exceptions.CredentialExpiredException;
 import framework.core.exceptions.InvalidUserException;
 import framework.core.exceptions.SessionExistException;
 import framework.core.exceptions.UserProfileExpiredException;
-import framework.core.utilities.EncryptionUtil;
 
 /**
  * Performs business operations for {@link Credential} entity/
@@ -30,18 +29,15 @@ class UserServiceImpl extends ServiceImpl<Credential> implements UserService {
     private static final long serialVersionUID = 5506093159372637005L;
 
     private final AuditlogService auditlogService;
-    private final EncryptionUtil encryptionUtil;
     private final SessionService sessionService;
     private final UserDao userDao;
 
     @Inject
-    protected UserServiceImpl(UserDao userDao, SessionService sessionService, AuditlogService auditlogService,
-            EncryptionUtil encryptionUtil) {
+    protected UserServiceImpl(UserDao userDao, SessionService sessionService, AuditlogService auditlogService) {
         super(userDao);
         this.userDao = userDao;
         this.sessionService = sessionService;
         this.auditlogService = auditlogService;
-        this.encryptionUtil = encryptionUtil;
     }
 
     @Override
@@ -81,13 +77,6 @@ class UserServiceImpl extends ServiceImpl<Credential> implements UserService {
         this.sessionService.delete(sessions);
     }
 
-    @Override
-    public Credential saveOrUpdate(Credential credential, String password) {
-        final String newPassword = this.encryptionUtil.getEncryptedPassword(password);
-        credential.setPassword(newPassword);
-        return super.saveOrUpdate(credential);
-    }
-
     protected Credential validateLogin(String username, String password) {
         final Credential credential = this.findCredentialByUsername(username);
         final Date now = Calendar.getInstance().getTime();
@@ -103,7 +92,7 @@ class UserServiceImpl extends ServiceImpl<Credential> implements UserService {
         if (now.after(credential.getPasswordexpiration())) {
             throw new CredentialExpiredException("Credentials for user " + username + " has already expired.");
         }
-        if (!this.encryptionUtil.isEqual(password, credential.getPassword())) {
+        if (!password.equals(credential.getPassword())) {
             throw new InvalidUserException("Password for " + username + " is invalid.");
         }
         return credential;

@@ -166,7 +166,8 @@ public class DefaultDataGenerator extends DataGenerator {
         credential.setName("administrator");
         credential.setPasswordexpiration(now.getTime());
         credential.setProfileexpiration(now.getTime());
-        return this.userService.saveOrUpdate(credential, "password1234");
+        credential.setPassword("password1234");
+        return this.userService.saveOrUpdate(credential);
     }
 
     private Usergroup generateUsergroup(List<Role> roles, List<Client> clients) {
