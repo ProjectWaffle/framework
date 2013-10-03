@@ -8,6 +8,7 @@ import javax.persistence.Table;
 
 import framework.core.constants.ReferenceType;
 import framework.core.domain.BaseEntity;
+import framework.core.domain.auditlog.Auditable;
 
 /**
  * Represents the <em>look-up</em> values used by the system.
@@ -21,9 +22,11 @@ public class Reference extends BaseEntity {
     private static final long serialVersionUID = -6616038947469958259L;
 
     @Column
+    @Auditable
     private String code;
 
     @Column
+    @Auditable
     private String label;
 
     @Column

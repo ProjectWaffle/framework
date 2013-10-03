@@ -1,5 +1,6 @@
 package framework.core.domain.auditlog;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -21,7 +22,7 @@ import framework.core.domain.BaseEntity;
  */
 @Entity
 @Table(name = "AUDITLOG")
-public class Auditlog extends BaseEntity {
+public class Auditlog extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -3935171119789690953L;
 
@@ -47,6 +48,12 @@ public class Auditlog extends BaseEntity {
         this();
         this.detail = String.format("%s - %s", e.getClass().getName(), e.getMessage());
         this.type = EventType.EXCEPTION;
+    }
+    
+    public Auditlog(String detail, EventType type) {
+        this();
+        this.detail = detail;
+        this.type = type;
     }
 
     /**

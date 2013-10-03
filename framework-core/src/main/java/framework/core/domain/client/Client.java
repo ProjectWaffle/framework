@@ -9,6 +9,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import framework.core.domain.BaseEntity;
+import framework.core.domain.auditlog.Auditable;
 
 @Entity
 @Table(name = "CLIENT")
@@ -17,19 +18,24 @@ public class Client extends BaseEntity {
     private static final long serialVersionUID = 2800740052878163935L;
 
     @Column(nullable = false, unique = true)
+    @Auditable
     private String emailaddress;
 
     @Column(nullable = false, unique = true)
+    @Auditable
     private String mobile;
 
     @Column(nullable = false, unique = true)
+    @Auditable
     private String name;
 
     @Column(nullable = false, unique = true)
+    @Auditable
     private String phone;
 
     @Column(nullable = false, unique = true)
     @Temporal(TemporalType.TIMESTAMP)
+    @Auditable
     private Date validity;
 
     public String getEmailaddress() {

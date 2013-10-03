@@ -15,7 +15,7 @@ import javax.persistence.Version;
  * @author Frederick Yap
  */
 @MappedSuperclass
-@EntityListeners({EncryptionEntityListener.class})
+@EntityListeners({ EncryptionEntityListener.class })
 public abstract class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -2688529713266301979L;
@@ -32,7 +32,7 @@ public abstract class BaseEntity implements Serializable {
     private Long version;
 
     protected BaseEntity() {
-        this.id = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString().toUpperCase();
     }
 
     /**

@@ -21,13 +21,13 @@ import framework.core.domain.auditlog.AuditlogService;
 public class UnhandledExceptionMapper implements ExceptionMapper<Exception> {
 
     private final static Logger logger = Logger.getLogger(UnhandledExceptionMapper.class.getName());
-    private final AuditlogService auditlogService;
-
+    private AuditlogService auditlogService;
+    
     @Inject
     protected UnhandledExceptionMapper(AuditlogService auditlogService) {
         this.auditlogService = auditlogService;
     }
-
+    
     @Override
     public Response toResponse(Exception exception) {
         logger.log(Level.WARNING, "Unhandled exception.", exception);

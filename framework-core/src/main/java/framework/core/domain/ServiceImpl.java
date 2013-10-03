@@ -20,7 +20,7 @@ public abstract class ServiceImpl<T extends BaseEntity> implements Service<T> {
     private static final long serialVersionUID = 8443877242673541465L;
 
     private final Dao<T> persistence;
-
+    
     protected ServiceImpl(Dao<T> persistence) {
         this.persistence = persistence;
     }
@@ -42,7 +42,14 @@ public abstract class ServiceImpl<T extends BaseEntity> implements Service<T> {
      */
     @Override
     public final void delete(T t) {
-        this.persistence.delete(t);
+        T latest = this.persistence.findById(t.getId());
+        if (latest != null) {
+            if (latest.getVersion().equals(t.getVersion()) && !latest.isDeleted()) {
+                t = latest;
+            }
+        }
+        t.setDeleted(true);
+        this.persistence.saveOrUpdate(t);
     }
 
     /*
@@ -73,6 +80,14 @@ public abstract class ServiceImpl<T extends BaseEntity> implements Service<T> {
      */
     @Override
     public final T saveOrUpdate(T t) {
+        T latest = this.persistence.findById(t.getId());
+        if (latest != null) {
+            if (latest.getVersion().equals(t.getVersion())) {
+                return this.persistence.saveOrUpdate(t);
+            } else {
+                return latest;
+            }
+        }
         return this.persistence.saveOrUpdate(t);
     }
     

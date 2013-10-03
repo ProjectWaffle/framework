@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import framework.core.domain.BaseEntity;
+import framework.core.domain.auditlog.Auditable;
 import framework.core.domain.client.Client;
 import framework.core.domain.role.Role;
 
@@ -27,12 +28,15 @@ public class Usergroup extends BaseEntity {
     private static final long serialVersionUID = -1885738464094155147L;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @Auditable
     private List<Client> clients;
 
     @Column
+    @Auditable
     private String description;
 
     @Column
+    @Auditable
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)

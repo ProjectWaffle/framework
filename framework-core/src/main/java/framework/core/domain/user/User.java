@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import framework.core.domain.BaseEntity;
+import framework.core.domain.auditlog.Auditable;
 
 /**
  * Represents the user's detailed information.
@@ -20,30 +21,39 @@ public class User extends BaseEntity {
     private static final long serialVersionUID = 5342989782721883971L;
 
     @Column
+    @Auditable
     private String address;
 
     @Column
+    @Auditable
     private Date birthdate;
 
     @Column
+    @Auditable
     private String city;
 
     @Column
+    @Auditable
     private String country;
 
     @Column
+    @Auditable
     private String emailaddress;
 
     @Column
+    @Auditable
     private String fullname;
 
     @Column
+    @Auditable
     private String locale;
 
     @Column
+    @Auditable
     private String phone;
 
     @Column
+    @Auditable
     private Long zipcode;
 
     /**

@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 
 import framework.core.domain.BaseEntity;
 import framework.core.domain.Encrypted;
+import framework.core.domain.auditlog.Auditable;
 import framework.core.domain.client.Client;
 import framework.core.domain.usergroup.Usergroup;
 
@@ -29,9 +30,11 @@ public class Credential extends BaseEntity implements Principal {
     private static final long serialVersionUID = -7767487387897790096L;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @Auditable
     private Client client;
 
     @Column(unique = true, nullable = false)
+    @Auditable
     private String name;
 
     @Column
@@ -40,16 +43,20 @@ public class Credential extends BaseEntity implements Principal {
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
+    @Auditable
     private Date passwordexpiration;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
+    @Auditable
     private Date profileexpiration;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Auditable
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @Auditable
     private Usergroup usergroup;
 
     public Client getClient() {

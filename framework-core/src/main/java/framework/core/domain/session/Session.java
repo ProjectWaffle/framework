@@ -11,6 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import framework.core.domain.BaseEntity;
+import framework.core.domain.auditlog.Auditable;
 import framework.core.domain.user.Credential;
 
 @Entity
@@ -20,14 +21,17 @@ public class Session extends BaseEntity {
     private static final long serialVersionUID = 4041171065363458266L;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @Auditable
     private Credential credential;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
+    @Auditable
     private Date expiry;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
+    @Auditable
     private Date start;
 
     public Credential getCredential() {

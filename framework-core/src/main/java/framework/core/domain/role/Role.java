@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import framework.core.domain.BaseEntity;
+import framework.core.domain.auditlog.Auditable;
 import framework.core.domain.usergroup.Usergroup;
 
 /**
@@ -22,9 +23,11 @@ public class Role extends BaseEntity {
     private static final long serialVersionUID = 1759977741752483761L;
 
     @Column
+    @Auditable
     private String description;
 
     @Column(unique = true)
+    @Auditable
     private String name;
 
     /**
