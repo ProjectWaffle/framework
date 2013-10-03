@@ -3,7 +3,11 @@ package framework.core.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Named;
+
+import framework.core.constants.EventType;
+import framework.core.domain.auditlog.AuditlogService;
 
 /**
  * Provides basic business operation for all service classes.
@@ -21,6 +25,13 @@ public abstract class ServiceImpl<T extends BaseEntity> implements Service<T> {
 
     private final Dao<T> persistence;
     
+    private AuditlogService auditlogService;
+    
+    @Inject
+    protected void setAuditlogService(AuditlogService auditlogService) {
+        this.auditlogService = auditlogService;
+    }
+
     protected ServiceImpl(Dao<T> persistence) {
         this.persistence = persistence;
     }
@@ -49,6 +60,7 @@ public abstract class ServiceImpl<T extends BaseEntity> implements Service<T> {
             }
         }
         t.setDeleted(true);
+        this.auditlogService.saveOrUpdate(t, EventType.DELETE);
         this.persistence.saveOrUpdate(t);
     }
 
@@ -83,11 +95,13 @@ public abstract class ServiceImpl<T extends BaseEntity> implements Service<T> {
         T latest = this.persistence.findById(t.getId());
         if (latest != null) {
             if (latest.getVersion().equals(t.getVersion())) {
+                this.auditlogService.saveOrUpdate(t, EventType.UPDATE);
                 return this.persistence.saveOrUpdate(t);
             } else {
                 return latest;
             }
         }
+        this.auditlogService.saveOrUpdate(t, EventType.INSERT);
         return this.persistence.saveOrUpdate(t);
     }
     

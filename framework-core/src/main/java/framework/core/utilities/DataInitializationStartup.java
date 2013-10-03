@@ -12,16 +12,21 @@ import javax.inject.Named;
 @Named
 class DataInitializationStartup {
 
-    private final DataInitializerService dataInitializerService;
+    private DataInitializer dataInitializerService;
 
+    protected DataInitializationStartup() {
+        super();
+    }
+    
     /**
      * Default constructor.
      * 
      * @param dataInitializerService
-     *            instance of {@link DataInitializerServiceImpl}.
+     *            instance of {@link DataInitializerImpl}.
      */
     @Inject
-    protected DataInitializationStartup(DataInitializerService dataInitializerService) {
+    protected DataInitializationStartup(DataInitializer dataInitializerService) {
+        this();
         this.dataInitializerService = dataInitializerService;
     }
 

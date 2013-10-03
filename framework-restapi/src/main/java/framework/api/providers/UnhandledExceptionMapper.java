@@ -10,10 +10,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import framework.api.webservices.ServiceResponse;
+import framework.api.resources.ServiceResponse;
 import framework.core.constants.ApplicationStatus;
-import framework.core.constants.EventType;
-import framework.core.domain.auditlog.Auditlog;
 import framework.core.domain.auditlog.AuditlogService;
 
 @Provider
@@ -32,10 +30,7 @@ public class UnhandledExceptionMapper implements ExceptionMapper<Exception> {
     public Response toResponse(Exception exception) {
         logger.log(Level.WARNING, "Unhandled exception.", exception);
 
-        final Auditlog auditlog = new Auditlog();
-        auditlog.setType(EventType.EXCEPTION);
-        auditlog.setDetail(String.format("%s - %s", exception.getClass().getName(), exception.getMessage()));
-        this.auditlogService.saveOrUpdate(auditlog);
+        this.auditlogService.saveOrUpdate(exception);
         return Response.serverError().type(MediaType.APPLICATION_JSON)
                 .entity(ServiceResponse.result().status(ApplicationStatus.SYSTEM_EXCEPTION).build()).build();
     }

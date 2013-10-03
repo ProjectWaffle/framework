@@ -37,23 +37,25 @@ public class Auditlog extends BaseEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private EventType type;
 
-    @Column
-    private String userid;
-
     public Auditlog() {
         this.logdate = Calendar.getInstance().getTime();
     }
-    
-    public Auditlog(Throwable e) {
+
+    public Auditlog(EventType type) {
         this();
-        this.detail = String.format("%s - %s", e.getClass().getName(), e.getMessage());
-        this.type = EventType.EXCEPTION;
+        this.type = type;
     }
-    
+
     public Auditlog(String detail, EventType type) {
         this();
         this.detail = detail;
         this.type = type;
+    }
+
+    public Auditlog(Throwable e) {
+        this();
+        this.detail = String.format("%s - %s", e.getClass().getName(), e.getMessage());
+        this.type = EventType.EXCEPTION;
     }
 
     /**
@@ -65,6 +67,10 @@ public class Auditlog extends BaseEntity implements Serializable {
         return this.detail;
     }
 
+    public Date getLogdate() {
+        return this.logdate;
+    }
+
     /**
      * Returns the event type.
      * 
@@ -74,30 +80,12 @@ public class Auditlog extends BaseEntity implements Serializable {
         return this.type;
     }
 
-    /**
-     * Returns the unique id of the authenticated user when the event has occured. Otherwise, returns SYSTEM if it is an
-     * application event.
-     * 
-     * @return the unique id of the authenticated user.
-     */
-    public String getUserid() {
-        return this.userid;
-    }
-
     public void setDetail(String detail) {
         this.detail = detail;
     }
 
     public void setType(EventType type) {
         this.type = type;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid;
-    }
-
-    public Date getLogdate() {
-        return this.logdate;
     }
 
 }

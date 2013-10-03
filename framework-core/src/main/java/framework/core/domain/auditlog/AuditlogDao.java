@@ -1,7 +1,8 @@
 package framework.core.domain.auditlog;
 
-import framework.core.domain.Dao;
+import java.io.Serializable;
 
-interface AuditlogDao extends Dao<Auditlog> {
+interface AuditlogDao extends Serializable {
 
+    void saveOrUpdate(Auditlog auditlog);
 }

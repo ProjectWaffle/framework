@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import framework.api.webservices.ServiceResponse;
+import framework.api.resources.ServiceResponse;
 import framework.core.constants.ApplicationStatus;
 
 @Provider

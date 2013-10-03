@@ -20,14 +20,14 @@ import framework.core.domain.reference.ReferenceService;
  * @author Frederick Yap
  */
 @Named
-public class DataInitializerServiceImpl implements DataInitializerService {
+public class DataInitializerImpl implements DataInitializer {
 
     private final ConfigurationService configurationService;
     private final List<DataGenerator> dataGenerators;
     private final ReferenceService referenceService;
 
     @Inject
-    protected DataInitializerServiceImpl(List<DataGenerator> dataGenerators, ReferenceService referenceService,
+    protected DataInitializerImpl(List<DataGenerator> dataGenerators, ReferenceService referenceService,
             ConfigurationService configurationService) {
         super();
         this.dataGenerators = dataGenerators;

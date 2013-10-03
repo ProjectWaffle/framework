@@ -27,18 +27,22 @@ import framework.core.domain.usergroup.UsergroupService;
 @Named
 public class DefaultDataGenerator extends DataGenerator {
 
-    private final ClientService clientService;
-    private final ConfigurationService configurationService;
-    private final ReferenceService referenceService;
-    private final RoleService roleService;
-    private final UsergroupService usergroupService;
-    private final UserService userService;
+    private ClientService clientService;
+    private ConfigurationService configurationService;
+    private ReferenceService referenceService;
+    private RoleService roleService;
+    private UsergroupService usergroupService;
+    private UserService userService;
 
+    protected DefaultDataGenerator() {
+        super();
+    }
+    
     @Inject
     public DefaultDataGenerator(ClientService clientService, RoleService roleService,
             ReferenceService referenceService, ConfigurationService configurationService,
             UsergroupService usergroupService, UserService userService) {
-        super();
+        this();
         this.clientService = clientService;
         this.roleService = roleService;
         this.referenceService = referenceService;

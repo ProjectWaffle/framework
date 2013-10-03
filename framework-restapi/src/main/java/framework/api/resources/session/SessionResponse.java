@@ -1,4 +1,4 @@
-package framework.api.webservices.session;
+package framework.api.resources.session;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;

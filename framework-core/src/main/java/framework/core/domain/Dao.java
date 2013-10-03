@@ -12,14 +12,6 @@ import java.io.Serializable;
 public interface Dao<T extends BaseEntity> extends Serializable {
 
     /**
-     * Remove a persistent instance from the datastore.
-     * 
-     * @param t
-     *            the persistent instance to be deleted.
-     */
-    void delete(T t);
-
-    /**
      * Return the persistent instance of the given entity class with the given identifier, or null if there is no such
      * persistent instance.
      * 

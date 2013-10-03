@@ -9,6 +9,8 @@ function LoginCtrl($scope, $cookies, $location, $http) {
             $cookies.username = data.result.username;
             $cookies.sessionid = data.result.sessionid;
             $location.path('/');
+        }).error(function(data) {
+            $scope.error = data.responseHeader.statusMessage;
         });
     };
 }

@@ -1,4 +1,4 @@
-package framework.api.webservices;
+package framework.api.resources;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -14,16 +14,16 @@ import javax.ws.rs.core.SecurityContext;
 import framework.core.domain.user.Credential;
 
 @Named
-public abstract class BaseController implements Serializable {
+public abstract class BaseResource implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(BaseController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BaseResource.class.getName());
     private static final String MESSAGES = "messages";
     private static final long serialVersionUID = -1508227485108273495L;
 
     @Context
     private SecurityContext securityContext;
 
-    protected BaseController() {
+    protected BaseResource() {
 
     }
 

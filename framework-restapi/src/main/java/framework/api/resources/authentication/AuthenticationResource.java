@@ -1,4 +1,4 @@
-package framework.api.webservices.authentication;
+package framework.api.resources.authentication;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -10,21 +10,21 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import framework.api.webservices.BaseController;
-import framework.api.webservices.SuccessResponse;
+import framework.api.resources.BaseResource;
+import framework.api.resources.SuccessResponse;
 import framework.core.domain.role.Role;
 import framework.core.domain.session.Session;
 import framework.core.domain.user.UserService;
 
 @Named
 @Path("/authentication")
-public class AuthenticationController extends BaseController {
+public class AuthenticationResource extends BaseResource {
 
     private static final long serialVersionUID = -6402313528023081815L;
     private UserService userService;
 
     @Inject
-    protected AuthenticationController(UserService userService) {
+    protected AuthenticationResource(UserService userService) {
         this.userService = userService;
     }
     

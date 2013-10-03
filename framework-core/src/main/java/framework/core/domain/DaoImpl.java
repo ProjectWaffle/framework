@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -42,33 +41,13 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
 
     /*
      * (non-Javadoc)
-     * @see framework.core.persistence.Dao#delete(framework.core.entity.AbstractEntity )
-     */
-    @Override
-    public void delete(T t) {
-        final T latest = this.entityManager.find(this.persistentClass, t.getId());
-        if (latest != null) {
-            this.entityManager.refresh(latest, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-            if (latest.getVersion().equals(t.getVersion()) && !latest.isDeleted()) {
-                t = latest;
-            }
-        }
-        t.setDeleted(true);
-        this.entityManager.merge(t);
-    }
-
-    /*
-     * (non-Javadoc)
      * @see framework.core.persistence.Dao#findById(java.lang.String)
      */
     @Override
     public T findById(String id) {
-        final T t = this.entityManager.find(this.persistentClass, id, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-        if (t != null) {
-            this.entityManager.detach(t);
-            return t;
-        }
-        return null;
+        final T t = this.entityManager.find(this.persistentClass, id);
+        this.entityManager.clear();
+        return t;
     }
 
     /*
@@ -77,15 +56,6 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
      */
     @Override
     public T saveOrUpdate(T t) {
-        final T latest = this.entityManager.find(this.persistentClass, t.getId());
-        if (latest != null) {
-            this.entityManager.refresh(latest, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-            if (latest.getVersion().equals(t.getVersion())) {
-                return this.entityManager.merge(t);
-            } else {
-                return latest;
-            }
-        }
         return this.entityManager.merge(t);
     }
 
@@ -105,9 +75,7 @@ public abstract class DaoImpl<T extends BaseEntity> implements Dao<T> {
             this.criteriaQuery.where(isdeletedCondition);
         }
         final List<T> results = this.entityManager.createQuery(this.criteriaQuery).getResultList();
-        for (final T t : results) {
-            this.entityManager.detach(t);
-        }
+        this.entityManager.clear();
         return results;
     }
 

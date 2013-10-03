@@ -1,4 +1,4 @@
-package framework.api.webservices.session;
+package framework.api.resources.session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,12 @@ import framework.core.domain.session.SessionService;
 
 @Named
 @Path("/session")
-public class SessionController {
+public class SessionResource {
 
     private SessionService sessionService;
     
     @Inject
-    protected SessionController(SessionService sessionService) {
+    protected SessionResource(SessionService sessionService) {
         this.sessionService = sessionService;
     }
     

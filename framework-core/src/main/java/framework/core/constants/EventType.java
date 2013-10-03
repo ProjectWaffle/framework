@@ -22,16 +22,6 @@ public enum EventType {
     INSERT,
 
     /**
-     * This is the event type when a user is authenticated in the system.
-     */
-    LOGIN,
-
-    /**
-     * This is the event type when a user is no longer authenticated in the system.
-     */
-    LOGOUT,
-
-    /**
      * This is the event type if an existing data has been updated.
      */
     UPDATE,

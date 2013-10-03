@@ -1,7 +1,17 @@
 package framework.core.domain.auditlog;
 
-import framework.core.domain.Service;
+import java.io.Serializable;
 
-public interface AuditlogService extends Service<Auditlog> {
+import framework.core.constants.EventType;
+import framework.core.domain.BaseEntity;
 
+public interface AuditlogService extends Serializable {
+
+    void saveOrUpdate(BaseEntity entity, EventType type);
+
+    void saveOrUpdate(EventType eventType);
+
+    void saveOrUpdate(Exception exception);
+
+    void saveOrUpdate(String detail, EventType type);
 }

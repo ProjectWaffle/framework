@@ -59,6 +59,7 @@
         <property name="beanNames">
             <list>
                 <value>*ServiceImpl</value>
+                <value>*DataGenerator</value>
             </list>
         </property>
         <property name="interceptorNames">

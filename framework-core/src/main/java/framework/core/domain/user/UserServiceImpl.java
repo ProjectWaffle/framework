@@ -7,10 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import framework.core.constants.EventType;
 import framework.core.domain.ServiceImpl;
-import framework.core.domain.auditlog.Auditlog;
-import framework.core.domain.auditlog.AuditlogService;
 import framework.core.domain.session.Session;
 import framework.core.domain.session.SessionService;
 import framework.core.exceptions.CredentialExpiredException;
@@ -28,26 +25,20 @@ class UserServiceImpl extends ServiceImpl<Credential> implements UserService {
 
     private static final long serialVersionUID = 5506093159372637005L;
 
-    private final AuditlogService auditlogService;
     private final SessionService sessionService;
     private final UserDao userDao;
 
     @Inject
-    protected UserServiceImpl(UserDao userDao, SessionService sessionService, AuditlogService auditlogService) {
+    protected UserServiceImpl(UserDao userDao, SessionService sessionService) {
         super(userDao);
         this.userDao = userDao;
         this.sessionService = sessionService;
-        this.auditlogService = auditlogService;
     }
 
     @Override
     public Session authenticate(String username, String password) {
-        final Credential user = this.validateLogin(username, password);
-        final Auditlog auditlog = new Auditlog();
-        auditlog.setType(EventType.LOGIN);
-        auditlog.setUserid(user.getId());
-        this.auditlogService.saveOrUpdate(auditlog);
-        return this.sessionService.saveOrUpdate(user);
+        final Credential credential = this.validateLogin(username, password);
+        return this.sessionService.saveOrUpdate(credential);
     }
 
     @Override
@@ -61,10 +52,6 @@ class UserServiceImpl extends ServiceImpl<Credential> implements UserService {
 
     @Override
     public void logout(Credential credential) {
-        final Auditlog auditlog = new Auditlog();
-        auditlog.setType(EventType.LOGOUT);
-        auditlog.setUserid(credential.getId());
-        this.auditlogService.saveOrUpdate(auditlog);
         this.sessionService.delete(credential);
     }
 

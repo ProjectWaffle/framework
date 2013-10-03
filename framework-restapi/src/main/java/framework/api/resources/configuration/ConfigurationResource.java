@@ -1,4 +1,4 @@
-package framework.api.webservices.configuration;
+package framework.api.resources.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,21 +14,21 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import framework.api.webservices.BaseController;
-import framework.api.webservices.SuccessResponse;
+import framework.api.resources.BaseResource;
+import framework.api.resources.SuccessResponse;
 import framework.core.domain.configuration.Configuration;
 import framework.core.domain.configuration.ConfigurationService;
 import framework.core.domain.role.Role;
 
 @Named
 @Path("/configuration")
-public class ConfigurationController extends BaseController {
+public class ConfigurationResource extends BaseResource {
 
     private static final long serialVersionUID = 200605594031531073L;
     private final ConfigurationService configurationService;
 
     @Inject
-    protected ConfigurationController(ConfigurationService configurationService) {
+    protected ConfigurationResource(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
 

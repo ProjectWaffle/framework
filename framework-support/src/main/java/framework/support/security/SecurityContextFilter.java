@@ -13,7 +13,7 @@ import com.sun.jersey.spi.container.ContainerResponseFilter;
 import com.sun.jersey.spi.container.ResourceFilter;
 
 import framework.api.providers.SecurityContext;
-import framework.api.webservices.ServiceResponse;
+import framework.api.resources.ServiceResponse;
 import framework.core.constants.ApplicationStatus;
 import framework.core.domain.session.Session;
 import framework.core.domain.session.SessionService;
