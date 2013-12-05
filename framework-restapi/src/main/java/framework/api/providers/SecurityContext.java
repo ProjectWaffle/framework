@@ -2,10 +2,10 @@ package framework.api.providers;
 
 import java.security.Principal;
 
-import framework.core.domain.role.Role;
 import framework.core.domain.session.Session;
 import framework.core.domain.session.SessionService;
 import framework.core.domain.user.Credential;
+import framework.core.domain.usergroup.Role;
 
 public class SecurityContext implements javax.ws.rs.core.SecurityContext {
 
@@ -39,11 +39,11 @@ public class SecurityContext implements javax.ws.rs.core.SecurityContext {
         if ((null == this.session) || (null == this.user)) {
             return false;
         }
-        if (Role.USERS.equals(name)) {
+        if (Role.USER.equals(name)) {
             return true;
         }
-        for (final Role role : this.user.getUsergroup().getRoles()) {
-            if (role.getName().equals(name)) {
+        for (final String role : this.user.getUsergroup().getRoles()) {
+            if (role.equals(name)) {
                 this.service.saveOrUpdate(this.user);
                 return true;
             }

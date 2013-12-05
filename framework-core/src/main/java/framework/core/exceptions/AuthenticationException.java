@@ -1,6 +1,5 @@
 package framework.core.exceptions;
 
-import framework.core.constants.ApplicationStatus;
 
 public abstract class AuthenticationException extends ApplicationException {
 

@@ -13,12 +13,12 @@ import com.sun.jersey.spi.container.ContainerResponseFilter;
 import com.sun.jersey.spi.container.ResourceFilter;
 
 import framework.api.providers.SecurityContext;
-import framework.api.resources.ServiceResponse;
-import framework.core.constants.ApplicationStatus;
+import framework.api.resource.ServiceResponse;
 import framework.core.domain.session.Session;
 import framework.core.domain.session.SessionService;
 import framework.core.domain.user.Credential;
 import framework.core.domain.user.UserService;
+import framework.core.exceptions.ApplicationStatus;
 
 @Named
 public class SecurityContextFilter implements ResourceFilter, ContainerRequestFilter, ContainerResponseFilter {

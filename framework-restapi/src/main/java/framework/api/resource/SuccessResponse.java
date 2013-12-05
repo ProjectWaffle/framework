@@ -1,6 +1,6 @@
-package framework.api.resources;
+package framework.api.resource;
 
-import framework.core.constants.ApplicationStatus;
+import framework.core.exceptions.ApplicationStatus;
 
 public class SuccessResponse extends ServiceResponse<String> {
 

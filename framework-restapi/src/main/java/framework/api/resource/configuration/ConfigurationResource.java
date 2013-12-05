@@ -1,4 +1,4 @@
-package framework.api.resources.configuration;
+package framework.api.resource.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +14,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import framework.api.resources.BaseResource;
-import framework.api.resources.SuccessResponse;
+import framework.api.resource.BaseResource;
+import framework.api.resource.SuccessResponse;
 import framework.core.domain.configuration.Configuration;
 import framework.core.domain.configuration.ConfigurationService;
-import framework.core.domain.role.Role;
+import framework.core.domain.usergroup.Role;
 
 @Named
 @Path("/configuration")
@@ -34,7 +34,7 @@ public class ConfigurationResource extends BaseResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed(value = { Role.ADMINISTRATORS })
+    @RolesAllowed(value = { Role.ADMINISTRATOR })
     public List<ConfigurationResponse> loadConfiguration() {
         final List<ConfigurationResponse> list = new ArrayList<ConfigurationResponse>();
         final String clientName = this.getCredential().getClient().getName();
@@ -50,7 +50,7 @@ public class ConfigurationResource extends BaseResource {
     @GET
     @Path(value = "/{code}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed(value = { Role.ADMINISTRATORS })
+    @RolesAllowed(value = { Role.ADMINISTRATOR })
     public ConfigurationResponse loadConfiguration(@PathParam(value = "code") String code) {
         final String client = this.getCredential().getClient().getName();
         final Configuration configuration = this.configurationService.findConfigurationByCodeAndClient(code, client);
@@ -65,7 +65,7 @@ public class ConfigurationResource extends BaseResource {
     @POST
     @Path("/save")
     @Consumes(MediaType.APPLICATION_JSON)
-    @RolesAllowed(value = { Role.ADMINISTRATORS })
+    @RolesAllowed(value = { Role.ADMINISTRATOR })
     public SuccessResponse save(ConfigurationRequest configurationRequest) {
         final String code = configurationRequest.getCode();
         final String name = this.getCredential().getClient().getName();

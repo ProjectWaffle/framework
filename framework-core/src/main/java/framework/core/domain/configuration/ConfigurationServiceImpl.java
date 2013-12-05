@@ -5,8 +5,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import framework.core.constants.ReferenceCode;
 import framework.core.domain.ServiceImpl;
+import framework.core.domain.reference.ReferenceCode;
 
 @Named
 class ConfigurationServiceImpl extends ServiceImpl<Configuration> implements ConfigurationService {

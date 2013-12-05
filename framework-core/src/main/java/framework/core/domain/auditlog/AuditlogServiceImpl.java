@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import framework.core.constants.EventType;
 import framework.core.domain.BaseEntity;
 import framework.core.exceptions.PersistenceNotPossibleException;
 

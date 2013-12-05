@@ -12,7 +12,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import framework.core.constants.EventType;
 import framework.core.domain.BaseEntity;
 
 /**

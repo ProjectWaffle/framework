@@ -1,4 +1,4 @@
-package framework.core.constants;
+package framework.core.domain.reference;
 
 /**
  * Returns the different types of look-up values.

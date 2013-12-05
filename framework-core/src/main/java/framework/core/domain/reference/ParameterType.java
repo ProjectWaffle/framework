@@ -1,6 +1,5 @@
-package framework.core.constants;
+package framework.core.domain.reference;
 
-import framework.core.domain.reference.Reference;
 
 /**
  * Allowable types of System Parameter.

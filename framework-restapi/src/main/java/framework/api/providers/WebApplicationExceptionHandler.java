@@ -10,8 +10,8 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import framework.api.resources.ServiceResponse;
-import framework.core.constants.ApplicationStatus;
+import framework.api.resource.ServiceResponse;
+import framework.core.exceptions.ApplicationStatus;
 
 @Provider
 public class WebApplicationExceptionHandler implements ExceptionMapper<WebApplicationException> {

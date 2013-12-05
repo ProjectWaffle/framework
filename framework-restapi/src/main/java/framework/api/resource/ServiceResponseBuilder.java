@@ -1,8 +1,8 @@
-package framework.api.resources;
+package framework.api.resource;
 
 import java.io.Serializable;
 
-import framework.core.constants.ApplicationStatus;
+import framework.core.exceptions.ApplicationStatus;
 
 public class ServiceResponseBuilder<T> implements Serializable {
 

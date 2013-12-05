@@ -2,8 +2,6 @@ package framework.core.exceptions;
 
 import java.util.Map;
 
-import framework.core.constants.ApplicationStatus;
-
 public class FormValidationException extends ApplicationException {
 
     private static final long serialVersionUID = 5236046400629103731L;

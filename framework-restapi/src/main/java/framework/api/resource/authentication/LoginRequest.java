@@ -1,4 +1,4 @@
-package framework.api.resources.authentication;
+package framework.api.resource.authentication;
 
 import java.io.Serializable;
 

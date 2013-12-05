@@ -6,7 +6,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
-import framework.core.constants.ReferenceType;
 import framework.core.domain.BaseEntity;
 import framework.core.domain.auditlog.Auditable;
 

@@ -6,10 +6,10 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import framework.core.constants.ReferenceCode;
 import framework.core.domain.ServiceImpl;
 import framework.core.domain.configuration.Configuration;
 import framework.core.domain.configuration.ConfigurationService;
+import framework.core.domain.reference.ReferenceCode;
 import framework.core.domain.user.Credential;
 
 @Named

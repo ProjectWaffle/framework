@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -14,7 +15,6 @@ import javax.persistence.Table;
 import framework.core.domain.BaseEntity;
 import framework.core.domain.auditlog.Auditable;
 import framework.core.domain.client.Client;
-import framework.core.domain.role.Role;
 
 /**
  * Represents the usergroup that a user can be a member-of.
@@ -39,9 +39,10 @@ public class Usergroup extends BaseEntity {
     @Auditable
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "USERGROUP_ROLE", joinColumns = { @JoinColumn(name = "USERGROUP_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
-    private List<Role> roles;
+    @ElementCollection(targetClass = String.class)
+    @JoinTable(name = "USERGROUP_ROLE", joinColumns = @JoinColumn(name = "USERGROUP_ID", nullable = false))
+    @Column(name = "NAME", nullable = false, length = 50)
+    private List<String> roles;
 
     public List<Client> getClients() {
         if (this.clients == null) {
@@ -73,7 +74,7 @@ public class Usergroup extends BaseEntity {
      * 
      * @return the {@link Role}s accessible to this usergroup.
      */
-    public List<Role> getRoles() {
+    public List<String> getRoles() {
         return this.roles;
     }
 
@@ -89,7 +90,7 @@ public class Usergroup extends BaseEntity {
         this.name = name;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(List<String> roles) {
         this.roles = roles;
     }
 

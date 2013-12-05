@@ -1,4 +1,4 @@
-package framework.api.resources.authentication;
+package framework.api.resource.authentication;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -10,11 +10,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import framework.api.resources.BaseResource;
-import framework.api.resources.SuccessResponse;
-import framework.core.domain.role.Role;
+import framework.api.resource.BaseResource;
+import framework.api.resource.SuccessResponse;
 import framework.core.domain.session.Session;
 import framework.core.domain.user.UserService;
+import framework.core.domain.usergroup.Role;
 
 @Named
 @Path("/authentication")
@@ -40,7 +40,7 @@ public class AuthenticationResource extends BaseResource {
     @GET
     @Path("/logout")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed(value={Role.USERS})
+    @RolesAllowed(value={Role.USER})
     public SuccessResponse logout() {
         this.userService.logout(getCredential());
         return new SuccessResponse();

@@ -1,4 +1,4 @@
-package framework.core.constants;
+package framework.core.domain.reference;
 
 /**
  * Unique codes that can be assigned as System Parameter.

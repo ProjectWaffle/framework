@@ -1,4 +1,4 @@
-package framework.api.resources.session;
+package framework.api.resource.session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +11,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import framework.core.domain.role.Role;
 import framework.core.domain.session.Session;
 import framework.core.domain.session.SessionService;
+import framework.core.domain.usergroup.Role;
 
 @Named
 @Path("/session")
@@ -28,7 +28,7 @@ public class SessionResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed(value = { Role.ADMINISTRATORS })
+    @RolesAllowed(value = { Role.ADMINISTRATOR })
     public List<SessionResponse> loadActiveSession() {
         List<SessionResponse> sessionResponses = new ArrayList<SessionResponse>();
         for (Session session : this.sessionService.findActiveSessions()) {

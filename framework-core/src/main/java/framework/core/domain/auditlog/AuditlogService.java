@@ -2,7 +2,6 @@ package framework.core.domain.auditlog;
 
 import java.io.Serializable;
 
-import framework.core.constants.EventType;
 import framework.core.domain.BaseEntity;
 
 public interface AuditlogService extends Serializable {

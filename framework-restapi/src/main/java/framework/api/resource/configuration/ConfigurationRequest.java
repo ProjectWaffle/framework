@@ -1,4 +1,4 @@
-package framework.api.resources.configuration;
+package framework.api.resource.configuration;
 
 import java.io.Serializable;
 

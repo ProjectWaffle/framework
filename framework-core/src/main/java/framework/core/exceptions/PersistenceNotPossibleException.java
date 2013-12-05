@@ -1,6 +1,5 @@
 package framework.core.exceptions;
 
-import framework.core.constants.ApplicationStatus;
 
 public class PersistenceNotPossibleException extends ApplicationException {
 

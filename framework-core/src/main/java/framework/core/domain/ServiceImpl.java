@@ -6,8 +6,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import framework.core.constants.EventType;
 import framework.core.domain.auditlog.AuditlogService;
+import framework.core.domain.auditlog.EventType;
 
 /**
  * Provides basic business operation for all service classes.
