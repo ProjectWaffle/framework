@@ -75,6 +75,12 @@
             <artifactId>ehcache-core</artifactId>
             <version>${ehcache.version}</version>
         </dependency>
+        <!-- Database Migration -->
+        <dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>3.0.8</version>
+		</dependency>
         <!-- Webservices -->
         <dependency>
             <groupId>com.sun.jersey</groupId>
