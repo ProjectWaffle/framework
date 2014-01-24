@@ -11,7 +11,7 @@ import javax.inject.Named;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 
-import framework.core.domain.user.Credential;
+import framework.core.domain.model.Credential;
 
 @Named
 public abstract class BaseResource implements Serializable {

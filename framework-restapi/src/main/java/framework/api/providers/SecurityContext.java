@@ -2,18 +2,18 @@ package framework.api.providers;
 
 import java.security.Principal;
 
-import framework.core.domain.session.Session;
-import framework.core.domain.session.SessionService;
-import framework.core.domain.user.Credential;
-import framework.core.domain.usergroup.Role;
+import framework.core.domain.model.Credential;
+import framework.core.domain.model.Role;
+import framework.core.domain.model.Session;
+import framework.core.domain.service.AuthenticationService;
 
 public class SecurityContext implements javax.ws.rs.core.SecurityContext {
 
-    private final SessionService service;
+    private final AuthenticationService service;
     private final Session session;
     private final Credential user;
 
-    public SecurityContext(SessionService service, Credential user, Session session) {
+    public SecurityContext(AuthenticationService service, Credential user, Session session) {
         this.user = user;
         this.session = session;
         this.service = service;

@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import framework.api.resource.ServiceResponse;
+import framework.api.dto.response.ServiceResponse;
 import framework.core.exceptions.ApplicationException;
 
 @Provider

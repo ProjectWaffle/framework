@@ -81,6 +81,11 @@
 			<artifactId>liquibase-core</artifactId>
 			<version>3.0.8</version>
 		</dependency>
+		<dependency>
+			<groupId>org.liquibase.ext</groupId>
+			<artifactId>liquibase-hibernate4</artifactId>
+			<version>3.2</version>
+		</dependency>
         <!-- Webservices -->
         <dependency>
             <groupId>com.sun.jersey</groupId>

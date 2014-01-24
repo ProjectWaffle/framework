@@ -12,25 +12,24 @@ import com.sun.jersey.spi.container.ContainerResponse;
 import com.sun.jersey.spi.container.ContainerResponseFilter;
 import com.sun.jersey.spi.container.ResourceFilter;
 
+import framework.api.dto.response.ServiceResponse;
 import framework.api.providers.SecurityContext;
-import framework.api.resource.ServiceResponse;
-import framework.core.domain.session.Session;
-import framework.core.domain.session.SessionService;
-import framework.core.domain.user.Credential;
-import framework.core.domain.user.UserService;
+import framework.core.domain.model.Credential;
+import framework.core.domain.model.Session;
+import framework.core.domain.service.AuthenticationService;
 import framework.core.exceptions.ApplicationStatus;
 
 @Named
 public class SecurityContextFilter implements ResourceFilter, ContainerRequestFilter, ContainerResponseFilter {
 
-    private final SessionService sessionService;
+    private final AuthenticationService authenticationService;
 
-    private final UserService userService;
+    private final AuthenticationService userService;
 
     @Inject
-    protected SecurityContextFilter(SessionService sessionService, UserService userService) {
+    protected SecurityContextFilter(AuthenticationService authenticationService, AuthenticationService userService) {
         super();
-        this.sessionService = sessionService;
+        this.authenticationService = authenticationService;
         this.userService = userService;
     }
 
@@ -40,14 +39,14 @@ public class SecurityContextFilter implements ResourceFilter, ContainerRequestFi
         Credential user = null;
         Session session = null;
         if (cookie.containsKey("sessionid") && cookie.containsKey("username")) {
-            session = this.sessionService.findSessionById(
+            session = this.authenticationService.findSessionById(
                     cookie.get("username").getValue(), 
                     cookie.get("sessionid").getValue());
             if (session != null) {
                 user = this.userService.findCredentialByUsername(cookie.get("username").getValue());
             }
         }
-        final SecurityContext securityContext = new SecurityContext(this.sessionService, user, session);
+        final SecurityContext securityContext = new SecurityContext(this.authenticationService, user, session);
         request.setSecurityContext(securityContext);
         return request;
     }

@@ -10,8 +10,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import framework.api.resource.ServiceResponse;
-import framework.core.domain.auditlog.AuditlogService;
+import framework.api.dto.response.ServiceResponse;
+import framework.core.domain.service.AuditlogService;
 import framework.core.exceptions.ApplicationStatus;
 
 @Provider
